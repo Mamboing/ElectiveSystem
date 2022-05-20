@@ -86,3 +86,4 @@ lint/tmp/
 import-summary.txt
 .idea/deploymentTargetDropDown.xml
 .idea/misc.xml
+node_modules

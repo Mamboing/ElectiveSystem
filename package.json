@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "element-plus": "^2.2.0",
+    "vue-router": "^4.0.15"
+  },
+  "devDependencies": {
+    "sass-loader": "^12.6.0"
+  }
+}
