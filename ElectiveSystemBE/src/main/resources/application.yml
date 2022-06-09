@@ -1,1 +1,30 @@
+server:
+  port: 8085
 
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://124.223.205.11:17382/elecsysserver?useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+    username: ElecSysServer
+    password: NK4c7aBN5XhpDNyS
+  redis:
+    host: localhost
+    port: 6379
+  session:
+    store-type: redis
+    timeout: 86400
+  jackson:
+    time-zone: Asia/Shanghai
+
+logging:
+  config: classpath:log4j2.xml
+  level:
+    root: INFO
+    javax.activation: info
+    org.apache.catalina: INFO
+    org.apache.commons.beanutils.converters: INFO
+    org.apache.coyote.http11.Http11Processor: INFO
+    org.apache.http: INFO
+    org.apache.tomcat: INFO
+    org.springframework: INFO
+    com.chinamobile.cmss.bdpaas.resource.monitor: DEBUG
