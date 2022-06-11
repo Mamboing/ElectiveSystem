@@ -22,6 +22,12 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 
 import java.time.Duration;
 
+
+/*
+ * 开启Session缓存
+ * 设置JSON格式的序列化器
+ * 设定缓存超时时间
+ */
 @EnableRedisHttpSession
 @EnableCaching
 @Configuration
