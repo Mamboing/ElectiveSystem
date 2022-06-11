@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 public class TestRestController {
-    @RequestMapping
+    @RequestMapping("/getSessionId")
     public Map<String, Object> getSessionId(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> map = new HashMap<>(4);
 
