@@ -8,8 +8,10 @@ spring:
     username: ElecSysServer
     password: NK4c7aBN5XhpDNyS
   redis:
+    database: 1
     host: localhost
     port: 6379
+    timeout: 1000ms
   session:
     store-type: redis
     timeout: 86400
