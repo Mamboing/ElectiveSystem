@@ -7,10 +7,8 @@
 <router-link to="/EducatorScoreVerify">Score Verify</router-link>|
 <router-link to="/EducatorCourseOfferingVerify">Offering Verify</router-link>|
 <router-link to="/EducatorCourseSelectionVerify">Selection Verify</router-link>
+
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
-export default defineComponent({
-    name: 'EducatorMainPage'
-})
+
 </script>

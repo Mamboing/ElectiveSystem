@@ -1,7 +1,10 @@
 {
   "dependencies": {
     "element-plus": "^2.2.0",
-    "vue-router": "^4.0.15"
+    "view-ui-plus": "^1.1.0",
+    "vue-router": "^4.0.15",
+    "vxe-table": "^4.2.7-beta.0",
+    "xe-utils": "^3.5.4"
   },
   "devDependencies": {
     "sass-loader": "^12.6.0"
