@@ -1,9 +1,9 @@
 <template>
-<h1>Main  Page
-</h1>
-<router-link to="/TeacherMain">Main Page</router-link>|
-<router-link to="/TeacherCourseOffering">Course Offering</router-link>|
-<router-link to="/TeacherScoreRegistration">Score Registration</router-link>
+  <h1>主页
+  </h1>
+  <router-link to="/TeacherMain">主页</router-link>|
+  <router-link to="/TeacherCourseOffering">课程开设</router-link>|
+  <router-link to="/TeacherScoreRegistration">成绩登记</router-link>
 <p></p>
  <vxe-toolbar ref="xToolbar" :loading="demo1.loading">
           <template #buttons>

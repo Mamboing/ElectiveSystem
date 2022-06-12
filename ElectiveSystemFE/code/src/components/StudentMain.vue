@@ -1,10 +1,10 @@
 <template>
-<h1>Main  Page
+<h1>主页
 </h1>
-<router-link to="/StudentMain">Main Page</router-link>|
-<router-link to="/StudentCourseSelection">Course Selection</router-link>|
-<router-link to="/StudentCurriculumView">Curriculum View</router-link>|
-<router-link to="/StudentScoreQuery">Score Query</router-link>
+<router-link to="/StudentMain">主页</router-link>|
+<router-link to="/StudentCourseSelection">选课</router-link>|
+<router-link to="/StudentCurriculumView">课表</router-link>|
+<router-link to="/StudentScoreQuery">查分</router-link>
 
 <vxe-table border :data="tableData">
           <vxe-column type="seq" width="60"></vxe-column>

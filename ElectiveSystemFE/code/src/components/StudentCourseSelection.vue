@@ -1,10 +1,10 @@
 <template>
-<h1>Course Selection
+<h1>选课
 </h1>
-<router-link to="/StudentMain">Main Page</router-link>|
-<router-link to="/StudentCourseSelection">Course Selection</router-link>|
-<router-link to="/StudentCurriculumView">Curriculum View</router-link>|
-<router-link to="/StudentScoreQuery">Score Query</router-link>
+<router-link to="/StudentMain">主页</router-link>|
+<router-link to="/StudentCourseSelection">选课</router-link>|
+<router-link to="/StudentCurriculumView">课表</router-link>|
+<router-link to="/StudentScoreQuery">查分</router-link>
 <vxe-toolbar>
           <template #buttons>
             <vxe-input v-model="demo1.filterName" type="search" placeholder="搜索" @keyup="searchEvent1"></vxe-input>

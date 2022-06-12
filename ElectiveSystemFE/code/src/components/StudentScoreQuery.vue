@@ -1,11 +1,10 @@
 <template>
-<h1>Score Query
+<h1>查分
 </h1>
-<router-link to="/StudentMain">Student Main</router-link>|
-<router-link to="/StudentCourseSelection">Student CourseSelection</router-link>|
-<router-link to="/StudentCurriculumView">Student CurriculumView</router-link>|
-<router-link to="/StudentScoreQuery">Student ScoreQuery</router-link>
-<h1>我的成绩</h1>
+<router-link to="/StudentMain">主页</router-link>|
+<router-link to="/StudentCourseSelection">选课</router-link>|
+<router-link to="/StudentCurriculumView">课表</router-link>|
+<router-link to="/StudentScoreQuery">查分</router-link>
 <vxe-table
           ref="xTable1"
           border
