@@ -1,9 +1,9 @@
 <template>
-    <h1>Course Offering
-    </h1>
-    <router-link to="/TeacherMain">Main Page</router-link>|
-    <router-link to="/TeacherCourseOffering">Course Offering</router-link>|
-    <router-link to="/TeacherScoreRegistration">Score Registration</router-link>
+  <h1>课程开设
+  </h1>
+  <router-link to="/TeacherMain">主页</router-link>|
+  <router-link to="/TeacherCourseOffering">课程开设</router-link>|
+  <router-link to="/TeacherScoreRegistration">成绩登记</router-link>
     <form @submit.prevent="Submit">
      <p>Course Name</p>
     <p>

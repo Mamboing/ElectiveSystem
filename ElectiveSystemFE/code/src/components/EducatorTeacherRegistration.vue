@@ -1,12 +1,12 @@
 <template>
-<h1>Teacher Registration
-</h1>
-<router-link to="/EducatorMain">Main Page</router-link>|
-<router-link to="/EducatorTeacherRegistration">Teacher Registration</router-link>|
-<router-link to="/EducatorStudentRegistration">Student Registration</router-link>|
-<router-link to="/EducatorScoreVerify">Score Verify</router-link>|
-<router-link to="/EducatorCourseOfferingVerify">Offering Verify</router-link>|
-<router-link to="/EducatorCourseSelectionVerify">Selection Verify</router-link>
+<h1>教师管理
+  </h1>
+  <router-link to="/EducatorMain">主页</router-link>|
+  <router-link to="/EducatorTeacherRegistration">教师管理</router-link>|
+  <router-link to="/EducatorStudentRegistration">学生管理</router-link>|
+  <router-link to="/EducatorScoreVerify">成绩管理</router-link>|
+  <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
+  <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
 <p></p>
   <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents">
           <template #name_edit="{ row }">

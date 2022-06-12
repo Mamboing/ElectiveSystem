@@ -1,42 +1,142 @@
 <template>
-  <h1>Score Registration
+  <h1>成绩登记
   </h1>
-  <router-link to="/TeacherMain">Score Registration</router-link>|
-  <router-link to="/TeacherCourseOffering">Course Offering</router-link>|
-  <router-link to="/TeacherScoreRegistration">Score Registration</router-link>
+  <router-link to="/TeacherMain">主页</router-link>|
+  <router-link to="/TeacherCourseOffering">课程开设</router-link>|
+  <router-link to="/TeacherScoreRegistration">成绩登记</router-link>
   <p>
     <vxe-table ref="xTable1" border auto-resize :data="demo1.tableData" @toggle-row-expand="toggleExpandChangeEvent">
       <vxe-column type="seq" width="60" :fixed="demo1.seqFixed"></vxe-column>
-       <vxe-column field="name" title="Name" width="400"></vxe-column>
+      <vxe-column field="name" title="课程名称" width="400"></vxe-column>
+      <vxe-column field="semester" title="授课学期" width="400"></vxe-column>
       <vxe-column type="expand" :fixed="demo1.expandFixed">
         <template #content="{ rowIndex }">
           <div v-if="rowIndex === 0" class="expand-wrapper">
-            <vxe-toolbar>
-              <template #buttons>
-                按点击先后顺序排序：<vxe-switch v-model="isChronological4"></vxe-switch>
+            <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents">
+              <template #name_edit="{ row }">
+                <vxe-input v-model="row.name"></vxe-input>
               </template>
-            </vxe-toolbar>
-            <vxe-table border height="300" :row-config="{ isHover: true }"
-              :sort-config="{ multiple: true, chronological: isChronological4 }" :data="demo1.tableData"
-              @sort-change="sortChangeEvent3">
-              <vxe-column field="id" title="学生ID" sortable></vxe-column>
-              <vxe-column field="name" title="学生名称" sortable></vxe-column>
-              <vxe-column field="score1" title="平时成绩" sortable></vxe-column>
-              <vxe-column field="score2" title="期末成绩" sortable></vxe-column>
-              <vxe-column field="score3" title="总评成绩" sortable></vxe-column>
-            </vxe-table>
+              <template #id_edit="{ row }">
+                <vxe-input v-model="row.id"></vxe-input>
+              </template>
+              <template #score1_edit="{ row }">
+                <vxe-input v-model="row.score1"></vxe-input>
+              </template>
+              <template #score2_edit="{ row }">
+                <vxe-input v-model="row.score2"></vxe-input>
+              </template>
+              <template #score3_edit="{ row }">
+                <vxe-input v-model="row.score3"></vxe-input>
+              </template>
+              <template #year_edit="{ row }">
+                <vxe-input v-model="row.year"></vxe-input>
+              </template>
+            </vxe-grid>
           </div>
         </template>
       </vxe-column>
     </vxe-table>
   </p>
+  <p>
+
+  </p>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, nextTick } from 'vue'
 import { VxeTableInstance, VxeTableEvents, VxeColumnPropTypes } from 'vxe-table'
+import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
 
 export default defineComponent({
   setup() {
+    const xGrid = ref({} as VxeGridInstance)
+
+    const gridOptions = reactive<VxeGridProps>({
+      border: true,
+      keepSource: true,
+      id: 'toolbar_demo_1',
+      height: 530,
+      printConfig: {},
+      importConfig: {},
+      exportConfig: {},
+      columnConfig: {
+        resizable: true
+      },
+      customConfig: {
+        storage: true
+      },
+      editConfig: {
+        trigger: 'click',
+        mode: 'row',
+        showStatus: true
+      },
+      columns: [
+        { type: 'checkbox', width: 50 },
+        { type: 'seq', width: 60 },
+        { field: 'id', title: '学生ID', editRender: {}, slots: { edit: 'id_edit' } },
+        { field: 'name', title: '学生姓名', editRender: {}, slots: { edit: 'name_edit' } },
+        {
+          title: '学生成绩',
+          children: [
+            { field: 'score1', title: '平时成绩', editRender: { autofocus: '.vxe-input--inner' }, slots: { edit: 'score1_edit' } },
+            { field: 'score2', title: '期末成绩', editRender: {}, slots: { edit: 'score2_edit' } },
+            { field: 'score3', title: '总评成绩', editRender: {}, slots: { edit: 'score3_edit' } }
+          ]
+        },
+        { field: 'year', title: '学生年份', showOverflow: true, editRender: {}, slots: { edit: 'year_edit' } }
+      ],
+      toolbarConfig: {
+        buttons: [
+          { code: 'myInsert', name: '新增数据' },
+          { code: 'mySave', name: '保存数据', status: 'success' },
+          { code: 'myExport', name: '导出数据', type: 'text', status: 'warning' },
+        ],
+        tools: [
+          { code: 'myPrint', name: '自定义打印' }
+        ],
+        import: true,
+        export: true,
+        print: true,
+        zoom: true,
+        custom: true
+      },
+      data: [
+        { id: 10001, name: 'Test1', score1: 100, score2: 100, score3: 100, year: 'Shenzhen' },
+      ]
+    })
+
+    const gridEvents: VxeGridListeners = {
+      toolbarButtonClick({ code }) {
+        const $grid = xGrid.value
+        switch (code) {
+          case 'myInsert': {
+            $grid.insert({
+              name: 'xxx'
+            })
+            break
+          }
+          case 'mySave': {
+            const { insertRecords, removeRecords, updateRecords } = $grid.getRecordset()
+            VXETable.modal.message({ content: `新增 ${insertRecords.length} 条，删除 ${removeRecords.length} 条，更新 ${updateRecords.length} 条`, status: 'success' })
+            break
+          }
+          case 'myExport': {
+            $grid.exportData({
+              type: 'csv'
+            })
+            break
+          }
+        }
+      },
+      toolbarToolClick({ code }) {
+        const $grid = xGrid.value
+        switch (code) {
+          case 'myPrint': {
+            $grid.print()
+            break
+          }
+        }
+      }
+    }
     const xTable1 = ref({} as VxeTableInstance)
 
     const isChronological4 = ref(false)
@@ -44,7 +144,7 @@ export default defineComponent({
       seqFixed: null as VxeColumnPropTypes.Fixed,
       expandFixed: null as VxeColumnPropTypes.Fixed,
       tableData: [
-        { id: '1', name: 'a', score1: 100, score2: 100, score3: 100 },
+        { id: '1', name: 'a', semester:'b' },
       ]
     })
 
@@ -71,14 +171,16 @@ export default defineComponent({
     const sortChangeEvent3: VxeTableEvents.SortChange = ({ sortList }) => {
       console.info(sortList.map((item) => `${item.property},${item.order}`).join('; '))
     }
-
     return {
       demo1,
       toggleSeqFixed,
       toggleExpandFixed,
       toggleExpandChangeEvent,
       sortChangeEvent3,
-      isChronological4
+      isChronological4,
+      xGrid,
+      gridOptions,
+      gridEvents
     }
   }
 })
