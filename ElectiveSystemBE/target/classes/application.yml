@@ -36,12 +36,12 @@ spring:
         login-username: admin
         login-password: 123456
       filter:
-        log4j2:
+        slf4j:
           enabled: true
-          statement-create-after-log-enabled: true
-          statement-close-after-log-enabled: true
-          result-set-open-after-log-enabled: true
-          result-set-close-after-log-enabled: true
+          connection-log-enabled: true
+          statement-log-enabled: true
+          result-set-log-enabled: true
+          statement-executable-sql-log-enable: true
   redis:
     database: 0
     host: localhost
