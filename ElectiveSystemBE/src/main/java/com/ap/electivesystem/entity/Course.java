@@ -4,14 +4,14 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName("tb_course")
 public class Course implements Serializable {
 
@@ -38,5 +38,13 @@ public class Course implements Serializable {
     @TableField("offer_state")
     private String offerState;
 
+    public Course(String courseName, String weekday, String time, Integer teacherId, String courseRoom, String offerState) {
+        this.courseName = courseName;
+        this.weekday = weekday;
+        this.time = time;
+        this.teacherId = teacherId;
+        this.courseRoom = courseRoom;
+        this.offerState = offerState;
+    }
 
 }

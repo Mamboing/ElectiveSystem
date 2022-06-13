@@ -1,5 +1,6 @@
 package com.ap.electivesystem.entity.vo;
 
+import com.ap.electivesystem.entity.constant.ReturnCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,10 @@ public class ResultVO implements Serializable {
 
     public static ResultVO fail(Integer code, String message) {
         return new ResultVO(code, message);
+    }
+
+    public static ResultVO fail(ReturnCode code){
+        return new ResultVO(code.getCode(), code.getMessage());
     }
 
 }

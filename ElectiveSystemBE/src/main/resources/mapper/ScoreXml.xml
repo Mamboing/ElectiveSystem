@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ap.electivesystem.mapper.ScoreMapper">
 
+    <insert id="insertBatch">
+        insert into tb_score(course_id, student_id, usual_grade, final_grade, total_grade) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.courseId}, #{item.studentId},#{item.usualGrade},#{item.finalGrade},#{item.totalGrade})
+        </foreach>
+    </insert>
 </mapper>
