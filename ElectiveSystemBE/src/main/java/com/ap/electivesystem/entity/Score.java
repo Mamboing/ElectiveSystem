@@ -18,7 +18,7 @@ public class Score implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("course_id")
+    @TableField("course_id")
     private Integer courseId;
 
     @TableField("student_id")

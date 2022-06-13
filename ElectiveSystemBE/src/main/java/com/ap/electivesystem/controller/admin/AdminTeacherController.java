@@ -1,6 +1,5 @@
 package com.ap.electivesystem.controller.admin;
 
-
 import com.ap.electivesystem.config.auth.annotation.Register;
 import com.ap.electivesystem.entity.Teacher;
 import com.ap.electivesystem.entity.constant.ReturnCode;

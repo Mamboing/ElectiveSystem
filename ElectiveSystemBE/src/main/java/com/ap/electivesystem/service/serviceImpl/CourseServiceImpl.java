@@ -3,6 +3,7 @@ package com.ap.electivesystem.service.serviceImpl;
 import cn.hutool.core.util.RandomUtil;
 import com.ap.electivesystem.entity.Course;
 import com.ap.electivesystem.entity.bo.LoginStatusBO;
+import com.ap.electivesystem.entity.dto.CourseDTO;
 import com.ap.electivesystem.entity.vo.CourseVO;
 import com.ap.electivesystem.manager.LoginStatusManager;
 import com.ap.electivesystem.mapper.CourseMapper;
@@ -42,5 +43,12 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         PageHelper.startPage(pageNo, pageSize);
         List<CourseVO> course = courseMapper.findCourse(courseName, courseTime, teacherName);
         return new PageInfo<>(course);
+    }
+
+    @Override
+    public PageInfo<CourseDTO> search(String courseName, String weekday, String time, String teacherName, String courseRoom, String offerState, int pageSize, int pageNo) {
+        PageHelper.startPage(pageNo, pageSize);
+        List<CourseDTO> search = courseMapper.search(courseName, weekday, time, teacherName, courseRoom, offerState);
+        return new PageInfo<>(search);
     }
 }
