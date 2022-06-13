@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ap.electivesystem.mapper.StudentMapper">
+
+    <sql id="courseField">
+        courseId, courseName, weekday, time, teacherId, courseRoom, offserState
+    </sql>
+    <select id="schedule" resultType="com.ap.electivesystem.entity.Course">
+        select
+        <include refid="courseField"/>
+        from tb_select s inner join tb_course c on s.course_id = c.course_id
+        where student_id = #{student_id} and select_state = 1;
+    </select>
+</mapper>

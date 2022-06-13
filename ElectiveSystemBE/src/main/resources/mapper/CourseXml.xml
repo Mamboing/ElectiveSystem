@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ap.electivesystem.mapper.CourseMapper">
+
+    <select id="getCourseNameByCourseId" resultType="java.lang.String">
+        select course_name
+        from tb_course
+        where course_id = #{courseId}
+    </select>
+    <select id="findCourse" resultType="com.ap.electivesystem.entity.vo.CourseVO">
+        select course_id, course_name, weekday, `time`, teacher_name, course_room
+        from tb_course inner join tb_teacher tt on tb_course.teacher_id = tt.teacher_id
+        where offer_state = '1'
+        <if test="courseName != null and courseName != ''">
+            and course_name = #{courseName}
+        </if>
+        <if test="courseTime != null and courseTime != ''">
+            and `time` = #{courseTime}
+        </if>
+        <if test="teacherName != null and teacherName != ''">
+            and teacherName = #{teacherName}
+        </if>
+    </select>
+    <select id="search" resultType="com.ap.electivesystem.entity.dto.CourseDTO">
+        select course_id, course_name, weekday, `time`, teacher_name, course_room, offer_state
+        from tb_course inner join tb_teacher tt on tb_course.teacher_id = tt.teacher_id
+        <where>
+            <if test="courseName != null and courseName != ''">
+                course_name = #{courseName}
+            </if>
+            <if test="weekday != null and weekday != ''">
+                and weekday = #{weekday}
+            </if>
+            <if test="time != null and time != ''">
+                and `time` = #{time}
+            </if>
+            <if test="teacherName != null and teacherName != ''">
+                and teacher_name = #{teacherName}
+            </if>
+            <if test="courseRoom != null and courseRoom != ''">
+                and course_room = #{courseRoom}
+            </if>
+            <if test="offerState != null and offerState != ''">
+                and offer_state = #{offerState}
+            </if>
+        </where>
+    </select>
+
+</mapper>
