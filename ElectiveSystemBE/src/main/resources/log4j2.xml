@@ -163,8 +163,11 @@
         <!--spring日志-->
         <Logger name="org.springframework" level="debug"/>
         <!--druid数据源日志-->
-        <Logger name="druid.sql.Statement" level="trace" additivity="false">
+        <Logger name="druid.sql.Statement" level="debug" additivity="false">
             <AppenderRef ref="druidSqlRollingFile"/>
+        </Logger>
+        <Logger name="druid.sql.Statement" level="debug" additivity="false">
+            <AppenderRef ref="consoleAppender"/>
         </Logger>
         <!-- mybatis日志 -->
         <Logger name="com.mybatis" level="warn"/>
