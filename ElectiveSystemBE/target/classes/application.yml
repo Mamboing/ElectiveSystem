@@ -35,7 +35,13 @@ spring:
         enabled: true
         login-username: admin
         login-password: 123456
-
+      filter:
+        log4j2:
+          enabled: true
+          statement-create-after-log-enabled: true
+          statement-close-after-log-enabled: true
+          result-set-open-after-log-enabled: true
+          result-set-close-after-log-enabled: true
   redis:
     database: 0
     host: localhost
