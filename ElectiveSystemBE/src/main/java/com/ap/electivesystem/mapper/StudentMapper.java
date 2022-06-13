@@ -1,7 +1,6 @@
 package com.ap.electivesystem.mapper;
 
 import com.ap.electivesystem.entity.Course;
-import com.ap.electivesystem.entity.Score;
 import com.ap.electivesystem.entity.Student;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;

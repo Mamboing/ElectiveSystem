@@ -39,7 +39,7 @@ public class ResultVO implements Serializable {
         return new ResultVO(code, message);
     }
 
-    public static ResultVO fail(ReturnCode code){
+    public static ResultVO fail(ReturnCode code) {
         return new ResultVO(code.getCode(), code.getMessage());
     }
 

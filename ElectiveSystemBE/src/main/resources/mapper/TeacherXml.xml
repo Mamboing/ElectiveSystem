@@ -3,7 +3,9 @@
 <mapper namespace="com.ap.electivesystem.mapper.TeacherMapper">
 
     <select id="getTeacherNameById" resultType="java.lang.String">
-        select teacher_name from tb_teacher inner join tb_course tc on tb_teacher.teacher_id = tc.teacher_id
+        select teacher_name
+        from tb_teacher
+                 inner join tb_course tc on tb_teacher.teacher_id = tc.teacher_id
         where course_id = #{courseId}
     </select>
 </mapper>

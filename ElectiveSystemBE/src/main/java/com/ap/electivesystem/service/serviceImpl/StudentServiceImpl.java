@@ -14,6 +14,8 @@ import com.ap.electivesystem.service.StudentService;
 import com.ap.electivesystem.utils.CopyUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -93,7 +95,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public List<StudentVO> findByCourseId(Integer courseId) {
-        return selectMapper.findByCourseId(courseId);
+    public PageInfo<StudentVO> findByCourseId(Integer courseId, int pageSize, int pageNo) {
+        PageHelper.startPage(pageNo, pageSize);
+        List<StudentVO> byCourseId = selectMapper.findByCourseId(courseId);
+        return new PageInfo<>(byCourseId);
     }
 }

@@ -11,6 +11,7 @@ class ElectiveSystemApplicationTests {
 
     @Resource
     private TeacherMapper teacherMapper;
+
     @Test
     void contextLoads() {
         String teacherNameById = teacherMapper.getTeacherNameById(400002);

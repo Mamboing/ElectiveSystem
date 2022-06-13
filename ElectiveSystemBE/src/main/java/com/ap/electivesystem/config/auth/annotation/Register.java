@@ -19,7 +19,9 @@ public @interface Register {
 
     int SELECT_COURSE_MANAGE = 8;
 
-    int ALL = 15;
+    int SCORE_MANAGE = 16;
+
+    int ALL = 31;
 
     int value() default 0;
 
