@@ -1,6 +1,5 @@
 package com.ap.electivesystem.config.auth;
 
-import com.ap.electivesystem.config.auth.Permission;
 import com.ap.electivesystem.config.auth.annotation.*;
 import com.ap.electivesystem.entity.constant.UserType;
 import org.springframework.stereotype.Component;

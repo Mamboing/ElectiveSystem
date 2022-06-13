@@ -26,9 +26,9 @@ public class UserService extends BaseServiceImpl {
     @Resource
     private Md5Encrypt md5Encrypt;
 
-    public ResultVO login(String username, String password, Integer userType){
+    public ResultVO login(String username, String password, Integer userType) {
         AuthInfoBO authInfoBO = manager.getAuthInfoByUsername(username, userType);
-        if(authInfoBO == null)
+        if (authInfoBO == null)
             return failedResult("用户不存在");
         String passwordHash = computePasswordHash(password);
         if (!passwordHash.equals(authInfoBO.getPassword())) {

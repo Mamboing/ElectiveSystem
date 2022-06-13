@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminTestController {
 
     @GetMapping("/")
-    public String hello(){
+    public String hello() {
         return "This is register!";
     }
 

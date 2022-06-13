@@ -22,7 +22,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     private final LoginStatusManager loginStatusManager;
     private final ObjectMapper objectMapper;
 
-    public AuthInterceptor(PermissionScanner scanner, LoginStatusManager loginStatusManager, ObjectMapper objectMapper){
+    public AuthInterceptor(PermissionScanner scanner, LoginStatusManager loginStatusManager, ObjectMapper objectMapper) {
         this.scanner = scanner;
         this.loginStatusManager = loginStatusManager;
         this.objectMapper = objectMapper;
@@ -38,7 +38,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         Method method = handlerMethod.getMethod();
 
         Permission permission = scanner.scan(method);
-        if(!permission.getNeedLogin() || permission.getUserType().equals(0))
+        if (!permission.getNeedLogin() || permission.getUserType().equals(0))
             return true;
         LoginStatusBO loginStatus = loginStatusManager.getLoginStatus(request.getSession());
         if (!loginStatus.getLoggedIn()) {

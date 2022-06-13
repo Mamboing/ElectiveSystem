@@ -14,9 +14,9 @@ public class TeacherDAO {
     @Resource
     private TeacherMapper teachersMapper;
 
-    public Teacher getByName(String userName){
+    public Teacher getByName(String userName) {
         LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Teacher::getTeacherName,userName);
+        wrapper.eq(Teacher::getTeacherName, userName);
         return teachersMapper.selectOne(wrapper);
     }
 

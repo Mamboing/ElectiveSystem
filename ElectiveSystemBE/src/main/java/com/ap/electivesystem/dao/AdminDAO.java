@@ -14,9 +14,9 @@ public class AdminDAO {
     @Resource
     private AdminMapper adminMapper;
 
-    public Admin getByName(String userName){
+    public Admin getByName(String userName) {
         LambdaQueryWrapper<Admin> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Admin::getAdminName,userName);
+        wrapper.eq(Admin::getAdminName, userName);
         return adminMapper.selectOne(wrapper);
     }
 

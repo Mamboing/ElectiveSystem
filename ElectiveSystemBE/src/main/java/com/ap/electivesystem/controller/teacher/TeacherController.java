@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Teacher
 @RestController
 @RequestMapping("/teacher")
-public class TeacherTestController {
+public class TeacherController {
     @GetMapping("/")
-    public String hello(){
+    public String hello() {
         return "This is Teacher!";
     }
 }
