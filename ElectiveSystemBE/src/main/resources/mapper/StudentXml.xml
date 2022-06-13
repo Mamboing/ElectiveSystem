@@ -3,8 +3,7 @@
 <mapper namespace="com.ap.electivesystem.mapper.StudentMapper">
 
     <sql id="courseField">
-        courseId
-        , courseName, weekday, time, teacherId, courseRoom, offserState
+        courseId, courseName, weekday, time, teacherId, courseRoom, offserState
     </sql>
     <select id="schedule" resultType="com.ap.electivesystem.entity.Course">
         select

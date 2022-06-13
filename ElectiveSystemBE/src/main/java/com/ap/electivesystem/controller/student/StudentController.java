@@ -5,19 +5,23 @@ import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.vo.CourseVO;
 import com.ap.electivesystem.entity.vo.ResultVO;
 import com.ap.electivesystem.entity.vo.ScoreVO;
+import com.ap.electivesystem.service.CourseService;
 import com.ap.electivesystem.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-@Student
+//@Student
 @RestController
 @RequestMapping("/student")
 public class StudentController {
 
     @Resource
     private StudentService studentService;
+
+    @Resource
+    private CourseService courseService;
 
 
     @GetMapping("/")
@@ -54,6 +58,11 @@ public class StudentController {
     @DeleteMapping("/deselect/{courseId}")
     public ResultVO deselect(@PathVariable Integer courseId){
         return ResultVO.success(studentService.deleteSelect(courseId));
+    }
+
+    @GetMapping("/course/list")
+    public ResultVO list(){
+        return ResultVO.success(courseService.list());
     }
 
 }
