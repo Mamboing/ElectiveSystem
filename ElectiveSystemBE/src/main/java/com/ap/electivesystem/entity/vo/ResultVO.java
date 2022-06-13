@@ -1,10 +1,8 @@
 package com.ap.electivesystem.entity.vo;
 
-import com.ap.electivesystem.entity.constant.HttpStatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.io.Serializable;
 
@@ -32,12 +30,12 @@ public class ResultVO implements Serializable {
         this.message = message;
     }
 
-    public static ResultVO success(Object data){
-        return new ResultVO(0,"success",data);
+    public static ResultVO success(Object data) {
+        return new ResultVO(0, "success", data);
     }
 
-    public static ResultVO fail(Integer code, String message){
-        return new ResultVO(code,message);
+    public static ResultVO fail(Integer code, String message) {
+        return new ResultVO(code, message);
     }
 
 }

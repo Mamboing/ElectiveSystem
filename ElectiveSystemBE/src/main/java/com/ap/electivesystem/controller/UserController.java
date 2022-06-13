@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
@@ -27,8 +26,6 @@ public class UserController {
         Integer userType = loginVO.getUserType();
         return userService.login(username, password, userType);
     }
-
-
 
 
 }

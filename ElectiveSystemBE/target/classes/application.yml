@@ -2,6 +2,9 @@ server:
   port: 8081
 
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://124.223.205.11:3306/elecsysserver?useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
@@ -60,3 +63,8 @@ logging:
     org.apache.tomcat: INFO
     org.springframework: INFO
     com.chinamobile.cmss.bdpaas.resource.monitor: DEBUG
+
+mica:
+  xss:
+    enabled: true
+    path-patterns: /**

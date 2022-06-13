@@ -26,7 +26,7 @@ public class StudentController {
     }
 
     @GetMapping("/schedule")
-    public ResultVO schedule(){
+    public ResultVO schedule() {
         List<CourseVO> schedule = studentService.schedule();
 //        if (schedule == null) return ResultVO;
         return null;
