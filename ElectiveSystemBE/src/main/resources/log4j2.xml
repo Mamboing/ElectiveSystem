@@ -166,6 +166,12 @@
         <Logger name="druid.sql.Statement" level="debug" additivity="false">
             <AppenderRef ref="druidSqlRollingFile"/>
         </Logger>
+        <Logger name="druid.sql.ResultSet" level="debug" additivity="false">
+            <AppenderRef ref="druidSqlRollingFile"/>
+        </Logger>
+        <Logger name="druid.sql.ResultSet" level="debug" additivity="false">
+            <AppenderRef ref="consoleAppender"/>
+        </Logger>
         <Logger name="druid.sql.Statement" level="debug" additivity="false">
             <AppenderRef ref="consoleAppender"/>
         </Logger>
