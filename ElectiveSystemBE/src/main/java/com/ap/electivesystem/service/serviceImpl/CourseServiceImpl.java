@@ -2,12 +2,14 @@ package com.ap.electivesystem.service.serviceImpl;
 
 import cn.hutool.core.util.RandomUtil;
 import com.ap.electivesystem.entity.Course;
-import com.ap.electivesystem.entity.Score;
 import com.ap.electivesystem.entity.bo.LoginStatusBO;
+import com.ap.electivesystem.entity.vo.CourseVO;
 import com.ap.electivesystem.manager.LoginStatusManager;
 import com.ap.electivesystem.mapper.CourseMapper;
 import com.ap.electivesystem.service.CourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,4 +37,10 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         return courseMapper.insert(course);
     }
 
+    @Override
+    public PageInfo<CourseVO> find(String courseName, String courseTime, String teacherName, int pageSize, int pageNo) {
+        PageHelper.startPage(pageNo, pageSize);
+        List<CourseVO> course = courseMapper.findCourse(courseName, courseTime, teacherName);
+        return new PageInfo<>(course);
+    }
 }

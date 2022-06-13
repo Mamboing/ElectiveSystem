@@ -10,7 +10,8 @@
     </insert>
     <select id="findByCourseId" resultType="com.ap.electivesystem.entity.vo.StudentVO">
         select ts.student_id, student_name
-        from tb_select inner join tb_student ts on tb_select.student_id = ts.student_id
+        from tb_select
+                 inner join tb_student ts on tb_select.student_id = ts.student_id
         where course_id = #{courseId}
     </select>
 </mapper>

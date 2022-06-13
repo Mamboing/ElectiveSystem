@@ -5,6 +5,7 @@ import com.ap.electivesystem.entity.vo.CourseVO;
 import com.ap.electivesystem.entity.vo.ScoreVO;
 import com.ap.electivesystem.entity.vo.StudentVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface StudentService extends IService<Student> {
 
     int deleteSelect(Integer courseId);
 
-    List<StudentVO> findByCourseId(Integer courseId);
+    PageInfo<StudentVO> findByCourseId(Integer courseId, int pageSize, int pageNo);
 }
