@@ -14,4 +14,37 @@
                  inner join tb_student ts on tb_select.student_id = ts.student_id
         where course_id = #{courseId}
     </select>
+    <select id="search" resultType="com.ap.electivesystem.entity.vo.SelectVO">
+        select tb_select.course_id, course_name, teacher_name, student_name, select_state
+        from tb_select
+        inner join tb_student ts on tb_select.student_id = ts.student_id
+        inner join tb_course tc on tb_select.course_id = tc.course_id
+        inner join tb_teacher tt on tc.teacher_id = tt.teacher_id
+        <where>
+            <if test="courseId != null">
+                tb_select.course_id = #{courseId}
+            </if>
+            <if test="teacherId != null">
+                and teacher_id = #{teacherId}
+            </if>
+            <if test="studentId != null">
+                and student_id = #{studentId}
+            </if>
+            <if test="teacherName != null and teacherName != ''">
+                and teacher_name = #{teacherName}
+            </if>
+            <if test="courseName != null and courseName != ''">
+                and course_name = #{courseName}
+            </if>
+            <if test="studentName != null and studentName != ''">
+                and student_name = #{studentName}
+            </if>
+            <if test="weekday != null and weekday != ''">
+                and weekday = #{weekday}
+            </if>
+            <if test="time != null and time != ''">
+                and `time` = #{time}
+            </if>
+        </where>
+    </select>
 </mapper>

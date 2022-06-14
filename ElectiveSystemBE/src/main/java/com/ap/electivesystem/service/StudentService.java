@@ -21,4 +21,6 @@ public interface StudentService extends IService<Student> {
     int deleteSelect(Integer courseId);
 
     PageInfo<StudentVO> findByCourseId(Integer courseId, int pageSize, int pageNo);
+
+    Student getByName(String userName);
 }
