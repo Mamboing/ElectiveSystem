@@ -24,7 +24,6 @@
         <p></p>
         <div>
             <button>登录</button>
-            <vxe-button status="success" content="登录"></vxe-button>
         </div>
     </form>
 
@@ -66,10 +65,10 @@ export default defineComponent({
                 sessionStorage.userType = data.userType;
                 sessionStorage.message = message;
                 ElMessage({
-    showClose: true,
-    message: 'Congrats, this is a success message.',
-    type: 'success',
-  })
+                    showClose: true,
+                    message: 'Congrats, this is a success message.',
+                    type: 'success',
+                })
                 if (sessionStorage.userType == 1 && sessionStorage.code == 0) {
                     this.$router.push("/StudentMain")
                 } else if (sessionStorage.userType == 2 && sessionStorage.code == 0) {
