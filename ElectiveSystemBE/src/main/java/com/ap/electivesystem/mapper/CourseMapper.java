@@ -5,7 +5,6 @@ import com.ap.electivesystem.entity.dto.CourseDTO;
 import com.ap.electivesystem.entity.vo.CourseVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

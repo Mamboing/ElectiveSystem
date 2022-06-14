@@ -8,10 +8,10 @@ import com.ap.electivesystem.entity.bo.LoginStatusBO;
 import com.ap.electivesystem.entity.vo.CourseVO;
 import com.ap.electivesystem.entity.vo.ScoreVO;
 import com.ap.electivesystem.entity.vo.StudentVO;
-import com.ap.electivesystem.manager.LoginStatusManager;
 import com.ap.electivesystem.mapper.*;
 import com.ap.electivesystem.service.StudentService;
 import com.ap.electivesystem.utils.CopyUtil;
+import com.ap.electivesystem.utils.SessionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -27,8 +27,6 @@ import java.util.List;
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
 
     @Resource
-    private LoginStatusManager loginStatusManager;
-    @Resource
     private HttpSession session;
     @Resource
     private StudentMapper studentMapper;
@@ -42,10 +40,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     private SelectMapper selectMapper;
     @Resource
     private CopyUtil copyUtil;
+    @Resource
+    private SessionUtil sessionUtil;
 
     @Override
     public List<CourseVO> schedule() {
-        LoginStatusBO loginStatus = loginStatusManager.getLoginStatus(session);
+        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
         Integer id = loginStatus.getId();
         List<Course> schedule = studentMapper.schedule(id);
         List<CourseVO> courseVOS = new ArrayList<>();
@@ -57,7 +57,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public List<ScoreVO> score() {
-        LoginStatusBO loginStatus = loginStatusManager.getLoginStatus(session);
+        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
         Integer id = loginStatus.getId();
         LambdaQueryWrapper<Score> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Score::getStudentId, id);
@@ -72,7 +72,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public int insertSelect(Integer courseId) {
-        LoginStatusBO loginStatus = loginStatusManager.getLoginStatus(session);
+        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
         Integer id = loginStatus.getId();
         Select select = new Select(courseId, id, 0);
         return selectMapper.insert(select);
@@ -80,14 +80,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public int insertSelectBatch(List<Integer> courseIds) {
-        LoginStatusBO loginStatus = loginStatusManager.getLoginStatus(session);
+        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
         Integer id = loginStatus.getId();
         return selectMapper.insertBatch(courseIds, id);
     }
 
     @Override
     public int deleteSelect(Integer courseId) {
-        LoginStatusBO loginStatus = loginStatusManager.getLoginStatus(session);
+        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
         Integer id = loginStatus.getId();
         LambdaQueryWrapper<Select> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Select::getCourseId, courseId).eq(Select::getStudentId, id);
@@ -99,5 +99,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         PageHelper.startPage(pageNo, pageSize);
         List<StudentVO> byCourseId = selectMapper.findByCourseId(courseId);
         return new PageInfo<>(byCourseId);
+    }
+
+    @Override
+    public Student getByName(String userName) {
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Student::getStudentName, userName);
+        return studentMapper.selectOne(wrapper);
     }
 }

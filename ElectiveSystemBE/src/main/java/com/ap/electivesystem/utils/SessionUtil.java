@@ -1,4 +1,4 @@
-package com.ap.electivesystem.manager;
+package com.ap.electivesystem.utils;
 
 import com.ap.electivesystem.entity.bo.LoginStatusBO;
 import org.springframework.stereotype.Component;
@@ -6,12 +6,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpSession;
 
 @Component
-public class LoginStatusManager extends BaseManager {
-    private static final String SESSION_USER_STATUS = "user_status";
+public class SessionUtil {
 
-    public void setLoginStatus(HttpSession session, LoginStatusBO loginStatus) {
-        session.setAttribute(SESSION_USER_STATUS, loginStatus);
-    }
+    private static final String SESSION_USER_STATUS = "user_status";
 
     public LoginStatusBO getLoginStatus(HttpSession session) {
         LoginStatusBO loginStatus = (LoginStatusBO) session.getAttribute(SESSION_USER_STATUS);
@@ -22,4 +19,9 @@ public class LoginStatusManager extends BaseManager {
 
         return loginStatus;
     }
+
+    public void setLoginStatus(HttpSession session, LoginStatusBO loginStatus) {
+        session.setAttribute(SESSION_USER_STATUS, loginStatus);
+    }
+
 }

@@ -61,7 +61,7 @@ public class StudentController {
     }
 
     @GetMapping("/course/list")
-    public ResultVO list(@RequestParam(required = false) String courseName, @RequestParam(required = false)  String courseTime, @RequestParam(required = false)  String teacherName, @RequestParam(defaultValue = "20") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
+    public ResultVO list(@RequestParam(required = false) String courseName, @RequestParam(required = false) String courseTime, @RequestParam(required = false) String teacherName, @RequestParam(defaultValue = "20") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
         if (pageSize < 0 || pageNo < 0)
             return ResultVO.fail(ReturnCode.PAGE_PARAMETER_ERROR);
         PageInfo<CourseVO> pageInfo = courseService.find(courseName, courseTime, teacherName, pageSize, pageNo);

@@ -2,13 +2,15 @@ package com.ap.electivesystem.config.auth;
 
 import com.ap.electivesystem.entity.bo.LoginStatusBO;
 import com.ap.electivesystem.entity.constant.HttpStatusCode;
+import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.vo.ResultVO;
-import com.ap.electivesystem.manager.LoginStatusManager;
+import com.ap.electivesystem.utils.SessionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -18,15 +20,12 @@ import java.lang.reflect.Method;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private final PermissionScanner scanner;
-    private final LoginStatusManager loginStatusManager;
-    private final ObjectMapper objectMapper;
-
-    public AuthInterceptor(PermissionScanner scanner, LoginStatusManager loginStatusManager, ObjectMapper objectMapper) {
-        this.scanner = scanner;
-        this.loginStatusManager = loginStatusManager;
-        this.objectMapper = objectMapper;
-    }
+    @Resource
+    private PermissionScanner scanner;
+    @Resource
+    private ObjectMapper objectMapper;
+    @Resource
+    private SessionUtil sessionUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -40,7 +39,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         Permission permission = scanner.scan(method);
         if (!permission.getNeedLogin() || permission.getUserType().equals(0))
             return true;
-        LoginStatusBO loginStatus = loginStatusManager.getLoginStatus(request.getSession());
+        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(request.getSession());
         if (!loginStatus.getLoggedIn()) {
             noLogin(response);
             return false;
@@ -59,19 +58,19 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private void noLogin(HttpServletResponse response) {
         response.setStatus(HttpStatusCode.UNAUTHORIZED);
-        ResultVO resultVO = new ResultVO(ResultVO.NO_LOGIN, "您没有登录", null);
+        ResultVO resultVO = ResultVO.fail(ReturnCode.NO_LOGIN);
         sendResult(resultVO, response);
     }
 
     private void errorRole(HttpServletResponse response) {
         response.setStatus(HttpStatusCode.FORBIDDEN);
-        ResultVO resultVO = new ResultVO(ResultVO.ERROR_ROLE, "您的角色错误", null);
+        ResultVO resultVO = ResultVO.fail(ReturnCode.ERROR_ROLE);
         sendResult(resultVO, response);
     }
 
     private void noPermission(HttpServletResponse response) {
         response.setStatus(HttpStatusCode.FORBIDDEN);
-        ResultVO resultVO = new ResultVO(ResultVO.NO_PERMISSION, "您没有此管理员权限", null);
+        ResultVO resultVO = ResultVO.fail(ReturnCode.NO_PERMISSION);
         sendResult(resultVO, response);
     }
 
