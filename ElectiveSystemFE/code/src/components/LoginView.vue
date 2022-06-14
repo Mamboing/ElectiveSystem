@@ -65,39 +65,27 @@ export default defineComponent({
                 sessionStorage.code = code;
                 sessionStorage.userType = data.userType;
                 sessionStorage.message = message;
-                ElMessage.success(message)
-                Router.push({
-                    path: '/StudentMain'
-                })
+                ElMessage({
+    showClose: true,
+    message: 'Congrats, this is a success message.',
+    type: 'success',
+  })
+                if (sessionStorage.userType == 1 && sessionStorage.code == 0) {
+                    this.$router.push("/StudentMain")
+                } else if (sessionStorage.userType == 2 && sessionStorage.code == 0) {
+                    this.$router.push("/TeacherMain")
+                } else if (sessionStorage.userType == 3 && sessionStorage.code == 0) {
+                    this.$router.push("/EducatorMain")
+                } else {
+                    ElMessage.error(sessionStorage.message)
+                }
+
 
             }).catch(res => {
-                console.log('失败了')
-                ElMessage.error(res)
+                console.log(res)
             }).finally(() => {
                 console.log('完成了')
             })
-            // if (this.selected === "E") {
-            //     if (this.username === "admin"
-            //         && this.password === "123456") {
-            //         this.$router.push("/EducatorMain")
-            //     } else {
-            //         alert("用户类型或用户名或密码错误")
-            //     }
-            // } else if (this.selected === "T") {
-            //     if (this.username === "admin"
-            //         && this.password === "123456") {
-            //         this.$router.push("/TeacherMain")
-            //     } else {
-            //         alert("用户类型或用户名或密码错误")
-            //     }
-            // }else if (this.selected === "S") {
-            //     if (this.username === "admin"
-            //         && this.password === "123456") {
-            //         this.$router.push("/StudentMain")
-            //     } else {
-            //         alert("用户类型或用户名或密码错误")
-            //     }
-            // }
         }
     }
 })
