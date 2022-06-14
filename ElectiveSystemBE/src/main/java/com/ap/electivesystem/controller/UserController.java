@@ -3,6 +3,7 @@ package com.ap.electivesystem.controller;
 import com.ap.electivesystem.entity.vo.LoginVO;
 import com.ap.electivesystem.entity.vo.ResultVO;
 import com.ap.electivesystem.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ public class UserController {
 
 
     @PostMapping("/login")
+    @ApiOperation("返回 bo.LoginStatusBO ")
     public ResultVO login(@Validated @RequestBody LoginVO loginVO) {
         String username = loginVO.getUsername();
         String password = loginVO.getPassword();

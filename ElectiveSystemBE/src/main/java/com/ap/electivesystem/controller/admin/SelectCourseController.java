@@ -11,7 +11,11 @@ import com.ap.electivesystem.entity.vo.SelectVO;
 import com.ap.electivesystem.service.SelectService;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 
@@ -27,6 +31,12 @@ public class SelectCourseController {
     private SelectService selectService;
 
     @PostMapping("/list")
+    @ApiOperation("返回 vo.SelectVO 的列表，包装为PageInfo(其中含有属性total、list(即 vo.SelectVO 的列表)以及分页的参数)")
+    @ApiResponses({
+            @ApiResponse(code = 1004, message = "分页参数问题"),
+            @ApiResponse(code = 0, message = "success"),
+            @ApiResponse(code = 1008, message = "不合法的时间范围"),
+    })
     public ResultVO list(@RequestBody SelectDTO selectDTO, int pageSize, int pageNo) {
         if (pageNo < 0 || pageSize < 0)
             return ResultVO.fail(ReturnCode.PAGE_PARAMETER_ERROR);
@@ -37,6 +47,11 @@ public class SelectCourseController {
     }
 
     @PutMapping("/verify")
+    @ApiResponses({
+            @ApiResponse(code = 1005, message = "ID为空"),
+            @ApiResponse(code = 0, message = "success"),
+            @ApiResponse(code = 1009, message = "选课信息未找到"),
+    })
     public ResultVO verify(@RequestBody SelectDTO selectDTO) {
         Integer courseId = selectDTO.getCourseId();
         Integer studentId = selectDTO.getStudentId();
@@ -54,11 +69,13 @@ public class SelectCourseController {
     }
 
     @PutMapping("/add/start")
+    @ApiIgnore
     public ResultVO start() {
         return null;
     }
 
     @PutMapping("/add/finish")
+    @ApiIgnore
     public ResultVO finish() {
         return null;
     }

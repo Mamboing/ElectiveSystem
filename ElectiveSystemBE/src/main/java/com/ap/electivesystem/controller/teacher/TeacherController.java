@@ -9,6 +9,9 @@ import com.ap.electivesystem.service.CourseService;
 import com.ap.electivesystem.service.ScoreService;
 import com.ap.electivesystem.service.StudentService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -44,6 +47,11 @@ public class TeacherController {
     }
 
     @GetMapping("/find/{courseId}")
+    @ApiOperation("返回 vo.StudentVO 的列表，包装为PageInfo(其中含有属性total、list(就是 vo.StudentVO 的列表)以及传入的分页参数)")
+    @ApiResponses({
+            @ApiResponse(code = 1003, message = "没有找到对应的学生"),
+            @ApiResponse(code = 0, message = "success")
+    })
     public ResultVO findByCourseId(@PathVariable Integer courseId, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
         PageInfo<StudentVO> studentVOS = studentService.findByCourseId(courseId, pageSize, pageNo);
         if (studentVOS.getSize() == 0)
