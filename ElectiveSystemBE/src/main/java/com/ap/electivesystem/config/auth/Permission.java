@@ -2,16 +2,14 @@ package com.ap.electivesystem.config.auth;
 
 import com.ap.electivesystem.entity.constant.UserType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Permission {
     private Integer userType = UserType.NO;
     private Integer permission = 0;
     private Boolean needLogin = true;
-
-    public Permission() {
-
-    }
 
     public Permission(Integer userType) {
         this.userType = userType;

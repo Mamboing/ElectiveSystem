@@ -1,16 +1,14 @@
 <template>
-<h1>Main  Page
-</h1>
-<router-link to="/EducatorMain">Main Page</router-link>|
-<router-link to="/EducatorTeacherRegistration">Teacher Registration</router-link>|
-<router-link to="/EducatorStudentRegistration">Student Registration</router-link>|
-<router-link to="/EducatorScoreVerify">Score Verify</router-link>|
-<router-link to="/EducatorCourseOfferingVerify">Offering Verify</router-link>|
-<router-link to="/EducatorCourseSelectionVerify">Selection Verify</router-link>
+<h1>主页
+  </h1>
+  <router-link to="/EducatorMain">主页</router-link>|
+  <router-link to="/EducatorTeacherRegistration">教师管理</router-link>|
+  <router-link to="/EducatorStudentRegistration">学生管理</router-link>|
+  <router-link to="/EducatorScoreVerify">成绩管理</router-link>|
+  <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
+  <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
+
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
-export default defineComponent({
-    name: 'EducatorMainPage'
-})
+
 </script>

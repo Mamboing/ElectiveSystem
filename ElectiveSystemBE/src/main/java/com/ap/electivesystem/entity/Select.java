@@ -1,7 +1,6 @@
 package com.ap.electivesystem.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +16,7 @@ public class Select implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("course_id")
+    @TableField("course_id")
     private Integer courseId;
 
     @TableField("student_id")

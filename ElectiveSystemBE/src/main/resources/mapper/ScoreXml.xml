@@ -8,4 +8,22 @@
             (#{item.courseId}, #{item.studentId},#{item.usualGrade},#{item.finalGrade},#{item.totalGrade})
         </foreach>
     </insert>
+    <select id="search" resultType="com.ap.electivesystem.entity.dto.ScoreDTO">
+        select course_name, tc.course_id, teacher_name, student_name, usual_grade, final_grade, total_grade
+        from tb_score
+        inner join tb_course tc on tb_score.course_id = tc.course_id
+        inner join tb_teacher tt on tc.teacher_id = tt.teacher_id
+        inner join tb_student ts on tb_score.student_id = ts.student_id
+        <where>
+            <if test="teacherName != null and teacherName != ''">
+                teacher_name = #{teacherName}
+            </if>
+            <if test="courseName != null and courseName != ''">
+                and course_name = #{courseName}
+            </if>
+            <if test="studentName != null and studentName != ''">
+                and student_name = #{studentName}
+            </if>
+        </where>
+    </select>
 </mapper>
