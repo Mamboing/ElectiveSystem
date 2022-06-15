@@ -7,10 +7,16 @@
   <router-link to="/EducatorScoreVerify">成绩管理</router-link>|
   <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
-   <p>
-    <vxe-input v-model="TeacherSearch.teacherName" placeholder="教师用户名" clearable></vxe-input>
+  <p>
+    <vxe-input v-model="TeacherSearch.teacherId" placeholder="【删改】教师ID" clearable></vxe-input>
+    <vxe-input v-model="TeacherSearch.teacherName" placeholder="【增改查】教师用户名" clearable></vxe-input>
+    <vxe-input v-model="TeacherSearch.teacherPass" placeholder="【增改】教师密码" clearable></vxe-input>
+
   </p>
   <p>
+    <vxe-button status="primary" content="增加" @click="Add"></vxe-button>
+    <vxe-button status="primary" content="删除" @click="Delete"></vxe-button>
+    <vxe-button status="primary" content="更改" @click="Update"></vxe-button>
     <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
   </p>
   <vxe-grid v-bind="gridOptions">
@@ -31,8 +37,10 @@ import XEUtils from 'xe-utils'
 // import { table } from 'console';
 export default defineComponent({
   setup() {
-     const TeacherSearch = reactive({
-      teacherName: ''
+    const TeacherSearch = reactive({
+      teacherId: '',
+      teacherName: '',
+      teacherPass: ''
     })
     const tablePage = reactive({
       total: 0,
@@ -55,7 +63,6 @@ export default defineComponent({
       data: [],
       columns: [
         { type: 'seq', width: 60 },
-        { type: 'checkbox', width: 50 },
         { field: 'teacherId', title: 'ID' },
         { field: 'teacherName', title: '教师用户名' },
         { field: 'teacherPass', title: '密码' }
@@ -76,19 +83,11 @@ export default defineComponent({
       tablePage.currentPage = 1
       findList()
     }
-    // let tableData: StudentList[] = ref<any>({})
-    const ShowList = () => {
-      // axios.get('http://localhost:8081/admin/student/list', {
-      //           pageNo: tablePage.currentPage,
-      //     pageSize: tablePage.pageSize
 
-      axios({//返回promise对象
-        // 请求类型
-        // headers: {
-        //   "Authorization": sessionStorage.name
-        // },
+    const ShowList = () => {
+
+      axios({
         method: 'GET',
-        //URL
         url: 'http://localhost:8081/admin/teacher/list',
         params: {
           teacherName: TeacherSearch.teacherName,
@@ -109,7 +108,82 @@ export default defineComponent({
       })
     }
 
+    const Update = () => {
 
+      axios({
+        method: 'POST',
+        url: 'http://localhost:8081/admin/teacher/update',
+        data: {
+          teacherId: TeacherSearch.teacherId,
+          teacherName: TeacherSearch.teacherName,
+          teacherPass: TeacherSearch.teacherPass
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+        TeacherSearch.teacherId = '',
+          TeacherSearch.teacherName = '',
+          TeacherSearch.teacherPass = ''
+        ShowList();
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
+    const Delete = () => {
+
+      axios({
+        method: 'DELETE',
+        url: 'http://localhost:8081/admin/teacher/delete/' + TeacherSearch.teacherId
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+        TeacherSearch.teacherId = '',
+          TeacherSearch.teacherName = '',
+          TeacherSearch.teacherPass = ''
+        ShowList();
+
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
+
+    const Add = () => {
+
+      axios({
+        method: 'POST',
+        url: 'http://localhost:8081/admin/teacher/add',
+        data: {
+          teacherId: 0,
+          teacherName: TeacherSearch.teacherName,
+          teacherPass: TeacherSearch.teacherPass
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+        TeacherSearch.teacherId = '',
+          TeacherSearch.teacherName = '',
+          TeacherSearch.teacherPass = ''
+        ShowList();
+
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
@@ -127,7 +201,10 @@ export default defineComponent({
       searchEvent,
       handlePageChange,
       ShowList,
-      TeacherSearch
+      TeacherSearch,
+      Update,
+      Delete,
+      Add
     }
   }
 })
