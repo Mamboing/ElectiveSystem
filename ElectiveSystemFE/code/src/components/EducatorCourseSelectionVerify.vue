@@ -52,6 +52,7 @@ import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-t
 
 export default defineComponent({
   setup() {
+    
     const xGrid = ref({} as VxeGridInstance)
 
     const gridOptions = reactive<VxeGridProps>({

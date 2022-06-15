@@ -47,4 +47,10 @@
             </if>
         </where>
     </select>
+    <select id="studentList" resultType="com.ap.electivesystem.entity.vo.StudentVO">
+        select ts.student_id, student_name
+        from tb_select inner join tb_course tc on tb_select.course_id = tc.course_id
+        inner join tb_student ts on tb_select.student_id = ts.student_id
+        where tc.course_id = #{courseId} and select_state = '1'
+    </select>
 </mapper>

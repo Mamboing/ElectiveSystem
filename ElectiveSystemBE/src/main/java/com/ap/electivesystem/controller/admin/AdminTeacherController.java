@@ -8,6 +8,9 @@ import com.ap.electivesystem.service.TeacherService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,6 +25,11 @@ public class AdminTeacherController {
     private TeacherService teacherService;
 
     @GetMapping("/list")
+    @ApiOperation("返回 Teacher 的列表，包装为PageInfo(其中含有属性total、list(即 Teacher 的列表)以及分页的参数)")
+    @ApiResponses({
+            @ApiResponse(code = 1004, message = "分页参数问题"),
+            @ApiResponse(code = 0, message = "success")
+    })
     public ResultVO list(@RequestParam(required = false) String teacherName, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
         if (pageNo < 0 || pageSize < 0)
             return ResultVO.fail(ReturnCode.PAGE_PARAMETER_ERROR);
@@ -34,6 +42,10 @@ public class AdminTeacherController {
     }
 
     @PostMapping("/update")
+    @ApiResponses({
+            @ApiResponse(code = 1006, message = "更新失败"),
+            @ApiResponse(code = 0, message = "success")
+    })
     public ResultVO update(@RequestBody Teacher teacher) {
         if (teacher.getTeacherId() == null)
             return ResultVO.fail(ReturnCode.ID_NULL_ERROR);

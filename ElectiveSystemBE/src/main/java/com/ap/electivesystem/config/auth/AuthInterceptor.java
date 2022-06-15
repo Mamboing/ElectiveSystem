@@ -29,29 +29,29 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (!(handler instanceof HandlerMethod)) {
-            return true;
-        }
-
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Method method = handlerMethod.getMethod();
-
-        Permission permission = scanner.scan(method);
-        if (!permission.getNeedLogin() || permission.getUserType().equals(0))
-            return true;
-        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(request.getSession());
-        if (!loginStatus.getLoggedIn()) {
-            noLogin(response);
-            return false;
-        }
-        if (!loginStatus.getUserType().equals(permission.getUserType())) {
-            errorRole(response);
-            return false;
-        }
-        if ((loginStatus.getPrivilege() & permission.getPermission()) != permission.getPermission()) {
-            noPermission(response);
-            return false;
-        }
+//        if (!(handler instanceof HandlerMethod)) {
+//            return true;
+//        }
+//
+//        HandlerMethod handlerMethod = (HandlerMethod) handler;
+//        Method method = handlerMethod.getMethod();
+//
+//        Permission permission = scanner.scan(method);
+//        if (!permission.getNeedLogin() || permission.getUserType().equals(0))
+//            return true;
+//        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(request.getSession());
+//        if (!loginStatus.getLoggedIn()) {
+//            noLogin(response);
+//            return false;
+//        }
+//        if (!loginStatus.getUserType().equals(permission.getUserType())) {
+//            errorRole(response);
+//            return false;
+//        }
+//        if ((loginStatus.getPrivilege() & permission.getPermission()) != permission.getPermission()) {
+//            noPermission(response);
+//            return false;
+//        }
 
         return true;
     }
