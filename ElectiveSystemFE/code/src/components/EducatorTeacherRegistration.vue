@@ -57,15 +57,19 @@ export default defineComponent({
       border: true,
       height: 530,
       loading: false,
+      sortConfig:{
+        multiple:true,
+        chronological:true
+      },
       columnConfig: {
         resizable: true
       },
       data: [],
       columns: [
         { type: 'seq', width: 60 },
-        { field: 'teacherId', title: 'ID' },
-        { field: 'teacherName', title: '教师用户名' },
-        { field: 'teacherPass', title: '密码' }
+        { field: 'teacherId', title: 'ID',sortable:true },
+        { field: 'teacherName', title: '教师用户名' ,sortable:true },
+        { field: 'teacherPass', title: '密码' ,sortable:true }
         // ,
         // { field: 'address', title: 'Address', showOverflow: true }
       ]

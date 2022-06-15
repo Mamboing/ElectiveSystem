@@ -79,19 +79,12 @@ export default defineComponent({
       tablePage.currentPage = 1
       findList()
     }
-    // let tableData: StudentList[] = ref<any>({})
+  
     const ShowList = () => {
-      // axios.get('http://localhost:8081/admin/student/list', {
-      //           pageNo: tablePage.currentPage,
-      //     pageSize: tablePage.pageSize
-
-      axios({//返回promise对象
-        // 请求类型
-        // headers: {
-        //   "Authorization": sessionStorage.name
-        // },
+    
+      axios({
         method: 'GET',
-        //URL
+
         url: 'http://localhost:8081/admin/student/list',
         params: {
           studentName: StudentSearch.studentName,

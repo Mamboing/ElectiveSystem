@@ -9,18 +9,25 @@
   <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
   <p>
-    <vxe-input v-model="CourseSearch.courseName" placeholder="课程名称" clearable></vxe-input>
-    <vxe-input v-model="CourseSearch.courseRoom" placeholder="授课教室" clearable></vxe-input>
-    <vxe-input v-model="CourseSearch.offerState" placeholder="课程状态" clearable></vxe-input>
-    <vxe-input v-model="CourseSearch.teacherName" placeholder="授课老师
+    <vxe-input v-model="CourseSearch.courseId" placeholder="【删审】课程ID" clearable></vxe-input>
+    <vxe-input v-model="CourseSearch.courseName" placeholder="【查改】课程名称" clearable></vxe-input>
+     <vxe-input v-model="CourseSearch.weekday" placeholder="【查改】授课日
 " clearable></vxe-input>
-    <vxe-input v-model="CourseSearch.time" placeholder="授课时间
+    <vxe-input v-model="CourseSearch.time" placeholder="【查改】授课时间
 " clearable></vxe-input>
-    <vxe-input v-model="CourseSearch.weekday" placeholder="授课日
+    <vxe-input v-model="CourseSearch.teacherName" placeholder="【查】授课教师
 " clearable></vxe-input>
+    <vxe-input v-model="CourseSearch.courseRoom" placeholder="【查改】授课教室" clearable></vxe-input>
+    <vxe-input v-model="CourseSearch.offerState" placeholder="【查改】课程状态" clearable></vxe-input>
+
+
+   
   </p>
   <p>
+    <vxe-button status="primary" content="删除" @click="Delete"></vxe-button>
+    <vxe-button status="primary" content="更改" @click="Update"></vxe-button>
     <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
+    <vxe-button status="primary" content="审核" @click="Verify"></vxe-button>
   </p>
   <vxe-grid v-bind="gridOptions">
     <template #pager>
@@ -41,6 +48,7 @@ import XEUtils from 'xe-utils'
 export default defineComponent({
   setup() {
     const CourseSearch = reactive({
+      courseId: '',
       courseName: '',
       courseRoom: '',
       offerState: '',
@@ -95,19 +103,13 @@ export default defineComponent({
       tablePage.currentPage = 1
       findList()
     }
-    // let tableData: StudentList[] = ref<any>({})
-    const ShowList = () => {
-      // axios.get('http://localhost:8081/admin/student/list', {
-      //           pageNo: tablePage.currentPage,
-      //     pageSize: tablePage.pageSize
 
-      axios({//返回promise对象
-        // 请求类型
-        // headers: {
-        //   "Authorization": sessionStorage.name
-        // },
+    const ShowList = () => {
+     
+
+      axios({
         method: 'GET',
-        //URL
+
         url: 'http://localhost:8081/admin/course/list',
         params: {
           courseName: CourseSearch.courseName,
@@ -133,7 +135,90 @@ export default defineComponent({
       })
     }
 
+    const Update = () => {
 
+      axios({
+        method: 'POST',
+        url: 'http://localhost:8081/admin/course/update',
+        data: {
+          courseId: 0,
+          courseName: CourseSearch.courseName,
+          courseRoom: CourseSearch.courseRoom,
+          offerState: CourseSearch.offerState,
+          teacherId: 0,
+          time: CourseSearch.time,
+          weekday: CourseSearch.weekday
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+        CourseSearch.courseName = '',
+          CourseSearch.courseRoom = '',
+          CourseSearch.offerState = '',
+          CourseSearch.teacherName = '',
+          CourseSearch.time = '',
+          CourseSearch.weekday = '',
+          ShowList();
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
+    const Delete = () => {
+
+      axios({
+        method: 'DELETE',
+        url: 'http://localhost:8081/admin/course/delete/' + CourseSearch.courseId
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+       CourseSearch.courseName = '',
+          CourseSearch.courseRoom = '',
+          CourseSearch.offerState = '',
+          CourseSearch.teacherName = '',
+          CourseSearch.time = '',
+          CourseSearch.weekday = '',
+        ShowList();
+
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
+
+    const Verify = () => {
+
+      axios({
+        method: 'DELETE',
+        url: 'http://localhost:8081/admin/course/verify/' + CourseSearch.courseId
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+       CourseSearch.courseName = '',
+          CourseSearch.courseRoom = '',
+          CourseSearch.offerState = '',
+          CourseSearch.teacherName = '',
+          CourseSearch.time = '',
+          CourseSearch.weekday = '',
+        ShowList();
+
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
@@ -151,7 +236,10 @@ export default defineComponent({
       searchEvent,
       handlePageChange,
       ShowList,
-      CourseSearch
+      CourseSearch,
+      Update,
+      Delete,
+      Verify
     }
   }
 })
