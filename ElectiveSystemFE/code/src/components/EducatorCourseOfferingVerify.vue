@@ -9,7 +9,7 @@
   <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
   <p>
-    <vxe-input v-model="CourseSearch.courseId" placeholder="【删审】课程ID" clearable></vxe-input>
+    <vxe-input v-model="CourseSearch.courseId" placeholder="【改删审】课程ID" clearable></vxe-input>
     <vxe-input v-model="CourseSearch.courseName" placeholder="【查改】课程名称" clearable></vxe-input>
      <vxe-input v-model="CourseSearch.weekday" placeholder="【查改】授课日
 " clearable></vxe-input>
@@ -141,7 +141,7 @@ export default defineComponent({
         method: 'POST',
         url: 'http://localhost:8081/admin/course/update',
         data: {
-          courseId: 0,
+          courseId:  CourseSearch.courseId,
           courseName: CourseSearch.courseName,
           courseRoom: CourseSearch.courseRoom,
           offerState: CourseSearch.offerState,
@@ -155,6 +155,7 @@ export default defineComponent({
         gridOptions.data = list;
         const { total } = response.data.data;
         tablePage.total = total;
+         CourseSearch.courseId = '',
         CourseSearch.courseName = '',
           CourseSearch.courseRoom = '',
           CourseSearch.offerState = '',
@@ -197,7 +198,7 @@ export default defineComponent({
     const Verify = () => {
 
       axios({
-        method: 'DELETE',
+        method: 'PUT',
         url: 'http://localhost:8081/admin/course/verify/' + CourseSearch.courseId
       }).then(response => {
         console.log(tablePage.currentPage);
