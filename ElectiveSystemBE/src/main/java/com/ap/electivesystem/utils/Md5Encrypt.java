@@ -29,7 +29,7 @@ public class Md5Encrypt {
     }
 
     public String encode(String pass, String salt){
-        return computeHexString(computeHexString("123454321") + salt);
+        return computeHexString(computeHexString(pass) + salt);
     }
 
     public String computeHexString(String str) {
