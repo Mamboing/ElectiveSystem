@@ -8,136 +8,150 @@
   <router-link to="/EducatorScoreVerify">成绩管理</router-link>|
   <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
-  <p></p>
-  <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents">
-    <template #teacher_edit="{ row }">
-      <vxe-input v-model="row.teacher"></vxe-input>
-    </template>
-    <template #semester_edit="{ row }">
-      <vxe-input v-model="row.semester"></vxe-input>
-    </template>
-    <template #id_edit="{ row }">
-      <vxe-input v-model="row.id"></vxe-input>
-    </template>
-    <template #course_edit="{ row }">
-      <vxe-input v-model="row.course"></vxe-input>
-    </template>
-    <template #day_edit="{ row }">
-      <vxe-input v-model="row.day"></vxe-input>
-    </template>
-    <template #time_edit="{ row }">
-      <vxe-input v-model="row.time"></vxe-input>
-    </template>
-    <template #location_edit="{ row }">
-      <vxe-input v-model="row.location"></vxe-input>
-    </template>
-    <template #state_edit="{ row }">
-      <vxe-input v-model="row.state"></vxe-input>
+  <p>
+    <vxe-input v-model="CourseSearch.courseName" placeholder="课程名称" clearable></vxe-input>
+    <vxe-input v-model="CourseSearch.courseRoom" placeholder="授课教室" clearable></vxe-input>
+    <vxe-input v-model="CourseSearch.offerState" placeholder="课程状态" clearable></vxe-input>
+    <vxe-input v-model="CourseSearch.teacherName" placeholder="授课老师
+" clearable></vxe-input>
+    <vxe-input v-model="CourseSearch.time" placeholder="授课时间
+" clearable></vxe-input>
+    <vxe-input v-model="CourseSearch.weekday" placeholder="授课日
+" clearable></vxe-input>
+  </p>
+  <p>
+    <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
+  </p>
+  <vxe-grid v-bind="gridOptions">
+    <template #pager>
+      <vxe-pager :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
+        v-model:current-page="tablePage.currentPage" v-model:page-size="tablePage.pageSize" :total="tablePage.total"
+        @page-change="handlePageChange">
+      </vxe-pager>
     </template>
   </vxe-grid>
 </template>
-<script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
-import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
 
+<script lang="ts">
+import { defineComponent, reactive } from 'vue'
+import { VxeGridProps, VxePagerEvents } from 'vxe-table'
+import axios from 'axios';
+import XEUtils from 'xe-utils'
+// import { table } from 'console';
 export default defineComponent({
   setup() {
-    const xGrid = ref({} as VxeGridInstance)
+    const CourseSearch = reactive({
+      courseName: '',
+      courseRoom: '',
+      offerState: '',
+      teacherName: '',
+      time: '',
+      weekday: ''
+    })
 
-    const gridOptions = reactive<VxeGridProps>({
+    const tablePage = reactive({
+      total: 0,
+      currentPage: 1,
+      pageSize: 20
+    })
+    // interface StudentList {
+    //   studentId: string
+    //   studentName: string
+    //   studentPass: string
+    //   children: object
+    // }
+    let gridOptions = reactive<VxeGridProps>({
       border: true,
-      keepSource: true,
-      id: 'toolbar_demo_1',
       height: 530,
-      printConfig: {},
-      importConfig: {},
-      exportConfig: {},
+      loading: false,
       columnConfig: {
         resizable: true
       },
-      customConfig: {
-        storage: true
-      },
-      editConfig: {
-        trigger: 'click',
-        mode: 'row',
-        showStatus: true
-      },
+      data: [],
       columns: [
-        { type: 'checkbox', width: 50 },
         { type: 'seq', width: 60 },
-        { field: 'teacher', title: '授课老师', editRender: {}, slots: { edit: 'teacher_edit' } },
-        { field: 'semester', title: '授课学期', editRender: {}, slots: { edit: 'semester_edit' } },
-        {
-          title: '课程信息',
-          children: [
-            { field: 'id', title: '课程ID', editRender: { autofocus: '.vxe-input--inner' }, slots: { edit: 'id_edit' } },
-            { field: 'course', title: '课程名称', editRender: {}, slots: { edit: 'course_edit' } },
-            { field: 'day', title: '课程日期', editRender: {}, slots: { edit: 'day_edit' } },
-            { field: 'time', title: '课程时间', editRender: {}, slots: { edit: 'time_edit' } },
-            { field: 'location', title: '授课教室', editRender: {}, slots: { edit: 'location_edit' } }
-          ]
-        },
-        { field: 'state', title: '课程状态', showOverflow: true, editRender: {}, slots: { edit: 'state_edit' } }
-      ],
-      toolbarConfig: {
-        buttons: [
-          { code: 'myInsert', name: '新增数据' },
-          { code: 'mySave', name: '保存数据', status: 'success' },
-          { code: 'myExport', name: '导出数据', type: 'text', status: 'warning' },
-        ],
-        tools: [
-          { code: 'myPrint', name: '自定义打印' }
-        ],
-        import: true,
-        export: true,
-        print: true,
-        zoom: true,
-        custom: true
-      },
-      data: [
-        { id: 10001, teacher: 'Teacher', day: '周一', time: '8：00-9：35', semester: '1', state: '审核通过', course: '高级编程', location: '教室101' },
+        { type: 'checkbox', width: 50 },
+        { field: 'courseId', title: '课程ID', sortable: true },
+        { field: 'courseName', title: '课程名称', sortable: true },
+        { field: 'weekday', title: '授课日', sortable: true },
+        { field: 'time', title: '授课时间', sortable: true },
+        { field: 'teacherName', title: '授课老师', sortable: true },
+        { field: 'courseRoom', title: '授课教室', sortable: true },
+        { field: 'offerState', title: '课程状态', sortable: true }
+        // ,
+        // { field: 'address', title: 'Address', showOverflow: true }
       ]
     })
 
-    const gridEvents: VxeGridListeners = {
-      toolbarButtonClick({ code }) {
-        const $grid = xGrid.value
-        switch (code) {
-          case 'myInsert': {
-            $grid.insert({
-              name: 'xxx'
-            })
-            break
-          }
-          case 'mySave': {
-            const { insertRecords, removeRecords, updateRecords } = $grid.getRecordset()
-            VXETable.modal.message({ content: `新增 ${insertRecords.length} 条，删除 ${removeRecords.length} 条，更新 ${updateRecords.length} 条`, status: 'success' })
-            break
-          }
-          case 'myExport': {
-            $grid.exportData({
-              type: 'csv'
-            })
-            break
-          }
-        }
-      },
-      toolbarToolClick({ code }) {
-        const $grid = xGrid.value
-        switch (code) {
-          case 'myPrint': {
-            $grid.print()
-            break
-          }
-        }
-      }
+    const findList = () => {
+      gridOptions.loading = true
+      setTimeout(() => {
+        gridOptions.loading = false
+      }, 300)
+      ShowList();
     }
 
+    const searchEvent = () => {
+      tablePage.currentPage = 1
+      findList()
+    }
+    // let tableData: StudentList[] = ref<any>({})
+    const ShowList = () => {
+      // axios.get('http://localhost:8081/admin/student/list', {
+      //           pageNo: tablePage.currentPage,
+      //     pageSize: tablePage.pageSize
+
+      axios({//返回promise对象
+        // 请求类型
+        // headers: {
+        //   "Authorization": sessionStorage.name
+        // },
+        method: 'GET',
+        //URL
+        url: 'http://localhost:8081/admin/course/list',
+        params: {
+          courseName: CourseSearch.courseName,
+          courseRoom: CourseSearch.courseRoom,
+          offerState: CourseSearch.offerState,
+          teacherName: CourseSearch.teacherName,
+          time: CourseSearch.time,
+          weekday: CourseSearch.weekday,
+          pageNo: tablePage.currentPage,
+          pageSize: tablePage.pageSize
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
+
+
+    const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
+      tablePage.currentPage = currentPage
+      tablePage.pageSize = pageSize
+      // console.log(tablePage.currentPage)
+      findList()
+    }
+
+    findList()
+
+
+
     return {
-      xGrid,
+      tablePage,
       gridOptions,
-      gridEvents
+      searchEvent,
+      handlePageChange,
+      ShowList,
+      CourseSearch
     }
   }
 })

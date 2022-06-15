@@ -1,5 +1,5 @@
 <template>
-<h1>学生管理
+  <h1>学生管理
   </h1>
   <router-link to="/EducatorMain">主页</router-link>|
   <router-link to="/EducatorTeacherRegistration">教师管理</router-link>|
@@ -7,128 +7,209 @@
   <router-link to="/EducatorScoreVerify">成绩管理</router-link>|
   <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
-<p></p>
-  <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents">
-          <template #name_edit="{ row }">
-            <vxe-input v-model="row.name"></vxe-input>
-          </template>
-          <template #nickname_edit="{ row }">
-            <vxe-input v-model="row.nickname"></vxe-input>
-          </template>
-          <template #role_edit="{ row }">
-            <vxe-input v-model="row.role"></vxe-input>
-          </template>
-          <template #address_edit="{ row }">
-            <vxe-input v-model="row.address"></vxe-input>
-          </template>
-        </vxe-grid>
+  <p>
+    <vxe-input v-model="StudentSearch.studentId" placeholder="【删改】学生ID" clearable></vxe-input>
+    <vxe-input v-model="StudentSearch.studentName" placeholder="【增改查】学生用户名" clearable></vxe-input>
+    <vxe-input v-model="StudentSearch.studentPass" placeholder="【增改】学生密码" clearable></vxe-input>
+  </p>
+  <p>
+    <vxe-button status="primary" content="增加" @click="Add"></vxe-button>
+    <vxe-button status="primary" content="删除" @click="Delete"></vxe-button>
+    <vxe-button status="primary" content="更改" @click="Update"></vxe-button>
+    <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
+  </p>
+  <vxe-grid v-bind="gridOptions">
+    <template #pager>
+      <vxe-pager :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
+        v-model:current-page="tablePage.currentPage" v-model:page-size="tablePage.pageSize" :total="tablePage.total"
+        @page-change="handlePageChange">
+      </vxe-pager>
+    </template>
+  </vxe-grid>
 </template>
+
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
-        import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
+import { defineComponent, reactive } from 'vue'
+import { VxeGridProps, VxePagerEvents } from 'vxe-table'
+import axios from 'axios';
+import XEUtils from 'xe-utils'
+// import { table } from 'console';
+export default defineComponent({
+  setup() {
+    const StudentSearch = reactive({
+      studentId: '',
+      studentName: '',
+      studentPass: ''
+    })
 
-        export default defineComponent({
-          setup () {
-            const xGrid = ref({} as VxeGridInstance)
+    const tablePage = reactive({
+      total: 0,
+      currentPage: 1,
+      pageSize: 10
+    })
 
-            const gridOptions = reactive<VxeGridProps>({
-              border: true,
-              keepSource: true,
-              id: 'toolbar_demo_1',
-              height: 530,
-              printConfig: {},
-              importConfig: {},
-              exportConfig: {},
-              columnConfig: {
-                resizable: true
-              },
-              customConfig: {
-                storage: true
-              },
-              editConfig: {
-                trigger: 'click',
-                mode: 'row',
-                showStatus: true
-              },
-              columns: [
-                { type: 'checkbox', width: 50 },
-                { type: 'seq', width: 60 },
-                { field: 'name', title: '学生姓名', editRender: {}, slots: { edit: 'name_edit' } },
-                {
-                  title: '帐号信息',
-                  children: [
-                    { field: 'nickname', title: '帐号', editRender: { autofocus: '.vxe-input--inner' }, slots: { edit: 'nickname_edit' } },
-                    { field: 'role', title: '密码', editRender: {}, slots: { edit: 'role_edit' } }
-                  ]
-                },
-                { field: 'address', title: '帐号年份', showOverflow: true, editRender: {}, slots: { edit: 'address_edit' } }
-              ],
-              toolbarConfig: {
-                buttons: [
-                  { code: 'myInsert', name: '新增数据' },
-                  { code: 'mySave', name: '保存数据', status: 'success' },
-                  { code: 'myExport', name: '导出数据', type: 'text', status: 'warning' },
-                ],
-                tools: [
-                  { code: 'myPrint', name: '自定义打印' }
-                ],
-                import: true,
-                export: true,
-                print: true,
-                zoom: true,
-                custom: true
-              },
-              data: [
-                { id: 10001, name: 'Test1', nickname: 'T1', role: 'Develop', sex: 'Man', age: 28, address: 'Shenzhen' },
-                { id: 10002, name: 'Test2', nickname: 'T2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
-                { id: 10003, name: 'Test3', nickname: 'T3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
-                { id: 10004, name: 'Test4', nickname: 'T4', role: 'Designer', sex: 'Women', age: 23, address: 'Shenzhen' },
-                { id: 10005, name: 'Test5', nickname: 'T5', role: 'Develop', sex: 'Women', age: 30, address: 'Shanghai' },
-                { id: 10006, name: 'Test6', nickname: 'T6', role: 'Designer', sex: 'Women', age: 21, address: 'Shenzhen' },
-                { id: 10007, name: 'Test7', nickname: 'T7', role: 'Test', sex: 'Man', age: 29, address: 'Shenzhen' },
-                { id: 10008, name: 'Test8', nickname: 'T8', role: 'Develop', sex: 'Man', age: 35, address: 'Shenzhen' }
-              ]
-            })
+    let gridOptions = reactive<VxeGridProps>({
+      border: true,
+      height: 530,
+      loading: false,
+      columnConfig: {
+        resizable: true
+      },
+      data: [],
+      columns: [
+        { type: 'seq', width: 60 },
+        { type: 'checkbox', width: 50 },
+        { field: 'studentId', title: 'ID' },
+        { field: 'studentName', title: '学生用户名' },
+        { field: 'studentPass', title: '密码' }
+        // ,
+        // { field: 'address', title: 'Address', showOverflow: true }
+      ]
+    })
 
-            const gridEvents: VxeGridListeners = {
-              toolbarButtonClick ({ code }) {
-                const $grid = xGrid.value
-                switch (code) {
-                  case 'myInsert': {
-                    $grid.insert({
-                      name: 'xxx'
-                    })
-                    break
-                  }
-                  case 'mySave': {
-                    const { insertRecords, removeRecords, updateRecords } = $grid.getRecordset()
-                    VXETable.modal.message({ content: `新增 ${insertRecords.length} 条，删除 ${removeRecords.length} 条，更新 ${updateRecords.length} 条`, status: 'success' })
-                    break
-                  }
-                  case 'myExport': {
-                    $grid.exportData({
-                      type: 'csv'
-                    })
-                    break
-                  }
-                }
-              },
-              toolbarToolClick ({ code }) {
-                const $grid = xGrid.value
-                switch (code) {
-                  case 'myPrint': {
-                    $grid.print()
-                    break
-                  }
-                }
-              }
-            }
+    const findList = () => {
+      gridOptions.loading = true
+      setTimeout(() => {
+        gridOptions.loading = false
+      }, 300)
+      ShowList();
+    }
 
-            return {
-              xGrid,
-              gridOptions,
-              gridEvents
-            }
-          }
-        })
+    const searchEvent = () => {
+      tablePage.currentPage = 1
+      findList()
+    }
+    // let tableData: StudentList[] = ref<any>({})
+    const ShowList = () => {
+      // axios.get('http://localhost:8081/admin/student/list', {
+      //           pageNo: tablePage.currentPage,
+      //     pageSize: tablePage.pageSize
+
+      axios({//返回promise对象
+        // 请求类型
+        // headers: {
+        //   "Authorization": sessionStorage.name
+        // },
+        method: 'GET',
+        //URL
+        url: 'http://localhost:8081/admin/student/list',
+        params: {
+          studentName: StudentSearch.studentName,
+          pageNo: tablePage.currentPage,
+          pageSize: tablePage.pageSize
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+
+
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
+
+    const Update = () => {
+
+      axios({
+        method: 'POST',
+        url: 'http://localhost:8081/admin/student/update',
+        data: {
+          studentId: StudentSearch.studentId,
+          studentName: StudentSearch.studentName,
+          studentPass: StudentSearch.studentPass
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+        StudentSearch.studentId = '',
+          StudentSearch.studentName = '',
+          StudentSearch.studentPass = ''
+        ShowList();
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
+    const Delete = () => {
+
+      axios({
+        method: 'DELETE',
+        url: 'http://localhost:8081/admin/student/delete/' + StudentSearch.studentId
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+        StudentSearch.studentId = '',
+          StudentSearch.studentName = '',
+          StudentSearch.studentPass = ''
+        ShowList();
+
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
+
+    const Add = () => {
+
+      axios({
+        method: 'POST',
+        url: 'http://localhost:8081/admin/student/add',
+        data: {
+          studentId: 0,
+          studentName: StudentSearch.studentName,
+          studentPass: StudentSearch.studentPass
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+        StudentSearch.studentId = '',
+          StudentSearch.studentName = '',
+          StudentSearch.studentPass = ''
+        ShowList();
+
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
+
+    const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
+      tablePage.currentPage = currentPage
+      tablePage.pageSize = pageSize
+      // console.log(tablePage.currentPage)
+      findList()
+    }
+
+    findList()
+
+    return {
+      tablePage,
+      gridOptions,
+      searchEvent,
+      handlePageChange,
+      ShowList,
+      StudentSearch,
+      Update,
+      Delete,
+      Add
+    }
+  }
+})
 </script>

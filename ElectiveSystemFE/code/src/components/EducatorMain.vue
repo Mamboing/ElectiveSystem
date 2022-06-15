@@ -7,7 +7,6 @@
   <router-link to="/EducatorScoreVerify">成绩管理</router-link>|
   <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
-  <!-- <vxe-button status="primary" content="刷新" @click="ShowList"></vxe-button> -->
   <vxe-grid v-bind="gridOptions">
     <template #pager>
       <vxe-pager :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
@@ -20,8 +19,9 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import { VxeGridProps, VxePagerEvents } from 'vxe-table'
+import { VxeGridProps, VxePagerEvents ,VXETable} from 'vxe-table'
 import axios from 'axios';
+ import XEUtils from 'xe-utils'
 // import { table } from 'console';
 export default defineComponent({
   setup() {
@@ -81,7 +81,7 @@ export default defineComponent({
         method: 'GET',
         //URL
         url: 'http://localhost:8081/admin/student/list',
-        data: {
+        params: {
           pageNo: tablePage.currentPage,
           pageSize: tablePage.pageSize
         }
@@ -109,12 +109,17 @@ export default defineComponent({
 
     findList()
 
+  const openAlert = (options: any) => {
+              VXETable.modal.alert(options)
+            }
+
     return {
       tablePage,
       gridOptions,
       searchEvent,
       handlePageChange,
-      ShowList
+      ShowList,
+      openAlert
     }
   }
 })

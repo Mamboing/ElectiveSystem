@@ -72,11 +72,11 @@ export default defineComponent({
                     message: sessionStorage.message1,
                     type: 'success',
                 })
-                if (sessionStorage.userType == 1 && sessionStorage.code == 0) {
+                if (sessionStorage.userType == 1) {
                     this.$router.push("/StudentMain")
-                } else if (sessionStorage.userType == 2 && sessionStorage.code == 0) {
-                    this.$router.push("/TeacherMain")
-                } else if (sessionStorage.userType == 3 && sessionStorage.code == 0) {
+                } else if (sessionStorage.userType == 2) {
+                    this.$router.push("/TeacherCourseOffering")
+                } else if (sessionStorage.userType == 3 ) {
                     this.$router.push("/EducatorMain")
                 } else {
                     ElMessage.error(sessionStorage.message)
