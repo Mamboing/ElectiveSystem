@@ -5,6 +5,7 @@ import com.ap.electivesystem.entity.Teacher;
 import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.vo.ResultVO;
 import com.ap.electivesystem.service.TeacherService;
+import com.ap.electivesystem.utils.Md5Encrypt;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,6 +24,11 @@ public class AdminTeacherController {
 
     @Resource
     private TeacherService teacherService;
+    @Resource
+    private Md5Encrypt md5Encrypt;
+
+    public static final String PASS_SALT = "Elective_System_0.0";
+
 
     @GetMapping("/list")
     @ApiOperation("返回 Teacher 的列表，包装为PageInfo(其中含有属性total、list(即 Teacher 的列表)以及分页的参数)")
@@ -59,11 +65,13 @@ public class AdminTeacherController {
 
     @PostMapping("/add")
     public ResultVO add(@RequestBody Teacher teacher) {
+        teacher.setTeacherPass(md5Encrypt.encode(teacher.getTeacherPass(), PASS_SALT));
         return ResultVO.success(teacherService.save(teacher));
     }
 
     @PostMapping("/add/batch")
     public ResultVO addBatch(@RequestBody List<Teacher> teachers) {
+        teachers.forEach(teacher -> teacher.setTeacherPass(md5Encrypt.encode(teacher.getTeacherPass(), PASS_SALT)));
         return ResultVO.success(teacherService.saveBatch(teachers));
     }
 

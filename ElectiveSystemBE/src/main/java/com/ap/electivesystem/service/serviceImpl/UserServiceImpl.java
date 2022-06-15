@@ -39,19 +39,13 @@ public class UserServiceImpl implements UserService {
         AuthInfoBO authInfoBO = getAuthInfoByUsername(username, userType);
         if (authInfoBO == null)
             return ResultVO.fail(ReturnCode.USER_NOT_EXIST);
-        String passwordHash = computePasswordHash(password);
+        String passwordHash = md5Encrypt.encode(password, PASSWORD_SALT);
         if (!passwordHash.equals(authInfoBO.getPassword()))
             return ResultVO.fail(ReturnCode.PASSWORD_ERROR);
         LoginStatusBO statusBO = LoginStatusBO.fromAuthInfo(authInfoBO);
         sessionUtil.setLoginStatus(session, statusBO);
-//        System.out.println(sessionUtil.getLoginStatus(session));
         return ResultVO.success(statusBO);
 
-    }
-
-    public String computePasswordHash(String password) {
-        String md5 = md5Encrypt.computeHexString(password);
-        return md5Encrypt.computeHexString(md5 + PASSWORD_SALT);
     }
 
     @Override
