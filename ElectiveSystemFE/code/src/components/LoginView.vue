@@ -60,13 +60,16 @@ export default defineComponent({
             }
             ).then(res => {
                 console.log(res)
-                let { code, data, message } = res.data;
-                sessionStorage.code = code;
+                let {data, message } = res.data;
+                sessionStorage.id = data.id;
+                sessionStorage.loggedIn = data.loggedIn;
+                sessionStorage.name = data.name;
+                sessionStorage.privilege = data.privilege;
                 sessionStorage.userType = data.userType;
-                sessionStorage.message = message;
+                sessionStorage.message1 = message;
                 ElMessage({
                     showClose: true,
-                    message: 'Congrats, this is a success message.',
+                    message: sessionStorage.message1,
                     type: 'success',
                 })
                 if (sessionStorage.userType == 1 && sessionStorage.code == 0) {
