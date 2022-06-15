@@ -41,7 +41,7 @@ public class AdminTeacherController {
             return ResultVO.fail(ReturnCode.PAGE_PARAMETER_ERROR);
         LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
         if (teacherName != null && !teacherName.equals(""))
-            wrapper.eq(Teacher::getTeacherName, teacherName);
+            wrapper.like(Teacher::getTeacherName, teacherName);
         PageHelper.startPage(pageNo, pageSize);
         List<Teacher> list = teacherService.list(wrapper);
         return ResultVO.success(new PageInfo<>(list));
@@ -55,11 +55,13 @@ public class AdminTeacherController {
     public ResultVO update(@RequestBody Teacher teacher) {
         if (teacher.getTeacherId() == null)
             return ResultVO.fail(ReturnCode.ID_NULL_ERROR);
+        teacher.setTeacherPass(md5Encrypt.encode(teacher.getTeacherPass(), PASS_SALT));
         return ResultVO.success(teacherService.updateById(teacher));
     }
 
     @PostMapping("/update/batch")
     public ResultVO updateBatch(@RequestBody List<Teacher> teachers) {
+        teachers.forEach(teacher -> teacher.setTeacherPass(md5Encrypt.encode(teacher.getTeacherPass(), PASS_SALT)));
         return ResultVO.success(teacherService.updateBatchById(teachers));
     }
 

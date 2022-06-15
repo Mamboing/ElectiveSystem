@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-@Register(Register.STUDENT_MANAGE)
+//@Register(Register.STUDENT_MANAGE)
 @RestController
 @RequestMapping("/admin/student/")
 public class AdminStudentController {
@@ -40,7 +40,7 @@ public class AdminStudentController {
             return ResultVO.fail(ReturnCode.PAGE_PARAMETER_ERROR);
         LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
         if (studentName != null && !studentName.equals(""))
-            wrapper.eq(Student::getStudentName, studentName);
+            wrapper.like(Student::getStudentName, studentName);
         PageHelper.startPage(pageNo, pageSize);
         List<Student> list = studentService.list(wrapper);
         return ResultVO.success(new PageInfo<>(list));
@@ -54,11 +54,13 @@ public class AdminStudentController {
     public ResultVO update(@RequestBody Student student) {
         if (student.getStudentId() == null)
             return ResultVO.fail(ReturnCode.ID_NULL_ERROR);
+        student.setStudentPass(md5Encrypt.encode(student.getStudentPass(), PASS_SALT));
         return ResultVO.success(studentService.updateById(student));
     }
 
     @PostMapping("/update/batch")
     public ResultVO updateBatch(@RequestBody List<Student> students) {
+        students.forEach(student -> student.setStudentPass(md5Encrypt.encode(student.getStudentPass(), PASS_SALT)));
         return ResultVO.success(studentService.updateBatchById(students));
     }
 
