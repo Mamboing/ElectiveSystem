@@ -31,13 +31,13 @@
                 and student_id = #{studentId}
             </if>
             <if test="teacherName != null and teacherName != ''">
-                and teacher_name = #{teacherName}
+                and teacher_name like concat('%',#{teacherName},'%')
             </if>
             <if test="courseName != null and courseName != ''">
-                and course_name = #{courseName}
+                and course_name like concat('%',#{courseName},'%')
             </if>
             <if test="studentName != null and studentName != ''">
-                and student_name = #{studentName}
+                and student_name like concat('%',#{studentName},'%')
             </if>
             <if test="weekday != null and weekday != ''">
                 and weekday = #{weekday}

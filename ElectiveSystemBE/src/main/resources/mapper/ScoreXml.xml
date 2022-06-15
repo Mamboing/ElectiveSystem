@@ -16,13 +16,13 @@
         inner join tb_student ts on tb_score.student_id = ts.student_id
         <where>
             <if test="teacherName != null and teacherName != ''">
-                teacher_name = #{teacherName}
+                teacher_name like concat('%',#{teacherName},'%')
             </if>
             <if test="courseName != null and courseName != ''">
-                and course_name = #{courseName}
+                and course_name like concat('%',#{courseName},'%')
             </if>
             <if test="studentName != null and studentName != ''">
-                and student_name = #{studentName}
+                and student_name like concat('%',#{studentName},'%')
             </if>
         </where>
     </select>
