@@ -2,10 +2,13 @@ package com.ap.electivesystem.controller.admin;
 
 import com.ap.electivesystem.config.auth.annotation.Register;
 import com.ap.electivesystem.entity.Course;
+import com.ap.electivesystem.entity.Student;
 import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.dto.CourseDTO;
 import com.ap.electivesystem.entity.vo.ResultVO;
+import com.ap.electivesystem.entity.vo.StudentVO;
 import com.ap.electivesystem.service.CourseService;
+import com.ap.electivesystem.service.SelectService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.github.pagehelper.PageInfo;
@@ -28,8 +31,11 @@ public class CourseController {
     @Resource
     private CourseService courseService;
 
+    @Resource
+    private SelectService selectService;
+
     @GetMapping("/list")
-    @ApiOperation("返回 dto.ScoreDTO 的列表，包装为PageInfo(其中含有属性total、list(即 dto.ScoreDTO 的列表)以及分页的参数)")
+    @ApiOperation("返回 dto.CourseDTO 的列表，包装为PageInfo(其中含有属性total、list(即 dto.CourseDTO 的列表)以及分页的参数)")
     @ApiResponses({
             @ApiResponse(code = 1005, message = "ID为空"),
             @ApiResponse(code = 0, message = "success")
@@ -83,6 +89,16 @@ public class CourseController {
         boolean update = courseService.update(wrapper);
         if (update) return ResultVO.success(update);
         else return ResultVO.fail(ReturnCode.VERIFY_COURSE_ERROR);
+    }
+
+    @GetMapping("/student/list/{courseId}")
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "success")
+    })
+    @ApiOperation("返回 vo.StudentVO 的列表，包装为PageInfo(其中含有属性total、list(即 vo.StudentVO 的列表)以及分页的参数)")
+    public ResultVO studentList(@PathVariable Integer courseId, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo){
+        PageInfo<StudentVO> studentVOPageInfo = courseService.studentList(courseId, pageSize, pageNo);
+        return ResultVO.success(studentVOPageInfo);
     }
 
 }

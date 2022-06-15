@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
             return ResultVO.fail(ReturnCode.PASSWORD_ERROR);
         LoginStatusBO statusBO = LoginStatusBO.fromAuthInfo(authInfoBO);
         sessionUtil.setLoginStatus(session, statusBO);
+//        System.out.println(sessionUtil.getLoginStatus(session));
         return ResultVO.success(statusBO);
 
     }

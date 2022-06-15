@@ -18,4 +18,6 @@ public interface SelectMapper extends BaseMapper<Select> {
 
     List<SelectVO> search(SelectDTO selectDTO);
 
+    List<StudentVO> studentList(Integer courseId);
+
 }
