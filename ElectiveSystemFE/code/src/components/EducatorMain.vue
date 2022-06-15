@@ -80,7 +80,7 @@ export default defineComponent({
         // },
         method: 'GET',
         //URL
-        url: 'http://localhost:8081/admin/student/list',
+        url: 'http://localhost:8081/admin/student/list' + '?pageNo=' + tablePage.currentPage + '&pageSize=' + tablePage.pageSize,
         data: {
           pageNo: tablePage.currentPage,
           pageSize: tablePage.pageSize
