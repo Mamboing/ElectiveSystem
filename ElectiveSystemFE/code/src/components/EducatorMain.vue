@@ -9,12 +9,12 @@
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
   <!-- <vxe-button status="primary" content="刷新" @click="ShowList"></vxe-button> -->
   <vxe-grid v-bind="gridOptions">
-  <template #pager>
-    <vxe-pager :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
-      v-model:current-page="tablePage.currentPage" v-model:page-size="tablePage.pageSize" :total="tablePage.total"
-      @page-change="handlePageChange">
-    </vxe-pager>
-  </template>
+    <template #pager>
+      <vxe-pager :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
+        v-model:current-page="tablePage.currentPage" v-model:page-size="tablePage.pageSize" :total="tablePage.total"
+        @page-change="handlePageChange">
+      </vxe-pager>
+    </template>
   </vxe-grid>
 </template>
 
@@ -36,7 +36,7 @@ export default defineComponent({
     //   studentPass: string
     //   children: object
     // }
-   let gridOptions = reactive<VxeGridProps>({
+    let gridOptions = reactive<VxeGridProps>({
       border: true,
       height: 530,
       loading: false,
@@ -59,10 +59,8 @@ export default defineComponent({
       gridOptions.loading = true
       setTimeout(() => {
         gridOptions.loading = false
-        tablePage.total = 10
-        ShowList();
-        gridOptions.data = JSON.parse(sessionStorage.Studentlist)
       }, 300)
+      ShowList();
     }
 
     const searchEvent = () => {
@@ -74,6 +72,7 @@ export default defineComponent({
       // axios.get('http://localhost:8081/admin/student/list', {
       //           pageNo: tablePage.currentPage,
       //     pageSize: tablePage.pageSize
+     
       axios({//返回promise对象
         // 请求类型
         // headers: {
@@ -87,20 +86,24 @@ export default defineComponent({
           pageSize: tablePage.pageSize
         }
       }).then(response => {
-        console.log(response.data.list);
-        let { data } = response.data;
-        sessionStorage.Studentlist = JSON.stringify(data.list);
-        console.log(sessionStorage.StudentList);
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+
       }).catch(res => {
         console.log(res)
       }).finally(() => {
         console.log('完成了')
       })
     }
+
     
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
+      // console.log(tablePage.currentPage)
       findList()
     }
 
