@@ -43,11 +43,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
 //        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
 //        Integer id = loginStatus.getId();
         PageHelper.startPage(pageNo,pageSize);
-        List<Course> schedule = teacherMapper.schedule(id);
-        List<CourseVO> courseVOS = new ArrayList<>();
-        schedule.forEach(course -> {
-            courseVOS.add(copyUtil.courseCopy(course));
-        });
-        return new PageInfo<>(courseVOS);
+        List<CourseVO> schedule = teacherMapper.schedule(id);
+        return new PageInfo<>(schedule);
     }
 }

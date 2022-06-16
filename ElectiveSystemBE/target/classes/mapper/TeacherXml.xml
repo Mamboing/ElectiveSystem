@@ -12,7 +12,7 @@
                  inner join tb_course tc on tb_teacher.teacher_id = tc.teacher_id
         where course_id = #{courseId}
     </select>
-    <select id="schedule" resultType="com.ap.electivesystem.entity.Course">
+    <select id="schedule" resultType="com.ap.electivesystem.entity.vo.CourseVO">
         select
         course_id, course_name, weekday, `time`, teacher_name, course_room, offer_state
         from tb_course inner join tb_teacher tt on tb_course.teacher_id = tt.teacher_id
