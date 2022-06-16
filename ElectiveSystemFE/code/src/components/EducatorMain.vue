@@ -8,6 +8,10 @@
   <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
   <p>
+ <vxe-input v-model="Search.adminPass" placeholder="【改】教务密码" clearable></vxe-input>
+  </p>
+
+  <p>
     <vxe-button status="primary" content="更改" @click="Update"></vxe-button>
   </p>
   <vxe-grid v-bind="gridOptions">
@@ -68,7 +72,7 @@ export default defineComponent({
         method: 'POST',
         url: 'http://localhost:8081/admin/update',
         data: {
-          adminId: Search.adminId,
+          adminId: sessionStorage.id,
           adminName: Search.adminName,
           adminPass: Search.adminPass
         },
@@ -135,7 +139,8 @@ export default defineComponent({
       ShowList,
       openAlert,
       Update,
-      clear
+      clear,
+      Search
     }
   }
 })

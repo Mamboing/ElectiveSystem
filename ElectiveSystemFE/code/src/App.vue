@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <router-link to="/login">Login</router-link>
+    <router-link to="/login">登出</router-link>
     <!-- |    <router-link to="/logindemo">Logindemo</router-link> -->
   </nav>
   <router-view/>
@@ -17,6 +17,7 @@
 
 nav {
   padding: 30px;
+  text-align: right;
 
   a {
     font-weight: bold;

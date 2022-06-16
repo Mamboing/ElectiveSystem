@@ -105,7 +105,8 @@ export default defineComponent({
         url: 'http://localhost:8081/teacher/find/' + Search.courseId,
         params: {
           pageNo: tablePage.currentPage,
-          pageSize: tablePage.pageSize
+          pageSize: tablePage.pageSize,
+          teacherId:sessionStorage.id
         }
       }).then(response => {
         console.log(tablePage.currentPage);
