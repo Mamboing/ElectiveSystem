@@ -63,7 +63,7 @@
     <vxe-button status="primary" content="更改" @click="Update"></vxe-button>
     <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
     <vxe-button status="primary" content="审核" @click="Verify"></vxe-button>
-     <vxe-button status="primary" content="清空查询" @click="clear"></vxe-button>
+    <vxe-button status="primary" content="清空查询" @click="clear"></vxe-button>
   </p>
   <vxe-grid v-bind="gridOptions">
     <template #pager>
@@ -79,8 +79,6 @@
 import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents } from 'vxe-table'
 import axios from 'axios';
-import XEUtils from 'xe-utils'
-// import { table } from 'console';
 export default defineComponent({
   setup() {
     const CourseSearch = reactive({
@@ -109,12 +107,7 @@ export default defineComponent({
       currentPage: 1,
       pageSize: 20
     })
-    // interface StudentList {
-    //   studentId: string
-    //   studentName: string
-    //   studentPass: string
-    //   children: object
-    // }
+
     let gridOptions = reactive<VxeGridProps>({
       border: true,
       height: 530,
@@ -133,8 +126,6 @@ export default defineComponent({
         { field: 'teacherName', title: '授课老师', sortable: true },
         { field: 'courseRoom', title: '授课教室', sortable: true },
         { field: 'offerState', title: '课程状态', sortable: true }
-        // ,
-        // { field: 'address', title: 'Address', showOverflow: true }
       ]
     })
 
@@ -251,13 +242,10 @@ export default defineComponent({
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
-      // console.log(tablePage.currentPage)
       findList()
     }
 
     findList()
-
-
 
     return {
       tablePage,

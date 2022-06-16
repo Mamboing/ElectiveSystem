@@ -42,8 +42,7 @@
 import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents } from 'vxe-table'
 import axios from 'axios';
-import XEUtils from 'xe-utils'
-// import { table } from 'console';
+
 export default defineComponent({
   setup() {
     const Search = reactive({
@@ -72,12 +71,7 @@ export default defineComponent({
       currentPage: 1,
       pageSize: 20
     })
-    // interface StudentList {
-    //   studentId: string
-    //   studentName: string
-    //   studentPass: string
-    //   children: object
-    // }
+
     let gridOptions = reactive<VxeGridProps>({
       border: true,
       height: 530,
@@ -97,8 +91,7 @@ export default defineComponent({
         { field: 'usualGrade', title: '平时成绩', sortable: true },
         { field: 'finalGrade', title: '期末成绩', sortable: true },
         { field: 'totalGrade', title: '总评成绩', sortable: true }
-        // ,
-        // { field: 'address', title: 'Address', showOverflow: true }
+
       ]
     })
 
@@ -157,7 +150,7 @@ export default defineComponent({
         gridOptions.data = list;
         const { total } = response.data.data;
         tablePage.total = total;
-       clear();
+        clear();
       }).catch(res => {
         console.log(res)
       }).finally(() => {
@@ -167,7 +160,7 @@ export default defineComponent({
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
-      // console.log(tablePage.currentPage)
+
       findList()
     }
 

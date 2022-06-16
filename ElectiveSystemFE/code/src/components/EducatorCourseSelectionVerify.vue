@@ -19,13 +19,13 @@
 " clearable></vxe-input>
     <vxe-input v-model="CourseSearch.teacherName" placeholder="【查】授课教师
 " clearable></vxe-input>
-<vxe-select v-model="CourseSearch.weekday" placeholder="【查】授课日" clearable>
-                <vxe-option value="周一" label="周一"></vxe-option>
-                <vxe-option value="周二" label="周二"></vxe-option>
-                <vxe-option value="周三" label="周三"></vxe-option>
-                <vxe-option value="周四" label="周四"></vxe-option>
-                <vxe-option value="周五" label="周五"></vxe-option>
-            </vxe-select>
+    <vxe-select v-model="CourseSearch.weekday" placeholder="【查】授课日" clearable>
+      <vxe-option value="周一" label="周一"></vxe-option>
+      <vxe-option value="周二" label="周二"></vxe-option>
+      <vxe-option value="周三" label="周三"></vxe-option>
+      <vxe-option value="周四" label="周四"></vxe-option>
+      <vxe-option value="周五" label="周五"></vxe-option>
+    </vxe-select>
     <vxe-select v-model="CourseSearch.time" placeholder="【查】授课时间" clearable>
       <vxe-option value="8:00 - 9:35" label="8:00 - 9:35"></vxe-option>
       <vxe-option value="9:50 - 11:25" label="9:50 - 11:25"></vxe-option>
@@ -33,32 +33,32 @@
       <vxe-option value="14:50 - 16:25" label="14:50 - 16:25"></vxe-option>
       <vxe-option value="18:00 - 20:35" label="18:00 - 20:35"></vxe-option>
     </vxe-select>
-     <vxe-select v-model="CourseSearch.courseRoom" placeholder="【查】上课教室" clearable>
-                <vxe-option value="101" label="教室 101"></vxe-option>
-                <vxe-option value="102" label="教室 102"></vxe-option>
-                <vxe-option value="103" label="教室 103"></vxe-option>
-                <vxe-option value="104" label="教室 104"></vxe-option>
-                <vxe-option value="105" label="教室 105"></vxe-option>
-                <vxe-option value="106" label="教室 106"></vxe-option>
-                <vxe-option value="107" label="教室 107"></vxe-option>
-                <vxe-option value="108" label="教室 108"></vxe-option>
-                <vxe-option value="109" label="教室 109"></vxe-option>
-                <vxe-option value="110" label="教室 110"></vxe-option>
-                <vxe-option value="111" label="教室 111"></vxe-option>
-                <vxe-option value="112" label="教室 112"></vxe-option>
-                <vxe-option value="113" label="教室 113"></vxe-option>
-                <vxe-option value="114" label="教室 114"></vxe-option>
-                <vxe-option value="115" label="教室 115"></vxe-option>
-                <vxe-option value="116" label="教室 116"></vxe-option>
-                <vxe-option value="117" label="教室 117"></vxe-option>
-                <vxe-option value="118" label="教室 118"></vxe-option>
-                <vxe-option value="119" label="教室 119"></vxe-option>
-                <vxe-option value="120" label="教室 120"></vxe-option>
-            </vxe-select>
-<vxe-select v-model="CourseSearch.offerState" placeholder="【查】课程状态" clearable>
-                <vxe-option value="0" label="待审核"></vxe-option>
-                <vxe-option value="1" label="已审核"></vxe-option>
-            </vxe-select>
+    <vxe-select v-model="CourseSearch.courseRoom" placeholder="【查】上课教室" clearable>
+      <vxe-option value="101" label="教室 101"></vxe-option>
+      <vxe-option value="102" label="教室 102"></vxe-option>
+      <vxe-option value="103" label="教室 103"></vxe-option>
+      <vxe-option value="104" label="教室 104"></vxe-option>
+      <vxe-option value="105" label="教室 105"></vxe-option>
+      <vxe-option value="106" label="教室 106"></vxe-option>
+      <vxe-option value="107" label="教室 107"></vxe-option>
+      <vxe-option value="108" label="教室 108"></vxe-option>
+      <vxe-option value="109" label="教室 109"></vxe-option>
+      <vxe-option value="110" label="教室 110"></vxe-option>
+      <vxe-option value="111" label="教室 111"></vxe-option>
+      <vxe-option value="112" label="教室 112"></vxe-option>
+      <vxe-option value="113" label="教室 113"></vxe-option>
+      <vxe-option value="114" label="教室 114"></vxe-option>
+      <vxe-option value="115" label="教室 115"></vxe-option>
+      <vxe-option value="116" label="教室 116"></vxe-option>
+      <vxe-option value="117" label="教室 117"></vxe-option>
+      <vxe-option value="118" label="教室 118"></vxe-option>
+      <vxe-option value="119" label="教室 119"></vxe-option>
+      <vxe-option value="120" label="教室 120"></vxe-option>
+    </vxe-select>
+    <vxe-select v-model="CourseSearch.offerState" placeholder="【查】课程状态" clearable>
+      <vxe-option value="0" label="待审核"></vxe-option>
+      <vxe-option value="1" label="已审核"></vxe-option>
+    </vxe-select>
 
   </p>
   <p>
@@ -79,8 +79,7 @@
 import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents } from 'vxe-table'
 import axios from 'axios';
-import XEUtils from 'xe-utils'
-// import { table } from 'console';
+
 export default defineComponent({
   setup() {
     const CourseSearch = reactive({
@@ -88,14 +87,14 @@ export default defineComponent({
       courseName: null,
       studentId: null,
       studentName: null,
-      teacherId:null,
+      teacherId: null,
       teacherName: null,
       time: null,
       weekday: null,
-      offerState:null,
-      courseRoom:null
+      offerState: null,
+      courseRoom: null
     })
-const clear = () => {
+    const clear = () => {
       CourseSearch.courseId = null,
         CourseSearch.courseName = null,
         CourseSearch.courseRoom = null,
@@ -132,10 +131,9 @@ const clear = () => {
         { field: 'teacherName', title: '授课老师', sortable: true },
         { field: 'time', title: '授课时间', sortable: true },
         { field: 'weekday', title: '授课日', sortable: true },
-         { field: 'courseRoom', title: '授课教室', sortable: true },
+        { field: 'courseRoom', title: '授课教室', sortable: true },
         { field: 'offerState', title: '课程状态', sortable: true },
-        // ,
-        // { field: 'address', title: 'Address', showOverflow: true }
+
       ]
     })
 
@@ -190,7 +188,7 @@ const clear = () => {
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
-      // console.log(tablePage.currentPage)
+
       findList()
     }
 
