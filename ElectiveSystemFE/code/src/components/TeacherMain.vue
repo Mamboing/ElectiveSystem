@@ -4,207 +4,122 @@
   <router-link to="/TeacherMain">主页</router-link>|
   <router-link to="/TeacherCourseOffering">课程开设</router-link>|
   <router-link to="/TeacherScoreRegistration">成绩登记</router-link>
-<p></p>
- <vxe-toolbar ref="xToolbar" :loading="demo1.loading">
-          <template #buttons>
-            <vxe-button status="primary" content="临时新增" @click="insertEvent"></vxe-button>
-            <vxe-button status="warning" content="临时删除" @click="removeSelectEvent"></vxe-button>
-            <vxe-button status="danger" content="直接删除" @click="deleteSelectEvent"></vxe-button>
-            <vxe-button content="提交（将临时操作持久化）" @click="saveEvent"></vxe-button>
-          </template>
-        </vxe-toolbar>
 
-        <vxe-table
-          border
-          show-overflow
-          keep-source
-          ref="xTable"
-          height="500"
-          :column-config="{resizable: true}"
-          :loading="demo1.loading"
-          :data="demo1.tableData"
-          :edit-rules="demo1.validRules"
-          :edit-config="{trigger: 'click', mode: 'row', showUpdateStatus: true, showInsertStatus: true}">
-          <vxe-column type="checkbox" width="60"></vxe-column>
-          <vxe-column field="name" title="Name" :edit-render="{}">
-            <template #edit="{ row }">
-              <vxe-input v-model="row.name" type="text"></vxe-input>
-            </template>
-          </vxe-column>
-          <vxe-column field="nickname" title="Nickname" :edit-render="{}">
-            <template #edit="{ row }">
-              <vxe-input v-model="row.nickname" type="text"></vxe-input>
-            </template>
-          </vxe-column>
-          <vxe-column field="sex" title="Sex" :edit-render="{}">
-            <template #default="{ row }">
-              <span>{{ formatSex(row.sex) }}</span>
-            </template>
-            <template #edit="{ row }">
-              <vxe-select v-model="row.sex" type="text" :options="demo1.sexList" transfer></vxe-select>
-            </template>
-          </vxe-column>
-          <vxe-column field="amount" title="Amount" :edit-render="{}">
-            <template #edit="{ row }">
-              <vxe-input v-model="row.amount" type="float" :digits="2"></vxe-input>
-            </template>
-          </vxe-column>
-          <vxe-column field="updateDate" title="Date" :edit-render="{}">
-            <template #edit="{ row }">
-              <vxe-input v-model="row.updateDate" type="date"></vxe-input>
-            </template>
-          </vxe-column>
-          <vxe-column title="操作" width="240">
-            <template #default="{ row }">
-              <vxe-button status="warning" content="临时删除" @click="removeRowEvent(row)"></vxe-button>
-              <vxe-button status="danger" content="直接删除" @click="deleteRowEvent(row)"></vxe-button>
-            </template>
-          </vxe-column>
-        </vxe-table>
+  <vxe-grid v-bind="gridOptions">
+    <template #pager>
+      <vxe-pager :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
+        v-model:current-page="tablePage.currentPage" v-model:page-size="tablePage.pageSize" :total="tablePage.total"
+        @page-change="handlePageChange">
+      </vxe-pager>
+    </template>
+  </vxe-grid>
 </template>
+
 <script lang="ts">
- import { defineComponent, reactive, ref, nextTick, computed } from 'vue'
-        import { useStore } from 'vuex'
-        import { VXETable, VxeTableInstance, VxeToolbarInstance } from 'vxe-table'
+import { defineComponent, reactive } from 'vue'
+import { VxeGridProps, VxePagerEvents, VXETable } from 'vxe-table'
+import axios from 'axios';
+import XEUtils from 'xe-utils'
+export default defineComponent({
+  setup() {
+    const tablePage = reactive({
+      total: 1,
+      currentPage: 1,
+      pageSize: 1
+    })
 
-        export default defineComponent({
-          setup () {
-            const store = useStore()
-            const serveApiUrl = computed(() => store.state.serveApiUrl)
+    const Search = reactive({
+      adminId: null,
+      adminName: null,
+      adminPass: null
+    })
 
-            const xToolbar = ref({} as VxeToolbarInstance)
-            const xTable = ref({} as VxeTableInstance)
+    const clear = () => {
+      Search.adminId = null,
+        Search.adminName = null,
+        Search.adminPass = null
+      ShowList();
+    }
 
-            const demo1 = reactive({
-              loading: false,
-              tableData: [],
-              validRules: {
-                name: [
-                  { required: true, message: '名称必须填写' }
-                ]
-              },
-              sexList: [
-                { label: '男', value: '1' },
-                { label: '女', value: '0' }
-              ]
-            })
+    let gridOptions = reactive<VxeGridProps>({
+      border: true,
+      height: 530,
+      loading: false,
+      columnConfig: {
+        resizable: true
+      },
+      data: [],
+      columns: [
+        { type: 'seq', width: 60 },
+        { type: 'checkbox', width: 50 },
+        { field: 'courseId', title: '课程ID', sortable: true },
+        { field: 'courseName', title: '课程名称', sortable: true },
+        { field: 'weekday', title: '授课日', sortable: true },
+        { field: 'time', title: '授课时间', sortable: true },
+        { field: 'teacherName', title: '授课老师', sortable: true },
+        { field: 'courseRoom', title: '授课教室', sortable: true },
+        { field: 'offerState', title: '课程状态', sortable: true }
 
-            const formatSex = (value: any) => {
-              if (value === '1') {
-                return '男'
-              }
-              if (value === '0') {
-                return '女'
-              }
-              return ''
-            }
+      ]
+    })
 
-            const loadList = async () => {
-              demo1.loading = true
-              try {
-                const res = await fetch(`${serveApiUrl.value}/api/pub/all`).then(response => response.json())
-                demo1.tableData = res
-              } catch (e) {
-                demo1.tableData = []
-              }
-              demo1.loading = false
-            }
+    const findList = () => {
+      gridOptions.loading = true
+      setTimeout(() => {
+        gridOptions.loading = false
+      }, 300)
+      ShowList();
+    }
 
-            const insertEvent = async () => {
-              const $table = xTable.value
-              const newRecord = {}
-              const { row: newRow } = await $table.insert(newRecord)
-              await $table.setActiveRow(newRow)
-            }
+    const searchEvent = () => {
+      tablePage.currentPage = 1
+      findList()
+    }
+    const ShowList = () => {
 
-            const removeSelectEvent = async () => {
-              const $table = xTable.value
-              await $table.removeCheckboxRow()
-            }
+      axios({
+        method: 'GET',
+        url: 'http://localhost:8081/teacher/schedule/',
+        params: {
+          id:sessionStorage.id,
+          pageNo: tablePage.currentPage,
+          pageSize: tablePage.pageSize
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
 
-            const deleteSelectEvent = async () => {
-              const type = await VXETable.modal.confirm('您确定要删除选中的数据?')
-              if (type !== 'confirm') {
-                return
-              }
-              const $table = xTable.value
-              const checkboxRecords = $table.getCheckboxRecords()
-              demo1.loading = true
-              try {
-                const body = { removeRecords: checkboxRecords }
-                await fetch(`${serveApiUrl.value}/api/pub/save`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-                await loadList()
-              }
-               catch (e) {console.log("error");
-               }
-              demo1.loading = false
-            }
 
-            const removeRowEvent = async (row: any) => {
-              const $table = xTable.value
-              await $table.remove(row)
-            }
+    const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
+      tablePage.currentPage = currentPage
+      tablePage.pageSize = pageSize
+      findList()
+    }
 
-            const deleteRowEvent = async (row: any) => {
-              const type = await VXETable.modal.confirm('您确定要删除该数据?')
-              if (type !== 'confirm') {
-                return
-              }
-              demo1.loading = true
-              try {
-                const body = { removeRecords: [row] }
-                await fetch(`${serveApiUrl.value}/api/pub/save`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-                await loadList()
-              } catch (e) {console.log("error")}
-            }
+    findList()
 
-            const saveEvent = async () => {
-              const $table = xTable.value
-              const { insertRecords, removeRecords, updateRecords } = $table.getRecordset()
-              if (insertRecords.length <= 0 && removeRecords.length <= 0 && updateRecords.length <= 0) {
-                VXETable.modal.message({ content: '数据未改动！', status: 'warning' })
-                return
-              }
-              const errMap = await $table.validate()
-              if (errMap) {
-                return
-              }
-              demo1.loading = true
-              try {
-                const body = { insertRecords, removeRecords, updateRecords }
-                await fetch(`${serveApiUrl.value}/api/pub/save`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-                await loadList()
-                VXETable.modal.message({ content: `操作成功，新增 ${insertRecords.length} 条，更新 ${updateRecords.length} 条，删除 ${removeRecords.length} 条`, status: 'success' })
-              }
-             catch (e) {
-            //     if (e && e.message) {
-            //       VXETable.modal.message({ content: e.message, status: 'error' })
-            //     }
-              }
-              demo1.loading = false
-            }
+    const openAlert = (options: any) => {
+      VXETable.modal.alert(options)
+    }
 
-            nextTick(() => {
-              // 将表格和工具栏进行关联
-              const $table = xTable.value
-              const $toolbar = xToolbar.value
-              $table.connect($toolbar)
-            })
-
-            loadList()
-
-            return {
-              demo1,
-              xToolbar,
-              xTable,
-              formatSex,
-              insertEvent,
-              removeSelectEvent,
-              deleteSelectEvent,
-              removeRowEvent,
-              deleteRowEvent,
-              saveEvent
-            }
-          }
-        })
+    return {
+      tablePage,
+      gridOptions,
+      searchEvent,
+      handlePageChange,
+      ShowList,
+      openAlert,
+      clear
+    }
+  }
+})
 </script>

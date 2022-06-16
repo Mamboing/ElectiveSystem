@@ -103,7 +103,6 @@ export default defineComponent({
 
       axios({
         method: 'GET',
-        //URL
         url: 'http://localhost:8081/admin/list',
       }).then(response => {
         console.log(tablePage.currentPage);

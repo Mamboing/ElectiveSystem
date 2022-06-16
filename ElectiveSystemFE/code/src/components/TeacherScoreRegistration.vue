@@ -5,188 +5,168 @@
   <router-link to="/TeacherCourseOffering">课程开设</router-link>|
   <router-link to="/TeacherScoreRegistration">成绩登记</router-link>
   <p>
-    <vxe-table ref="xTable1" border auto-resize :data="demo1.tableData" @toggle-row-expand="toggleExpandChangeEvent">
-      <vxe-column type="seq" width="60" :fixed="demo1.seqFixed"></vxe-column>
-      <vxe-column field="name" title="课程名称" width="400"></vxe-column>
-      <vxe-column field="semester" title="授课学期" width="400"></vxe-column>
-      <vxe-column type="expand" :fixed="demo1.expandFixed">
-        <template #content="{ rowIndex }">
-          <div v-if="rowIndex === 0" class="expand-wrapper">
-            <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents">
-              <template #name_edit="{ row }">
-                <vxe-input v-model="row.name"></vxe-input>
-              </template>
-              <template #id_edit="{ row }">
-                <vxe-input v-model="row.id"></vxe-input>
-              </template>
-              <template #score1_edit="{ row }">
-                <vxe-input v-model="row.score1"></vxe-input>
-              </template>
-              <template #score2_edit="{ row }">
-                <vxe-input v-model="row.score2"></vxe-input>
-              </template>
-              <template #score3_edit="{ row }">
-                <vxe-input v-model="row.score3"></vxe-input>
-              </template>
-              <template #year_edit="{ row }">
-                <vxe-input v-model="row.year"></vxe-input>
-              </template>
-            </vxe-grid>
-          </div>
-        </template>
-      </vxe-column>
-    </vxe-table>
+    <vxe-input v-model="Search.courseId" placeholder="【改查】课程ID" clearable></vxe-input>
+    <vxe-input v-model="Search.studentId" placeholder="【改】学生ID
+" clearable></vxe-input>
+    <vxe-input v-model="Search.usualGrade" placeholder="【改】平时成绩
+" clearable></vxe-input>
+    <vxe-input v-model="Search.finalGrade" placeholder="【改】期末成绩
+" clearable></vxe-input>
+    <vxe-input v-model="Search.totalGrade" placeholder="【改】总评成绩
+" clearable></vxe-input>
   </p>
   <p>
-
+    <vxe-button status="primary" content="修改" @click="Update"></vxe-button>
+    <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
+    <vxe-button status="primary" content="清空查询" @click="clear"></vxe-button>
   </p>
+  <vxe-grid v-bind="gridOptions">
+    <template #pager>
+      <vxe-pager :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
+        v-model:current-page="tablePage.currentPage" v-model:page-size="tablePage.pageSize" :total="tablePage.total"
+        @page-change="handlePageChange">
+      </vxe-pager>
+    </template>
+  </vxe-grid>
 </template>
+
 <script lang="ts">
-import { defineComponent, reactive, ref, nextTick } from 'vue'
-import { VxeTableInstance, VxeTableEvents, VxeColumnPropTypes } from 'vxe-table'
-import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
+import { defineComponent, reactive } from 'vue'
+import { VxeGridProps, VxePagerEvents } from 'vxe-table'
+import axios from 'axios';
 
 export default defineComponent({
   setup() {
-    const xGrid = ref({} as VxeGridInstance)
+    const Search = reactive({
+      courseName: null,
+      courseId: null,
+      studentId: null,
+      studentName: null,
+      usualGrade: null,
+      finalGrade: null,
+      totalGrade: null
+    })
+    const clear = () => {
+      Search.studentId = null,
+        Search.studentName = null,
+        Search.courseId = null,
+        Search.courseName = null,
+        Search.totalGrade = null,
+        Search.usualGrade = null,
+        Search.finalGrade = null,
+        ShowList();
+    }
+    const tablePage = reactive({
+      total: 0,
+      currentPage: 1,
+      pageSize: 20
+    })
 
-    const gridOptions = reactive<VxeGridProps>({
+    let gridOptions = reactive<VxeGridProps>({
       border: true,
-      keepSource: true,
-      id: 'toolbar_demo_1',
       height: 530,
-      printConfig: {},
-      importConfig: {},
-      exportConfig: {},
+      loading: false,
       columnConfig: {
         resizable: true
       },
-      customConfig: {
-        storage: true
-      },
-      editConfig: {
-        trigger: 'click',
-        mode: 'row',
-        showStatus: true
-      },
+      data: [],
       columns: [
-        { type: 'checkbox', width: 50 },
         { type: 'seq', width: 60 },
-        { field: 'id', title: '学生ID', editRender: {}, slots: { edit: 'id_edit' } },
-        { field: 'name', title: '学生姓名', editRender: {}, slots: { edit: 'name_edit' } },
-        {
-          title: '学生成绩',
-          children: [
-            { field: 'score1', title: '平时成绩', editRender: { autofocus: '.vxe-input--inner' }, slots: { edit: 'score1_edit' } },
-            { field: 'score2', title: '期末成绩', editRender: {}, slots: { edit: 'score2_edit' } },
-            { field: 'score3', title: '总评成绩', editRender: {}, slots: { edit: 'score3_edit' } }
-          ]
-        },
-        { field: 'year', title: '学生年份', showOverflow: true, editRender: {}, slots: { edit: 'year_edit' } }
-      ],
-      toolbarConfig: {
-        buttons: [
-          { code: 'myInsert', name: '新增数据' },
-          { code: 'mySave', name: '保存数据', status: 'success' },
-          { code: 'myExport', name: '导出数据', type: 'text', status: 'warning' },
-        ],
-        tools: [
-          { code: 'myPrint', name: '自定义打印' }
-        ],
-        import: true,
-        export: true,
-        print: true,
-        zoom: true,
-        custom: true
-      },
-      data: [
-        { id: 10001, name: 'Test1', score1: 100, score2: 100, score3: 100, year: 'Shenzhen' },
+        { type: 'checkbox', width: 50 },
+        { field: 'courseId', title: '课程ID', sortable: true },
+        { field: 'courseName', title: '课程名称', sortable: true },
+        { field: 'studentId', title: '学生ID', sortable: true },
+        { field: 'studentName', title: '学生', sortable: true },
+        { field: 'usualGrade', title: '平时成绩', sortable: true },
+        { field: 'finalGrade', title: '期末成绩', sortable: true },
+        { field: 'totalGrade', title: '总评成绩', sortable: true }
+
       ]
     })
 
-    const gridEvents: VxeGridListeners = {
-      toolbarButtonClick({ code }) {
-        const $grid = xGrid.value
-        switch (code) {
-          case 'myInsert': {
-            $grid.insert({
-              name: 'xxx'
-            })
-            break
-          }
-          case 'mySave': {
-            const { insertRecords, removeRecords, updateRecords } = $grid.getRecordset()
-            VXETable.modal.message({ content: `新增 ${insertRecords.length} 条，删除 ${removeRecords.length} 条，更新 ${updateRecords.length} 条`, status: 'success' })
-            break
-          }
-          case 'myExport': {
-            $grid.exportData({
-              type: 'csv'
-            })
-            break
-          }
-        }
-      },
-      toolbarToolClick({ code }) {
-        const $grid = xGrid.value
-        switch (code) {
-          case 'myPrint': {
-            $grid.print()
-            break
-          }
-        }
-      }
+    const findList = () => {
+      gridOptions.loading = true
+      setTimeout(() => {
+        gridOptions.loading = false
+      }, 300)
+      ShowList();
     }
-    const xTable1 = ref({} as VxeTableInstance)
 
-    const isChronological4 = ref(false)
-    const demo1 = reactive({
-      seqFixed: null as VxeColumnPropTypes.Fixed,
-      expandFixed: null as VxeColumnPropTypes.Fixed,
-      tableData: [
-        { id: '1', name: 'a', semester:'b' },
-      ]
-    })
+    const searchEvent = () => {
+      tablePage.currentPage = 1
+      findList()
+    }
 
-    const toggleSeqFixed = () => {
-      demo1.seqFixed = demo1.seqFixed ? null : 'left'
-      nextTick(() => {
-        const $table = xTable1.value
-        $table.refreshColumn()
+    const ShowList = () => {
+
+      axios({
+        method: 'GET',
+        //URL
+        url: 'http://localhost:8081/teacher/find/'+Search.courseId,
+        params: {
+          pageNo: tablePage.currentPage,
+          pageSize: tablePage.pageSize
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
       })
     }
 
-    const toggleExpandFixed = () => {
-      demo1.expandFixed = demo1.expandFixed ? null : 'left'
-      nextTick(() => {
-        const $table = xTable1.value
-        $table.refreshColumn()
+    const Update = () => {
+
+      axios({
+        method: 'POST',
+        url: 'http://localhost:8081/admin/score/update',
+        data: {
+          courseId: Search.courseId,
+          finalGrade: Search.finalGrade,
+          studentId: Search.studentId,
+          totalGrade: Search.totalGrade,
+          usualGrade: Search.usualGrade
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+        clear();
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
       })
     }
+    const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
+      tablePage.currentPage = currentPage
+      tablePage.pageSize = pageSize
 
-    const toggleExpandChangeEvent: VxeTableEvents.ToggleRowExpand = ({ expanded }) => {
-      console.log('行展开事件' + expanded)
+      findList()
     }
 
-    const sortChangeEvent3: VxeTableEvents.SortChange = ({ sortList }) => {
-      console.info(sortList.map((item) => `${item.property},${item.order}`).join('; '))
-    }
+    findList()
+
+
+
     return {
-      demo1,
-      toggleSeqFixed,
-      toggleExpandFixed,
-      toggleExpandChangeEvent,
-      sortChangeEvent3,
-      isChronological4,
-      xGrid,
+      tablePage,
       gridOptions,
-      gridEvents
+      searchEvent,
+      handlePageChange,
+      ShowList,
+      Search,
+      Update,
+      clear
     }
   }
 })
 </script>
-<style>
-.expand-wrapper {
-  padding: 20px;
-}
-</style>
