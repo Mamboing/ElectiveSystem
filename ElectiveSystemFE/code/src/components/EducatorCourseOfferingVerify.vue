@@ -79,6 +79,8 @@
 import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents } from 'vxe-table'
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
+
 export default defineComponent({
   setup() {
     const CourseSearch = reactive({
@@ -160,11 +162,26 @@ export default defineComponent({
           pageSize: tablePage.pageSize
         }
       }).then(response => {
-        console.log(tablePage.currentPage);
-        const { list } = response.data.data;
-        gridOptions.data = list;
-        const { total } = response.data.data;
-        tablePage.total = total;
+        let { code } = response.data;
+        let { message } = response.data;
+        if (code == 0) {
+          const { list } = response.data.data;
+          gridOptions.data = list;
+          const { total } = response.data.data;
+          tablePage.total = total;
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'success',
+          })
+
+        } else {
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'error',
+          })
+        }
 
       }).catch(res => {
         console.log(res)
@@ -188,11 +205,26 @@ export default defineComponent({
           weekday: CourseSearch.weekday
         }
       }).then(response => {
-        console.log(tablePage.currentPage);
-        const { list } = response.data.data;
-        gridOptions.data = list;
-        const { total } = response.data.data;
-        tablePage.total = total;
+        let { code } = response.data;
+        let { message } = response.data;
+        if (code == 0) {
+          const { list } = response.data.data;
+          gridOptions.data = list;
+          const { total } = response.data.data;
+          tablePage.total = total;
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'success',
+          })
+
+        } else {
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'error',
+          })
+        }
         clear();
       }).catch(res => {
         console.log(res)
@@ -206,11 +238,26 @@ export default defineComponent({
         method: 'DELETE',
         url: 'http://localhost:8081/admin/course/delete/' + CourseSearch.courseId
       }).then(response => {
-        console.log(tablePage.currentPage);
-        const { list } = response.data.data;
-        gridOptions.data = list;
-        const { total } = response.data.data;
-        tablePage.total = total;
+        let { code } = response.data;
+        let { message } = response.data;
+        if (code == 0) {
+          const { list } = response.data.data;
+          gridOptions.data = list;
+          const { total } = response.data.data;
+          tablePage.total = total;
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'success',
+          })
+
+        } else {
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'error',
+          })
+        }
         clear();
 
       }).catch(res => {
@@ -226,11 +273,26 @@ export default defineComponent({
         method: 'PUT',
         url: 'http://localhost:8081/admin/course/verify/' + CourseSearch.courseId
       }).then(response => {
-        console.log(tablePage.currentPage);
-        const { list } = response.data.data;
-        gridOptions.data = list;
-        const { total } = response.data.data;
-        tablePage.total = total;
+        let { code } = response.data;
+        let { message } = response.data;
+        if (code == 0) {
+          const { list } = response.data.data;
+          gridOptions.data = list;
+          const { total } = response.data.data;
+          tablePage.total = total;
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'success',
+          })
+
+        } else {
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'error',
+          })
+        }
         clear();
 
       }).catch(res => {

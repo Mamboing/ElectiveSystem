@@ -81,7 +81,6 @@ export default defineComponent({
         },
       }).then(response => {
         let { code } = response.data;
-
         let { message } = response.data;
         if (code == 0) {
           const { list } = response.data.data;
@@ -127,7 +126,6 @@ export default defineComponent({
         url: 'http://localhost:8081/admin/list',
       }).then(response => {
         let { code } = response.data;
-
         let { message } = response.data;
         if (code == 0) {
           const { data } = response.data;
