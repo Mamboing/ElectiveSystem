@@ -55,4 +55,7 @@
                  inner join tb_student ts on tb_select.student_id = ts.student_id
         where tc.course_id = #{courseId}
     </select>
+    <select id="getCourseIds" resultType="java.lang.Integer">
+        select course_id from tb_select where student_id = #{courseId}
+    </select>
 </mapper>

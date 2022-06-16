@@ -11,7 +11,7 @@ public interface CourseService extends IService<Course> {
 
     int saveNoId(String courseName, String weekday, String time, Integer id);
 
-    PageInfo<CourseVO> find(String courseName, String courseTime, String teacherName, int pageSize, int pageNo);
+    PageInfo<CourseVO> find(String courseName, String courseTime, String teacherName, int pageSize, int pageNo, int studentId);
 
     PageInfo<CourseDTO> search(String courseName, String weekday, String time, String teacherName, String courseRoom, String offerState, int pageSize, int pageNo);
 

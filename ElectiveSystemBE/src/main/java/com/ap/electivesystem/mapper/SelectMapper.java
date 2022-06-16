@@ -21,4 +21,6 @@ public interface SelectMapper extends BaseMapper<Select> {
 
     List<StudentVO> studentList(Integer courseId);
 
+    List<Integer> getCourseIds(Integer studentId);
+
 }

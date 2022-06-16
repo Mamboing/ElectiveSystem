@@ -58,9 +58,15 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     }
 
     @Override
-    public PageInfo<CourseVO> find(String courseName, String courseTime, String teacherName, int pageSize, int pageNo) {
+    public PageInfo<CourseVO> find(String courseName, String courseTime, String teacherName, int pageSize, int pageNo, int studentId) {
         PageHelper.startPage(pageNo, pageSize);
         List<CourseVO> course = courseMapper.findCourse(courseName, courseTime, teacherName);
+        List<Integer> courseIds = selectMapper.getCourseIds(studentId);
+        for(int i = course.size(); i >= 0; i--){
+            CourseVO courseVO = course.get(i);
+            if(courseIds.contains(courseVO.getCourseId()))
+                course.remove(courseVO);
+        }
         return new PageInfo<>(course);
     }
 
