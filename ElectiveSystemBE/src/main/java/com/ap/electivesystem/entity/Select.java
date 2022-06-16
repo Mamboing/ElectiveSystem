@@ -22,7 +22,4 @@ public class Select implements Serializable {
     @TableField("student_id")
     private Integer studentId;
 
-    @TableField("select_state")
-    private Integer selectState;
-
 }

@@ -74,7 +74,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public int insertSelect(Integer courseId) {
         LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
         Integer id = loginStatus.getId();
-        Select select = new Select(courseId, id, 0);
+        Select select = new Select(courseId, id);
         return selectMapper.insert(select);
     }
 

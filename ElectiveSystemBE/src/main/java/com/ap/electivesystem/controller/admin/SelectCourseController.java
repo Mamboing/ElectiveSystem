@@ -2,14 +2,12 @@ package com.ap.electivesystem.controller.admin;
 
 
 import com.ap.electivesystem.config.auth.annotation.Register;
-import com.ap.electivesystem.entity.Select;
 import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.constant.TimeRange;
 import com.ap.electivesystem.entity.dto.SelectDTO;
 import com.ap.electivesystem.entity.vo.ResultVO;
 import com.ap.electivesystem.entity.vo.SelectVO;
 import com.ap.electivesystem.service.SelectService;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -46,27 +44,26 @@ public class SelectCourseController {
         return ResultVO.success(search);
     }
 
-    @PutMapping("/verify")
-    @ApiResponses({
-            @ApiResponse(code = 1005, message = "ID为空"),
-            @ApiResponse(code = 0, message = "success"),
-            @ApiResponse(code = 1009, message = "选课信息未找到"),
-    })
-    public ResultVO verify(@RequestBody SelectDTO selectDTO) {
-        Integer courseId = selectDTO.getCourseId();
-        Integer studentId = selectDTO.getStudentId();
-        if (courseId == null || studentId == null)
-            return ResultVO.fail(ReturnCode.ID_NULL_ERROR);
-        LambdaUpdateWrapper<Select> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(Select::getStudentId, studentId)
-                .eq(Select::getCourseId, courseId)
-                .set(Select::getSelectState, "1");
-        boolean update = selectService.update(wrapper);
-        if (update)
-            return ResultVO.success(null);
-        else
-            return ResultVO.fail(ReturnCode.SELECT_NOT_FOUND);
-    }
+//    @PutMapping("/verify")
+//    @ApiResponses({
+//            @ApiResponse(code = 1005, message = "ID为空"),
+//            @ApiResponse(code = 0, message = "success"),
+//            @ApiResponse(code = 1009, message = "选课信息未找到"),
+//    })
+//    public ResultVO verify(@RequestBody SelectDTO selectDTO) {
+//        Integer courseId = selectDTO.getCourseId();
+//        Integer studentId = selectDTO.getStudentId();
+//        if (courseId == null || studentId == null)
+//            return ResultVO.fail(ReturnCode.ID_NULL_ERROR);
+//        LambdaUpdateWrapper<Select> wrapper = new LambdaUpdateWrapper<>();
+//        wrapper.eq(Select::getStudentId, studentId)
+//                .eq(Select::getCourseId, courseId);
+//        boolean update = selectService.update(wrapper);
+//        if (update)
+//            return ResultVO.success(null);
+//        else
+//            return ResultVO.fail(ReturnCode.SELECT_NOT_FOUND);
+//    }
 
     @PutMapping("/add/start")
     @ApiIgnore

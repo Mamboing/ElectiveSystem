@@ -2,7 +2,6 @@ package com.ap.electivesystem.service.serviceImpl;
 
 import cn.hutool.core.util.RandomUtil;
 import com.ap.electivesystem.entity.Course;
-import com.ap.electivesystem.entity.Select;
 import com.ap.electivesystem.entity.bo.LoginStatusBO;
 import com.ap.electivesystem.entity.dto.CourseDTO;
 import com.ap.electivesystem.entity.vo.CourseVO;
@@ -10,9 +9,7 @@ import com.ap.electivesystem.entity.vo.StudentVO;
 import com.ap.electivesystem.mapper.CourseMapper;
 import com.ap.electivesystem.mapper.SelectMapper;
 import com.ap.electivesystem.service.CourseService;
-import com.ap.electivesystem.service.SelectService;
 import com.ap.electivesystem.utils.SessionUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
