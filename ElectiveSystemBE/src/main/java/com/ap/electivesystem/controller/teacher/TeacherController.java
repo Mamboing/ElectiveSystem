@@ -3,11 +3,13 @@ package com.ap.electivesystem.controller.teacher;
 import com.ap.electivesystem.config.auth.annotation.Teacher;
 import com.ap.electivesystem.entity.Score;
 import com.ap.electivesystem.entity.constant.ReturnCode;
+import com.ap.electivesystem.entity.vo.CourseVO;
 import com.ap.electivesystem.entity.vo.ResultVO;
 import com.ap.electivesystem.entity.vo.StudentVO;
 import com.ap.electivesystem.service.CourseService;
 import com.ap.electivesystem.service.ScoreService;
 import com.ap.electivesystem.service.StudentService;
+import com.ap.electivesystem.service.TeacherService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -30,6 +32,10 @@ public class TeacherController {
 
     @Resource
     private StudentService studentService;
+
+    @Resource
+    private TeacherService teacherService;
+
 
     @GetMapping("/")
     public String hello() {
@@ -57,6 +63,19 @@ public class TeacherController {
         if (studentVOS.getSize() == 0)
             return ResultVO.fail(ReturnCode.STUDENT_NOT_FOUND);
         return ResultVO.success(studentVOS);
+    }
+
+    @GetMapping("/schedule")
+    @ApiOperation("返回 vo.CourseVO 的列表")
+    @ApiResponses({
+            @ApiResponse(code = 1001, message = "没有找到对应的课表"),
+            @ApiResponse(code = 0, message = "success")
+    })
+    public ResultVO schedule() {
+        List<CourseVO> schedule = teacherService.schedule();
+        if (schedule == null)
+            return ResultVO.fail(ReturnCode.COURSE_NOT_FOUND);
+        return ResultVO.success(schedule);
     }
 
 }

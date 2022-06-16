@@ -2,10 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ap.electivesystem.mapper.TeacherMapper">
 
+    <sql id="courseField">
+        course_id, course_name, weekday, `time`, teacher_id, course_room, offser_state
+    </sql>
+
     <select id="getTeacherNameById" resultType="java.lang.String">
         select teacher_name
         from tb_teacher
                  inner join tb_course tc on tb_teacher.teacher_id = tc.teacher_id
         where course_id = #{courseId}
+    </select>
+    <select id="schedule" resultType="com.ap.electivesystem.entity.Course">
+        select
+        <include refid="courseField"/>
+        from tb_course
+        where teacher_id = #{id}
     </select>
 </mapper>

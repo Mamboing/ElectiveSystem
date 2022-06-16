@@ -1,8 +1,6 @@
 package com.ap.electivesystem.controller.admin;
 
-import com.ap.electivesystem.config.auth.annotation.Register;
 import com.ap.electivesystem.entity.Course;
-import com.ap.electivesystem.entity.Student;
 import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.dto.CourseDTO;
 import com.ap.electivesystem.entity.vo.ResultVO;
@@ -23,7 +21,7 @@ import java.util.List;
 /**
  * 需要实现的功能：老师开设课程的审核、开始增设课程、结束增设课程
  */
-@Register(Register.COURSE_MANAGE)
+//@Register(Register.COURSE_MANAGE)
 @RestController
 @RequestMapping("/admin/course")
 public class CourseController {
@@ -81,22 +79,22 @@ public class CourseController {
         return null;
     }
 
-    @PutMapping("/verify/{courseId}")
-    public ResultVO verify(@PathVariable Integer courseId) {
-        LambdaUpdateWrapper<Course> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(Course::getCourseId, courseId)
-                .set(Course::getOfferState, "1");
-        boolean update = courseService.update(wrapper);
-        if (update) return ResultVO.success(update);
-        else return ResultVO.fail(ReturnCode.VERIFY_COURSE_ERROR);
-    }
+//    @PutMapping("/verify/{courseId}")
+//    public ResultVO verify(@PathVariable Integer courseId) {
+//        LambdaUpdateWrapper<Course> wrapper = new LambdaUpdateWrapper<>();
+//        wrapper.eq(Course::getCourseId, courseId)
+//                .set(Course::getOfferState, "1");
+//        boolean update = courseService.update(wrapper);
+//        if (update) return ResultVO.success(update);
+//        else return ResultVO.fail(ReturnCode.VERIFY_COURSE_ERROR);
+//    }
 
     @GetMapping("/student/list/{courseId}")
     @ApiResponses({
             @ApiResponse(code = 0, message = "success")
     })
     @ApiOperation("返回 vo.StudentVO 的列表，包装为PageInfo(其中含有属性total、list(即 vo.StudentVO 的列表)以及分页的参数)")
-    public ResultVO studentList(@PathVariable Integer courseId, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo){
+    public ResultVO studentList(@PathVariable Integer courseId, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
         PageInfo<StudentVO> studentVOPageInfo = courseService.studentList(courseId, pageSize, pageNo);
         return ResultVO.success(studentVOPageInfo);
     }

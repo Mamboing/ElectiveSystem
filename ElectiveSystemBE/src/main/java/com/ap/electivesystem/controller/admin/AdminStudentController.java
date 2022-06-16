@@ -22,18 +22,17 @@ import java.util.List;
 @RequestMapping("/admin/student/")
 public class AdminStudentController {
 
+    public static final String PASS_SALT = "Elective_System_0.0";
     @Resource
     private StudentService studentService;
     @Resource
     private Md5Encrypt md5Encrypt;
 
-    public static final String PASS_SALT = "Elective_System_0.0";
-
     @GetMapping("/list")
     @ApiOperation("返回 Student 的列表，包装为PageInfo(其中含有属性total、list(即 Student 的列表)以及分页的参数)")
     @ApiResponses({
-        @ApiResponse(code = 1004, message = "分页参数问题"),
-        @ApiResponse(code = 0, message = "success")
+            @ApiResponse(code = 1004, message = "分页参数问题"),
+            @ApiResponse(code = 0, message = "success")
     })
     public ResultVO list(@RequestParam(required = false) String studentName, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
         if (pageNo < 0 || pageSize < 0)

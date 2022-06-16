@@ -22,13 +22,11 @@ import java.util.List;
 @RestController
 public class AdminTeacherController {
 
+    public static final String PASS_SALT = "Elective_System_0.0";
     @Resource
     private TeacherService teacherService;
     @Resource
     private Md5Encrypt md5Encrypt;
-
-    public static final String PASS_SALT = "Elective_System_0.0";
-
 
     @GetMapping("/list")
     @ApiOperation("返回 Teacher 的列表，包装为PageInfo(其中含有属性total、list(即 Teacher 的列表)以及分页的参数)")

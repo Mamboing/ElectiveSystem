@@ -9,6 +9,6 @@
         select
         <include refid="courseField"/>
         from tb_select s inner join tb_course c on s.course_id = c.course_id
-        where student_id = #{studentId} and select_state = 1;
+        where student_id = #{studentId}
     </select>
 </mapper>
