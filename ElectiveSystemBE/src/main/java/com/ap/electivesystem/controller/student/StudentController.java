@@ -74,7 +74,7 @@ public class StudentController {
         return ResultVO.success(studentService.deleteSelect(courseId, id));
     }
 
-    @GetMapping("/course/list")
+    @PostMapping("/course/list")
     @ApiResponses({
             @ApiResponse(code = 1004, message = "分页参数问题"),
             @ApiResponse(code = 0, message = "success")
