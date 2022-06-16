@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 /**
  * 需要完成的功能：开始选课、结束选课、选课审核
  */
-@Register(Register.SELECT_COURSE_MANAGE)
+//@Register(Register.SELECT_COURSE_MANAGE)
 @RequestMapping("/admin/select/course/")
 @RestController
 public class SelectCourseController {

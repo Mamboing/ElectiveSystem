@@ -13,7 +13,7 @@ public class SelectVO {
 
     private String courseName;
 
-    private Integer teacherName;
+    private String teacherName;
 
     private String studentName;
 
