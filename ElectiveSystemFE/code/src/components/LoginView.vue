@@ -56,11 +56,14 @@ export default defineComponent({
             axios.post('http://localhost:8081/user/login', {
                 password: this.LoginPassword,
                 username: this.LoginUsername,
-                userType: this.LoginSelected
+                userType: this.LoginSelected,
+                xhrFields: {
+                    withCredentials: true
+                }
             }
             ).then(res => {
                 console.log(res)
-                let {data, message } = res.data;
+                let { data, message } = res.data;
                 sessionStorage.id = data.id;
                 sessionStorage.loggedIn = data.loggedIn;
                 sessionStorage.name = data.name;
@@ -76,7 +79,7 @@ export default defineComponent({
                     this.$router.push("/StudentMain")
                 } else if (sessionStorage.userType == 2) {
                     this.$router.push("/TeacherCourseOffering")
-                } else if (sessionStorage.userType == 3 ) {
+                } else if (sessionStorage.userType == 3) {
                     this.$router.push("/EducatorMain")
                 } else {
                     ElMessage.error(sessionStorage.message)
@@ -85,8 +88,10 @@ export default defineComponent({
 
             }).catch(res => {
                 console.log(res)
+                ElMessage.error(sessionStorage.message)
             }).finally(() => {
                 console.log('完成了')
+
             })
         }
     }
