@@ -26,4 +26,10 @@
             </if>
         </where>
     </select>
+    <select id="getScore" resultType="com.ap.electivesystem.entity.vo.ScoreVO">
+        select tc.course_id, course_name, teacher_name, usual_grade, final_grade, total_grade
+        from tb_score inner join tb_course tc on tb_score.course_id = tc.course_id
+                    inner  join tb_teacher tt on tc.teacher_id = tt.teacher_id
+        where tc.course_id = #{courseId} and student_id = #{studentId}
+    </select>
 </mapper>
