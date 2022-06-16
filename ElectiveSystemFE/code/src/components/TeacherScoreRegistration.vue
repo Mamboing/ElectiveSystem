@@ -99,11 +99,11 @@ export default defineComponent({
     }
 
     const ShowList = () => {
-
+      sessionStorage.courseId=Search.courseId
       axios({
         method: 'GET',
         //URL
-        url: 'http://localhost:8081/teacher/find/' + Search.courseId,
+        url: 'http://localhost:8081/teacher/find/' +sessionStorage.courseId,
         params: {
           pageNo: tablePage.currentPage,
           pageSize: tablePage.pageSize,
@@ -151,13 +151,12 @@ export default defineComponent({
           usualGrade: Search.usualGrade
         }
       }).then(response => {
+        console.log(response.config)
+         console.log(response.data)
+          console.log(response.status)
         let { code } = response.data;
         let { message } = response.data;
         if (code == 0) {
-          const { list } = response.data.data;
-          gridOptions.data = list;
-          const { total } = response.data.data;
-          tablePage.total = total;
           ElMessage({
             showClose: true,
             message: message,
@@ -171,7 +170,7 @@ export default defineComponent({
             type: 'error',
           })
         }
-        clear();
+        ShowList();
       }).catch(res => {
         console.log(res)
       }).finally(() => {
