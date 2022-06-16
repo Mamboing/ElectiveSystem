@@ -1,5 +1,6 @@
 package com.ap.electivesystem.controller.student;
 
+import com.ap.electivesystem.config.auth.annotation.Student;
 import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.vo.CourseVO;
 import com.ap.electivesystem.entity.vo.ResultVO;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-//@Student
+@Student
 @RestController
 @RequestMapping("/student")
 public class StudentController {

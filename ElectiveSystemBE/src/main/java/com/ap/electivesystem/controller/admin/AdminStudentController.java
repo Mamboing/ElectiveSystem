@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-//@Register(Register.STUDENT_MANAGE)
+@Register(Register.STUDENT_MANAGE)
 @RestController
 @RequestMapping("/admin/student/")
 public class AdminStudentController {

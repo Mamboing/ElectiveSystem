@@ -1,5 +1,6 @@
 package com.ap.electivesystem.controller.admin;
 
+import com.ap.electivesystem.config.auth.annotation.Register;
 import com.ap.electivesystem.entity.Course;
 import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.dto.CourseDTO;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * 需要实现的功能：老师开设课程的审核、开始增设课程、结束增设课程
  */
-//@Register(Register.COURSE_MANAGE)
+@Register(Register.COURSE_MANAGE)
 @RestController
 @RequestMapping("/admin/course")
 public class CourseController {
@@ -79,15 +80,15 @@ public class CourseController {
         return null;
     }
 
-//    @PutMapping("/verify/{courseId}")
-//    public ResultVO verify(@PathVariable Integer courseId) {
-//        LambdaUpdateWrapper<Course> wrapper = new LambdaUpdateWrapper<>();
-//        wrapper.eq(Course::getCourseId, courseId)
-//                .set(Course::getOfferState, "1");
-//        boolean update = courseService.update(wrapper);
-//        if (update) return ResultVO.success(update);
-//        else return ResultVO.fail(ReturnCode.VERIFY_COURSE_ERROR);
-//    }
+    @PutMapping("/verify/{courseId}")
+    public ResultVO verify(@PathVariable Integer courseId) {
+        LambdaUpdateWrapper<Course> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(Course::getCourseId, courseId)
+                .set(Course::getOfferState, "1");
+        boolean update = courseService.update(wrapper);
+        if (update) return ResultVO.success(update);
+        else return ResultVO.fail(ReturnCode.VERIFY_COURSE_ERROR);
+    }
 
     @GetMapping("/student/list/{courseId}")
     @ApiResponses({
