@@ -22,16 +22,18 @@
         </vxe-select>
 
     </p>
-    <vxe-button content="SUBMIT" @click="Add"></vxe-button>
+    <vxe-button content="提交" @click="Add"></vxe-button>
 
 </template>
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
+
 export default defineComponent({
     setup() {
         const course = reactive({
-            courseName: '',
+            courseName: null,
             weekday: null,
             time: null
         })
@@ -48,7 +50,26 @@ export default defineComponent({
                     //location: course.location
                 }
             }).then(response => {
-                console.log(response)
+                let { code } = response.data;
+                let { message } = response.data;
+                if (code == 0) {
+                    ElMessage({
+                        showClose: true,
+                        message: message,
+                        type: 'success',
+                    })
+                    course.courseName = null;
+                    course.weekday = null;
+                    course.time = null;
+
+
+                } else {
+                    ElMessage({
+                        showClose: true,
+                        message: message,
+                        type: 'error',
+                    })
+                }
             }).catch(res => {
                 console.log(res)
             }).finally(() => {

@@ -24,7 +24,7 @@ export default defineComponent({
     const tablePage = reactive({
       total: 1,
       currentPage: 1,
-      pageSize: 1
+      pageSize: 10
     })
 
     const Search = reactive({
