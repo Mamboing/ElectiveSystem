@@ -17,7 +17,7 @@ public class CopyUtil {
     public CourseVO courseCopy(Course course) {
         Integer teacherId = course.getTeacherId();
         Teacher teacher = teacherMapper.selectById(teacherId);
-        return new CourseVO(course.getCourseId(), course.getCourseName(), course.getWeekday(), course.getTime(), teacher.getTeacherName(), course.getCourseRoom());
+        return new CourseVO(course.getCourseId(), course.getCourseName(), course.getWeekday(), course.getTime(), teacher.getTeacherName(), course.getCourseRoom(), course.getOfferState());
     }
 
 }
