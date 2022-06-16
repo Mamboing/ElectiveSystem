@@ -18,6 +18,7 @@
     <vxe-button status="primary" content="删除" @click="Delete"></vxe-button>
     <vxe-button status="primary" content="更改" @click="Update"></vxe-button>
     <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
+    <vxe-button status="primary" content="清空查询" @click="clear"></vxe-button>
   </p>
   <vxe-grid v-bind="gridOptions">
     <template #pager>
@@ -34,32 +35,32 @@ import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents } from 'vxe-table'
 import axios from 'axios';
 import XEUtils from 'xe-utils'
-// import { table } from 'console';
 export default defineComponent({
   setup() {
     const TeacherSearch = reactive({
-      teacherId: '',
-      teacherName: '',
-      teacherPass: ''
+      teacherId: null,
+      teacherName: null,
+      teacherPass: null
     })
+    const clear = () => {
+      TeacherSearch.teacherId = null,
+        TeacherSearch.teacherName = null,
+        TeacherSearch.teacherPass = null
+      ShowList();
+    }
     const tablePage = reactive({
       total: 0,
       currentPage: 1,
       pageSize: 10
     })
-    // interface StudentList {
-    //   studentId: string
-    //   studentName: string
-    //   studentPass: string
-    //   children: object
-    // }
+
     let gridOptions = reactive<VxeGridProps>({
       border: true,
       height: 530,
       loading: false,
-      sortConfig:{
-        multiple:true,
-        chronological:true
+      sortConfig: {
+        multiple: true,
+        chronological: true
       },
       columnConfig: {
         resizable: true
@@ -67,11 +68,9 @@ export default defineComponent({
       data: [],
       columns: [
         { type: 'seq', width: 60 },
-        { field: 'teacherId', title: 'ID',sortable:true },
-        { field: 'teacherName', title: '教师用户名' ,sortable:true },
-        { field: 'teacherPass', title: '密码' ,sortable:true }
-        // ,
-        // { field: 'address', title: 'Address', showOverflow: true }
+        { field: 'teacherId', title: 'ID', sortable: true },
+        { field: 'teacherName', title: '教师用户名', sortable: true },
+        { field: 'teacherPass', title: '密码', sortable: true }
       ]
     })
 
@@ -128,10 +127,7 @@ export default defineComponent({
         gridOptions.data = list;
         const { total } = response.data.data;
         tablePage.total = total;
-        TeacherSearch.teacherId = '',
-          TeacherSearch.teacherName = '',
-          TeacherSearch.teacherPass = ''
-        ShowList();
+        clear();
       }).catch(res => {
         console.log(res)
       }).finally(() => {
@@ -149,10 +145,7 @@ export default defineComponent({
         gridOptions.data = list;
         const { total } = response.data.data;
         tablePage.total = total;
-        TeacherSearch.teacherId = '',
-          TeacherSearch.teacherName = '',
-          TeacherSearch.teacherPass = ''
-        ShowList();
+        clear();
 
       }).catch(res => {
         console.log(res)
@@ -177,10 +170,7 @@ export default defineComponent({
         gridOptions.data = list;
         const { total } = response.data.data;
         tablePage.total = total;
-        TeacherSearch.teacherId = '',
-          TeacherSearch.teacherName = '',
-          TeacherSearch.teacherPass = ''
-        ShowList();
+        clear();
 
       }).catch(res => {
         console.log(res)
@@ -191,7 +181,7 @@ export default defineComponent({
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
-      // console.log(tablePage.currentPage)
+
       findList()
     }
 
@@ -208,7 +198,8 @@ export default defineComponent({
       TeacherSearch,
       Update,
       Delete,
-      Add
+      Add,
+      clear
     }
   }
 })

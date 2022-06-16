@@ -26,6 +26,7 @@
   <p>
     <vxe-button status="primary" content="修改" @click="Update"></vxe-button>
     <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
+    <vxe-button status="primary" content="清空查询" @click="clear"></vxe-button>
   </p>
   <vxe-grid v-bind="gridOptions">
     <template #pager>
@@ -46,16 +47,26 @@ import XEUtils from 'xe-utils'
 export default defineComponent({
   setup() {
     const Search = reactive({
-      courseName: '',
-      courseId: '',
-      studentId: '',
-      studentName: '',
-      teacherName: '',
-      usualGrade: '',
-      finalGrade: '',
-      totalGrade: ''
+      courseName: null,
+      courseId: null,
+      studentId: null,
+      studentName: null,
+      teacherName: null,
+      usualGrade: null,
+      finalGrade: null,
+      totalGrade: null
     })
-
+    const clear = () => {
+      Search.studentId = null,
+        Search.studentName = null,
+        Search.courseId = null,
+        Search.courseName = null,
+        Search.totalGrade = null,
+        Search.teacherName = null,
+        Search.usualGrade = null,
+        Search.finalGrade = null,
+        ShowList();
+    }
     const tablePage = reactive({
       total: 0,
       currentPage: 1,
@@ -78,14 +89,14 @@ export default defineComponent({
       columns: [
         { type: 'seq', width: 60 },
         { type: 'checkbox', width: 50 },
-        { field: 'courseId', title: '课程ID', sortable: true  },
-        { field: 'courseName', title: '课程名称', sortable: true  },
-        { field: 'teacherName', title: '教师' , sortable: true },
-        { field: 'studentId', title: '学生ID' , sortable: true },
-        { field: 'studentName', title: '学生' , sortable: true },
-        { field: 'usualGrade', title: '平时成绩' , sortable: true },
-        { field: 'finalGrade', title: '期末成绩', sortable: true  },
-        { field: 'totalGrade', title: '总评成绩', sortable: true  }
+        { field: 'courseId', title: '课程ID', sortable: true },
+        { field: 'courseName', title: '课程名称', sortable: true },
+        { field: 'teacherName', title: '教师', sortable: true },
+        { field: 'studentId', title: '学生ID', sortable: true },
+        { field: 'studentName', title: '学生', sortable: true },
+        { field: 'usualGrade', title: '平时成绩', sortable: true },
+        { field: 'finalGrade', title: '期末成绩', sortable: true },
+        { field: 'totalGrade', title: '总评成绩', sortable: true }
         // ,
         // { field: 'address', title: 'Address', showOverflow: true }
       ]
@@ -146,12 +157,7 @@ export default defineComponent({
         gridOptions.data = list;
         const { total } = response.data.data;
         tablePage.total = total;
-        Search.courseId = '',
-          Search.finalGrade = '',
-          Search.studentId = '',
-          Search.totalGrade = '',
-          Search.usualGrade = '',
-          ShowList();
+       clear();
       }).catch(res => {
         console.log(res)
       }).finally(() => {
@@ -176,7 +182,8 @@ export default defineComponent({
       handlePageChange,
       ShowList,
       Search,
-      Update
+      Update,
+      clear
     }
   }
 })

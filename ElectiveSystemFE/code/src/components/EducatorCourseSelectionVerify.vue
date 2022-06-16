@@ -63,6 +63,7 @@
   </p>
   <p>
     <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
+    <vxe-button status="primary" content="清空查询" @click="clear"></vxe-button>
   </p>
   <vxe-grid v-bind="gridOptions">
     <template #pager>
@@ -83,18 +84,30 @@ import XEUtils from 'xe-utils'
 export default defineComponent({
   setup() {
     const CourseSearch = reactive({
-      courseId: '',
-      courseName: '',
-      studentId: '',
-      studentName: '',
-      teacherId: '',
-      teacherName: '',
-      time: '',
-      weekday: '',
-      offerState:'',
-      courseRoom:''
+      courseId: null,
+      courseName: null,
+      studentId: null,
+      studentName: null,
+      teacherId:null,
+      teacherName: null,
+      time: null,
+      weekday: null,
+      offerState:null,
+      courseRoom:null
     })
-
+const clear = () => {
+      CourseSearch.courseId = null,
+        CourseSearch.courseName = null,
+        CourseSearch.courseRoom = null,
+        CourseSearch.offerState = null,
+        CourseSearch.teacherName = null,
+        CourseSearch.teacherId = null,
+        CourseSearch.time = null,
+        CourseSearch.weekday = null,
+        CourseSearch.studentId = null,
+        CourseSearch.studentName = null,
+        ShowList();
+    }
     const tablePage = reactive({
       total: 0,
       currentPage: 1,
@@ -191,7 +204,8 @@ export default defineComponent({
       searchEvent,
       handlePageChange,
       ShowList,
-      CourseSearch
+      CourseSearch,
+      clear
     }
   }
 })

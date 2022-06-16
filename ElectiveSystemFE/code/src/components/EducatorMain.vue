@@ -19,16 +19,16 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import { VxeGridProps, VxePagerEvents ,VXETable} from 'vxe-table'
+import { VxeGridProps, VxePagerEvents, VXETable } from 'vxe-table'
 import axios from 'axios';
- import XEUtils from 'xe-utils'
+import XEUtils from 'xe-utils'
 // import { table } from 'console';
 export default defineComponent({
   setup() {
     const tablePage = reactive({
-      total: 0,
+      total: 1,
       currentPage: 1,
-      pageSize: 10
+      pageSize: 1
     })
     // interface StudentList {
     //   studentId: string
@@ -47,9 +47,9 @@ export default defineComponent({
       columns: [
         { type: 'seq', width: 60 },
         { type: 'checkbox', width: 50 },
-        { field: 'studentId', title: 'ID' },
-        { field: 'studentName', title: '姓名' },
-        { field: 'studentPass', title: '密码' }
+        { field: 'adminId', title: 'ID' },
+        { field: 'adminName', title: '姓名' },
+        { field: 'adminPass', title: '密码' }
         // ,
         // { field: 'address', title: 'Address', showOverflow: true }
       ]
@@ -60,7 +60,6 @@ export default defineComponent({
       setTimeout(() => {
         gridOptions.loading = false
       }, 300)
-      ShowList();
     }
 
     const searchEvent = () => {
@@ -69,28 +68,15 @@ export default defineComponent({
     }
     // let tableData: StudentList[] = ref<any>({})
     const ShowList = () => {
-      // axios.get('http://localhost:8081/admin/student/list', {
-      //           pageNo: tablePage.currentPage,
-      //     pageSize: tablePage.pageSize
-     
-      axios({//返回promise对象
-        // 请求类型
-        // headers: {
-        //   "Authorization": sessionStorage.name
-        // },
+
+      axios({
         method: 'GET',
         //URL
-        url: 'http://localhost:8081/admin/student/list',
-        params: {
-          pageNo: tablePage.currentPage,
-          pageSize: tablePage.pageSize
-        }
+        url: 'http://localhost:8081/admin/list',
       }).then(response => {
         console.log(tablePage.currentPage);
         const { list } = response.data.data;
         gridOptions.data = list;
-        const { total } = response.data.data;
-        tablePage.total = total;
 
       }).catch(res => {
         console.log(res)
@@ -99,7 +85,7 @@ export default defineComponent({
       })
     }
 
-    
+
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
@@ -108,10 +94,11 @@ export default defineComponent({
     }
 
     findList()
+    ShowList()
 
-  const openAlert = (options: any) => {
-              VXETable.modal.alert(options)
-            }
+    const openAlert = (options: any) => {
+      VXETable.modal.alert(options)
+    }
 
     return {
       tablePage,
