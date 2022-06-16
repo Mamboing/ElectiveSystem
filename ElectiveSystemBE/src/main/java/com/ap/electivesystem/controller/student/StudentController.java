@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Student
 @RestController
@@ -78,9 +79,12 @@ public class StudentController {
             @ApiResponse(code = 1004, message = "分页参数问题"),
             @ApiResponse(code = 0, message = "success")
     })
-    public ResultVO list(@RequestParam(required = false) String courseName, @RequestParam(required = false) String courseTime, @RequestParam(required = false) String teacherName, @RequestParam(defaultValue = "20") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
+    public ResultVO list(@RequestBody Map<String, Object> map, @RequestParam(defaultValue = "20") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
         if (pageSize < 0 || pageNo < 0)
             return ResultVO.fail(ReturnCode.PAGE_PARAMETER_ERROR);
+        String courseName = (String)map.get("courseName");
+        String courseTime = (String)map.get("courseTime");
+        String teacherName = (String)map.get("teacherName");
         PageInfo<CourseVO> pageInfo = courseService.find(courseName, courseTime, teacherName, pageSize, pageNo);
         return ResultVO.success(pageInfo);
     }
