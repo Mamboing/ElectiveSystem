@@ -34,7 +34,6 @@
 import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents } from 'vxe-table'
 import axios from 'axios';
-import XEUtils from 'xe-utils'
 export default defineComponent({
   setup() {
     const TeacherSearch = reactive({

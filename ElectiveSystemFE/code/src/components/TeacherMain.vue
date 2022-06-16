@@ -19,7 +19,6 @@
 import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents, VXETable } from 'vxe-table'
 import axios from 'axios';
-import XEUtils from 'xe-utils'
 export default defineComponent({
   setup() {
     const tablePage = reactive({
@@ -81,7 +80,7 @@ export default defineComponent({
         method: 'GET',
         url: 'http://localhost:8081/teacher/schedule/',
         params: {
-          id:sessionStorage.id,
+          id: sessionStorage.id,
           pageNo: tablePage.currentPage,
           pageSize: tablePage.pageSize
         }

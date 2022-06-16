@@ -102,7 +102,7 @@ export default defineComponent({
       axios({
         method: 'GET',
         //URL
-        url: 'http://localhost:8081/teacher/find/'+Search.courseId,
+        url: 'http://localhost:8081/teacher/find/' + Search.courseId,
         params: {
           pageNo: tablePage.currentPage,
           pageSize: tablePage.pageSize
