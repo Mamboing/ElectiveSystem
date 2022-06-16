@@ -3,7 +3,7 @@
 <mapper namespace="com.ap.electivesystem.mapper.TeacherMapper">
 
     <sql id="courseField">
-        course_id, course_name, weekday, `time`, teacher_id, course_room, offser_state
+        course_id, course_name, weekday, `time`, teacher_id, course_room, offer_state
     </sql>
 
     <select id="getTeacherNameById" resultType="java.lang.String">
