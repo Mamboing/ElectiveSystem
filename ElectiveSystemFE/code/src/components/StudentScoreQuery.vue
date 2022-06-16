@@ -1,9 +1,9 @@
 <template>
-<h1>查分
-</h1>
-<router-link to="/StudentCourseSelection">选课</router-link>|
-<router-link to="/StudentCurriculumView">课表</router-link>|
-<router-link to="/StudentScoreQuery">查分</router-link>
+  <h1>查分
+  </h1>
+  <router-link to="/StudentCourseSelection">选课</router-link>|
+  <router-link to="/StudentCurriculumView">课表</router-link>|
+  <router-link to="/StudentScoreQuery">查分</router-link>
 
   <vxe-grid v-bind="gridOptions">
     <template #pager>
@@ -19,6 +19,7 @@
 import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents } from 'vxe-table'
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
 
 export default defineComponent({
   setup() {
@@ -31,7 +32,7 @@ export default defineComponent({
       totalGrade: null
     })
     const clear = () => {
-        Search.teacherName = null,
+      Search.teacherName = null,
         Search.courseId = null,
         Search.courseName = null,
         Search.totalGrade = null,
@@ -84,14 +85,30 @@ export default defineComponent({
       axios({
         method: 'GET',
         //URL
-        url: 'http://localhost:8081/student/score' ,
+        url: 'http://localhost:8081/student/score',
         params: {
-         id: sessionStorage.id,
+          id: sessionStorage.id,
         }
       }).then(response => {
-        console.log(tablePage.currentPage);
-        const { data } = response.data;
-        gridOptions.data = data;
+        let { code } = response.data;
+        let { message } = response.data;
+        if (code == 0) {
+          const { data } = response.data;
+          gridOptions.data = data;
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'success',
+          })
+
+        } else {
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'error',
+          })
+        }
+
 
       }).catch(res => {
         console.log(res)

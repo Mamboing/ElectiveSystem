@@ -57,6 +57,7 @@ export default defineComponent({
                 let { message } = res.data;
                 if (code == 0) {
                     sessionStorage.id = data.id;
+                    sessionStorage.userType = data.userType;
                     ElMessage({
                         showClose: true,
                         message: message,

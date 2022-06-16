@@ -25,6 +25,8 @@
 import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents, VXETable } from 'vxe-table'
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
+
 export default defineComponent({
   setup() {
 
@@ -94,9 +96,25 @@ export default defineComponent({
           id: sessionStorage.id,
         }
       }).then(response => {
-        console.log(tablePage.currentPage);
-        const { data } = response.data;
+        let { code } = response.data;
+        let { message } = response.data;
+        if (code == 0) {
+           const { data } = response.data;
         gridOptions.data = data;
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'success',
+          })
+
+        } else {
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'error',
+          })
+        }
+       
       }).catch(res => {
         console.log(res)
       }).finally(() => {
@@ -115,9 +133,23 @@ export default defineComponent({
           
         }
       }).then(response => {
-        console.log(tablePage.currentPage);
-        CourseSearch.courseId=null
-        ShowList();
+        let { code } = response.data;
+        let { message } = response.data;
+        if (code == 0) {
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'success',
+          })
+
+        } else {
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'error',
+          })
+        }
+        clear();
       }).catch(res => {
         console.log(res)
       }).finally(() => {
