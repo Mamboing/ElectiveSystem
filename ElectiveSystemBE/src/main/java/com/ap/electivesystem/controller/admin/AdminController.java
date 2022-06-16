@@ -14,7 +14,6 @@ import java.util.List;
 @Register
 @RestController
 @RequestMapping("/admin")
-@ApiIgnore
 public class AdminController {
 
     public static final String PASSWORD_SALT = "Elective_System_0.0";
