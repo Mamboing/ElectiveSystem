@@ -1,8 +1,6 @@
 package com.ap.electivesystem.service.serviceImpl;
 
-import cn.hutool.core.util.RandomUtil;
 import com.ap.electivesystem.entity.Course;
-import com.ap.electivesystem.entity.Select;
 import com.ap.electivesystem.entity.bo.LoginStatusBO;
 import com.ap.electivesystem.entity.dto.CourseDTO;
 import com.ap.electivesystem.entity.vo.CourseVO;
@@ -10,7 +8,6 @@ import com.ap.electivesystem.entity.vo.StudentVO;
 import com.ap.electivesystem.mapper.CourseMapper;
 import com.ap.electivesystem.mapper.SelectMapper;
 import com.ap.electivesystem.service.CourseService;
-import com.ap.electivesystem.service.SelectService;
 import com.ap.electivesystem.utils.SessionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -41,7 +38,22 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     public int saveNoId(String courseName, String weekday, String time) {
         LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
         Integer id = loginStatus.getId();
-        Course course = new Course(courseName, weekday, time, id, RandomUtil.randomInt(ROOM_START, ROOM_END) + "", "0");
+        LambdaQueryWrapper<Course> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Course::getWeekday, weekday)
+                .eq(Course::getTime, time)
+                .eq(Course::getTeacherId, id);
+        Long aLong = courseMapper.selectCount(wrapper);
+        if (aLong > 0) return -1;
+        int i;
+        for (i = ROOM_START; i <= ROOM_END; i++) {
+            wrapper.clear();
+            wrapper.eq(Course::getWeekday, weekday)
+                    .eq(Course::getTime, time)
+                    .eq(Course::getCourseRoom, i + "");
+            if (courseMapper.selectCount(wrapper) == 0) break;
+        }
+        if (i == ROOM_END + 1) return -2;
+        Course course = new Course(courseName, weekday, time, id, i + "", "0");
         return courseMapper.insert(course);
     }
 

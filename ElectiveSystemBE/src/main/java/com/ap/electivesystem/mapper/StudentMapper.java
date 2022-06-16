@@ -9,6 +9,6 @@ import java.util.List;
 
 @Mapper
 public interface StudentMapper extends BaseMapper<Student> {
-    List<Course> schedule(int student_id);
+    List<Course> schedule(int studentId);
 
 }

@@ -3,9 +3,9 @@
 <mapper namespace="com.ap.electivesystem.mapper.SelectMapper">
 
     <insert id="insertBatch">
-        insert into tb_select(course_id, student_id, select_state) values
+        insert into tb_select(course_id, student_id) values
         <foreach collection="list" item="courseId" separator=",">
-            (#{courseId}, #{studentId}, 0)
+            (#{courseId}, #{studentId})
         </foreach>
     </insert>
     <select id="findByCourseId" resultType="com.ap.electivesystem.entity.vo.StudentVO">
@@ -15,7 +15,7 @@
         where course_id = #{courseId}
     </select>
     <select id="search" resultType="com.ap.electivesystem.entity.vo.SelectVO">
-        select tb_select.course_id, course_name, teacher_name, student_name, select_state
+        select tb_select.course_id, course_name, tc.teacher_id, teacher_name,ts.student_id, student_name, weekday, course_room, `time`, offer_state
         from tb_select
         inner join tb_student ts on tb_select.student_id = ts.student_id
         inner join tb_course tc on tb_select.course_id = tc.course_id
@@ -31,13 +31,13 @@
                 and student_id = #{studentId}
             </if>
             <if test="teacherName != null and teacherName != ''">
-                and teacher_name = #{teacherName}
+                and teacher_name like concat('%',#{teacherName},'%')
             </if>
             <if test="courseName != null and courseName != ''">
-                and course_name = #{courseName}
+                and course_name like concat('%',#{courseName},'%')
             </if>
             <if test="studentName != null and studentName != ''">
-                and student_name = #{studentName}
+                and student_name like concat('%',#{studentName},'%')
             </if>
             <if test="weekday != null and weekday != ''">
                 and weekday = #{weekday}
@@ -49,8 +49,9 @@
     </select>
     <select id="studentList" resultType="com.ap.electivesystem.entity.vo.StudentVO">
         select ts.student_id, student_name
-        from tb_select inner join tb_course tc on tb_select.course_id = tc.course_id
-        inner join tb_student ts on tb_select.student_id = ts.student_id
-        where tc.course_id = #{courseId} and select_state = '1'
+        from tb_select
+                 inner join tb_course tc on tb_select.course_id = tc.course_id
+                 inner join tb_student ts on tb_select.student_id = ts.student_id
+        where tc.course_id = #{courseId}
     </select>
 </mapper>

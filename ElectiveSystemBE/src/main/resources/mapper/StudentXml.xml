@@ -3,12 +3,12 @@
 <mapper namespace="com.ap.electivesystem.mapper.StudentMapper">
 
     <sql id="courseField">
-        courseId, courseName, weekday, time, teacherId, courseRoom, offserState
+        course_id, course_name, weekday, `time`, teacher_id, course_room, offser_state
     </sql>
     <select id="schedule" resultType="com.ap.electivesystem.entity.Course">
         select
         <include refid="courseField"/>
         from tb_select s inner join tb_course c on s.course_id = c.course_id
-        where student_id = #{student_id} and select_state = 1;
+        where student_id = #{studentId}
     </select>
 </mapper>

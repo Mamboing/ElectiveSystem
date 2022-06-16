@@ -12,13 +12,13 @@
         from tb_course inner join tb_teacher tt on tb_course.teacher_id = tt.teacher_id
         where offer_state = '1'
         <if test="courseName != null and courseName != ''">
-            and course_name = #{courseName}
+            and course_name like concat('%',#{courseName},'%')
         </if>
         <if test="courseTime != null and courseTime != ''">
             and `time` = #{courseTime}
         </if>
         <if test="teacherName != null and teacherName != ''">
-            and teacherName = #{teacherName}
+            and teacher_name like concat('%',#{teacherName},'%')
         </if>
     </select>
     <select id="search" resultType="com.ap.electivesystem.entity.dto.CourseDTO">
@@ -26,7 +26,7 @@
         from tb_course inner join tb_teacher tt on tb_course.teacher_id = tt.teacher_id
         <where>
             <if test="courseName != null and courseName != ''">
-                course_name = #{courseName}
+                course_name like concat('%',#{courseName},'%')
             </if>
             <if test="weekday != null and weekday != ''">
                 and weekday = #{weekday}
@@ -35,10 +35,10 @@
                 and `time` = #{time}
             </if>
             <if test="teacherName != null and teacherName != ''">
-                and teacher_name = #{teacherName}
+                and teacher_name like concat('%',#{teacherName},'%')
             </if>
             <if test="courseRoom != null and courseRoom != ''">
-                and course_room = #{courseRoom}
+                and course_room like concat('%',#{courseRoom},'%')
             </if>
             <if test="offerState != null and offerState != ''">
                 and offer_state = #{offerState}

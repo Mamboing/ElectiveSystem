@@ -21,6 +21,7 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
 
     @Override
     public int addScore(List<Score> list) {
+        list.forEach(score -> score.setTotalGrade((int) (0.4 * score.getUsualGrade() + 0.6 * score.getFinalGrade())));
         return scoreMapper.insertBatch(list);
     }
 

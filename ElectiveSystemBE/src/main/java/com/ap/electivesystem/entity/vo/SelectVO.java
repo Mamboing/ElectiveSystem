@@ -13,9 +13,19 @@ public class SelectVO {
 
     private String courseName;
 
-    private Integer teacherName;
+    private Integer teacherId;
+
+    private String teacherName;
+
+    private Integer studentId;
 
     private String studentName;
 
-    private String selectState;
+    private String weekday;
+
+    private String courseRoom;
+
+    private String time;
+
+    private String offerState;
 }

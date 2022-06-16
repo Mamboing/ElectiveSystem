@@ -15,6 +15,8 @@ public class ScoreDTO {
 
     private String teacherName;
 
+    private Integer studentId;
+
     private String studentName;
 
     private Integer usualGrade;

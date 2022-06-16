@@ -5,6 +5,7 @@ import com.ap.electivesystem.entity.Teacher;
 import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.vo.ResultVO;
 import com.ap.electivesystem.service.TeacherService;
+import com.ap.electivesystem.utils.Md5Encrypt;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,8 +22,11 @@ import java.util.List;
 @RestController
 public class AdminTeacherController {
 
+    public static final String PASS_SALT = "Elective_System_0.0";
     @Resource
     private TeacherService teacherService;
+    @Resource
+    private Md5Encrypt md5Encrypt;
 
     @GetMapping("/list")
     @ApiOperation("返回 Teacher 的列表，包装为PageInfo(其中含有属性total、list(即 Teacher 的列表)以及分页的参数)")
@@ -35,7 +39,7 @@ public class AdminTeacherController {
             return ResultVO.fail(ReturnCode.PAGE_PARAMETER_ERROR);
         LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
         if (teacherName != null && !teacherName.equals(""))
-            wrapper.eq(Teacher::getTeacherName, teacherName);
+            wrapper.like(Teacher::getTeacherName, teacherName);
         PageHelper.startPage(pageNo, pageSize);
         List<Teacher> list = teacherService.list(wrapper);
         return ResultVO.success(new PageInfo<>(list));
@@ -49,21 +53,25 @@ public class AdminTeacherController {
     public ResultVO update(@RequestBody Teacher teacher) {
         if (teacher.getTeacherId() == null)
             return ResultVO.fail(ReturnCode.ID_NULL_ERROR);
+        teacher.setTeacherPass(md5Encrypt.encode(teacher.getTeacherPass(), PASS_SALT));
         return ResultVO.success(teacherService.updateById(teacher));
     }
 
     @PostMapping("/update/batch")
     public ResultVO updateBatch(@RequestBody List<Teacher> teachers) {
+        teachers.forEach(teacher -> teacher.setTeacherPass(md5Encrypt.encode(teacher.getTeacherPass(), PASS_SALT)));
         return ResultVO.success(teacherService.updateBatchById(teachers));
     }
 
     @PostMapping("/add")
     public ResultVO add(@RequestBody Teacher teacher) {
+        teacher.setTeacherPass(md5Encrypt.encode(teacher.getTeacherPass(), PASS_SALT));
         return ResultVO.success(teacherService.save(teacher));
     }
 
     @PostMapping("/add/batch")
     public ResultVO addBatch(@RequestBody List<Teacher> teachers) {
+        teachers.forEach(teacher -> teacher.setTeacherPass(md5Encrypt.encode(teacher.getTeacherPass(), PASS_SALT)));
         return ResultVO.success(teacherService.saveBatch(teachers));
     }
 

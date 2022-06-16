@@ -18,7 +18,9 @@ public enum ReturnCode {
     PASSWORD_ERROR(1011, "密码错误"),
     NO_PERMISSION(1012, "无权限"),
     ERROR_ROLE(1013, "角色错误"),
-    NO_LOGIN(1014, "您还没有登录");
+    NO_LOGIN(1014, "您还没有登录"),
+    TIME_CONFLICT(1015, "当前时间您已经有课！"),
+    ROOM_FULLY_OCCUPIED(1016, "没有可用教室");
 
     private int code;
     private String message;

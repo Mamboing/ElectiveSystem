@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 需要完成的功能：老师提交的成绩的审核、开始提交成绩、结束提交成绩
  */
-@Register(Register.SCORE_MANAGE)
+//@Register(Register.SCORE_MANAGE)
 @RestController
 @RequestMapping("/admin/score")
 public class ScoreController {

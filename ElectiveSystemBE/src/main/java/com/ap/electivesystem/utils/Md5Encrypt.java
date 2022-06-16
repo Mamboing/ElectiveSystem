@@ -28,6 +28,10 @@ public class Md5Encrypt {
         System.out.println(md5Encrypt.computeHexString(s + "Elective_System_0.0"));
     }
 
+    public String encode(String pass, String salt) {
+        return computeHexString(computeHexString(pass) + salt);
+    }
+
     public String computeHexString(String str) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("md5");
