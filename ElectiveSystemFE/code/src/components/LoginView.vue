@@ -1,35 +1,28 @@
 <template>
     <img alt="Vue logo" src="../assets/logo.png">
-    <form @submit.prevent="LoginVue">
-        <h1>Welcome to Elective System</h1>
-        <div>
-            <label for="">Type：</label>
-            <!-- 帐号类型 -->
-            <select v-model="LoginSelected">
-                <option v-bind:key="option in options" v-for="option in options" :value="option.value">
-                    {{ option.text }}
-                </option>
-            </select>
-        </div>
-        <p></p>
-        <div>
-            <label for="">Username：</label>
-            <input type="text" v-model="LoginUsername">
-        </div>
-        <p></p>
-        <div>
-            <label for="">Password：</label>
-            <input type="password" v-model="LoginPassword">
-        </div>
-        <p></p>
-        <div>
-            <button>登录</button>
-        </div>
-    </form>
+    <p>
+        <vxe-select v-model="Login.userType" placeholder="用户类型" clearable>
+            <vxe-option value="1" label="学生"></vxe-option>
+            <vxe-option value="2" label="老师"></vxe-option>
+            <vxe-option value="3" label="教务"></vxe-option>
+        </vxe-select>
+    </p>
+    <p>
+        <vxe-input v-model="Login.username" placeholder="用户名
+" clearable></vxe-input>
+    </p>
+    <p>
+        <vxe-input v-model="Login.password" placeholder="密码
+" clearable></vxe-input>
+    </p>
+
+    <p>
+        <vxe-button status="primary" content="登录" @click="LoginVue"></vxe-button>
+    </p>
 
 </template>
 <script lang="ts" >
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
@@ -39,54 +32,55 @@ console.log(Route, Router)
 // 接口基础路径
 export default defineComponent({
     name: 'LoginView',
-    data() {
+    setup() {
+        const Login = reactive({
+            username: null,
+            password: null,
+            userType: null,
+        })
+
         return {
-            LoginUsername: "",
-            LoginPassword: "",
-            LoginSelected: '1',
-            options: [
-                { text: '教务', value: 3 },
-                { text: '学生', value: 1 },
-                { text: '老师', value: 2 }
-            ]
+            Login
         }
     },
     methods: {
         LoginVue() {
             axios.post('http://localhost:8081/user/login', {
-                password: this.LoginPassword,
-                username: this.LoginUsername,
-                userType: this.LoginSelected,
-                withCredentials: true
+                password: this.Login.password,
+                username: this.Login.username,
+                userType: this.Login.userType
             }
             ).then(res => {
                 console.log(res)
-                let { data, message } = res.data;
-                sessionStorage.id = data.id;
-                sessionStorage.loggedIn = data.loggedIn;
-                sessionStorage.name = data.name;
-                sessionStorage.privilege = data.privilege;
-                sessionStorage.userType = data.userType;
-                sessionStorage.message1 = message;
-                ElMessage({
-                    showClose: true,
-                    message: sessionStorage.message1,
-                    type: 'success',
-                })
-                if (sessionStorage.userType == 1) {
-                    this.$router.push("/StudentMain")
-                } else if (sessionStorage.userType == 2) {
-                    this.$router.push("/TeacherCourseOffering")
-                } else if (sessionStorage.userType == 3) {
-                    this.$router.push("/EducatorMain")
+                let { code } = res.data;
+                let { data } = res.data;
+                let { message } = res.data;
+                if (code == 0) {
+                    sessionStorage.id = data.id;
+                    ElMessage({
+                        showClose: true,
+                        message: message,
+                        type: 'success',
+                    })
+                    if (sessionStorage.userType == 1) {
+                        this.$router.push("/StudentCourseSelection")
+                    } else if (sessionStorage.userType == 2) {
+                        this.$router.push("/TeacherCourseOffering")
+                    } else if (sessionStorage.userType == 3) {
+                        this.$router.push("/EducatorMain")
+                    }
                 } else {
-                    ElMessage.error(sessionStorage.message)
+                    ElMessage({
+                        showClose: true,
+                        message: message,
+                        type: 'error',
+                    })
                 }
-
 
             }).catch(res => {
                 console.log(res)
-                ElMessage.error(sessionStorage.message)
+                let { message } = res.data;
+                console.log('失败了')
             }).finally(() => {
                 console.log('完成了')
 

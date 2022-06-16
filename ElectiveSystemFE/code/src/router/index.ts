@@ -20,11 +20,6 @@ const routes: Array<RouteRecordRaw> = [
     component: LoginView
   },
   {
-    path: '/StudentMain',
-    name: 'StudentMain',
-    component: () => import( '../components/StudentMain.vue')
-  },
-  {
     path: '/TeacherMain',
     name: 'TeacherMain',
     component: () => import( '../components/TeacherMain.vue')

@@ -1,7 +1,6 @@
 <template>
 <h1>课表
 </h1>
-<router-link to="/StudentMain">主页</router-link>|
 <router-link to="/StudentCourseSelection">选课</router-link>|
 <router-link to="/StudentCurriculumView">课表</router-link>|
 <router-link to="/StudentScoreQuery">查分</router-link>
