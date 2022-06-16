@@ -4,10 +4,9 @@ import com.ap.electivesystem.entity.Course;
 import com.ap.electivesystem.entity.Score;
 import com.ap.electivesystem.entity.Select;
 import com.ap.electivesystem.entity.Student;
-import com.ap.electivesystem.entity.bo.LoginStatusBO;
 import com.ap.electivesystem.entity.vo.CourseVO;
 import com.ap.electivesystem.entity.vo.ScoreVO;
-import com.ap.electivesystem.entity.vo.StudentVO;
+import com.ap.electivesystem.entity.vo.StudentScore;
 import com.ap.electivesystem.mapper.*;
 import com.ap.electivesystem.service.StudentService;
 import com.ap.electivesystem.utils.CopyUtil;
@@ -95,9 +94,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public PageInfo<StudentVO> findByCourseId(Integer courseId, int pageSize, int pageNo) {
+    public PageInfo<StudentScore> findByCourseId(Integer courseId, int pageSize, int pageNo) {
         PageHelper.startPage(pageNo, pageSize);
-        List<StudentVO> byCourseId = selectMapper.findByCourseId(courseId);
+        List<StudentScore> byCourseId = selectMapper.findByCourseIdAndTeacherId(courseId);
         return new PageInfo<>(byCourseId);
     }
 

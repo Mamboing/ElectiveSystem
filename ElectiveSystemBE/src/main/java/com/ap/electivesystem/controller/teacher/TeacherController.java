@@ -5,6 +5,7 @@ import com.ap.electivesystem.entity.Score;
 import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.vo.CourseVO;
 import com.ap.electivesystem.entity.vo.ResultVO;
+import com.ap.electivesystem.entity.vo.StudentScore;
 import com.ap.electivesystem.entity.vo.StudentVO;
 import com.ap.electivesystem.service.CourseService;
 import com.ap.electivesystem.service.ScoreService;
@@ -67,7 +68,7 @@ public class TeacherController {
             @ApiResponse(code = 0, message = "success")
     })
     public ResultVO findByCourseId(@PathVariable Integer courseId, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
-        PageInfo<StudentVO> studentVOS = studentService.findByCourseId(courseId, pageSize, pageNo);
+        PageInfo<StudentScore> studentVOS = studentService.findByCourseId(courseId, pageSize, pageNo);
         if (studentVOS.getSize() == 0)
             return ResultVO.fail(ReturnCode.STUDENT_NOT_FOUND);
         return ResultVO.success(studentVOS);

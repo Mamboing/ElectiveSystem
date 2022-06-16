@@ -3,6 +3,7 @@ package com.ap.electivesystem.mapper;
 import com.ap.electivesystem.entity.Select;
 import com.ap.electivesystem.entity.dto.SelectDTO;
 import com.ap.electivesystem.entity.vo.SelectVO;
+import com.ap.electivesystem.entity.vo.StudentScore;
 import com.ap.electivesystem.entity.vo.StudentVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,7 +15,7 @@ public interface SelectMapper extends BaseMapper<Select> {
 
     int insertBatch(List<Integer> courseIds, Integer student_id);
 
-    List<StudentVO> findByCourseId(Integer courseId);
+    List<StudentScore> findByCourseIdAndTeacherId(Integer courseId);
 
     List<SelectVO> search(SelectDTO selectDTO);
 
