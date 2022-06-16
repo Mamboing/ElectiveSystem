@@ -25,7 +25,7 @@
                 tb_select.course_id = #{courseId}
             </if>
             <if test="teacherId != null">
-                and teacher_id = #{teacherId}
+                and tc.teacher_id = #{teacherId}
             </if>
             <if test="studentId != null">
                 and student_id = #{studentId}

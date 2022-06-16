@@ -39,8 +39,8 @@ public class StudentController {
             @ApiResponse(code = 1001, message = "没有找到对应的课表"),
             @ApiResponse(code = 0, message = "success")
     })
-    public ResultVO schedule() {
-        List<CourseVO> schedule = studentService.schedule();
+    public ResultVO schedule(Integer id) {
+        List<CourseVO> schedule = studentService.schedule(id);
         if (schedule == null)
             return ResultVO.fail(ReturnCode.COURSE_NOT_FOUND);
         return ResultVO.success(schedule);
@@ -51,26 +51,26 @@ public class StudentController {
             @ApiResponse(code = 1001, message = "没有找到对应的课表"),
             @ApiResponse(code = 0, message = "success")
     })
-    public ResultVO score() {
-        List<ScoreVO> score = studentService.score();
+    public ResultVO score(@RequestParam Integer id) {
+        List<ScoreVO> score = studentService.score(id);
         if (score == null)
             return ResultVO.fail(ReturnCode.COURSE_NOT_FOUND);
         return ResultVO.success(score);
     }
 
     @PutMapping("/select/{courseId}")
-    public ResultVO select(@PathVariable Integer courseId) {
-        return ResultVO.success(studentService.insertSelect(courseId));
+    public ResultVO select(@PathVariable Integer courseId, @RequestParam Integer id) {
+        return ResultVO.success(studentService.insertSelect(courseId, id));
     }
 
     @PostMapping("/select")
-    public ResultVO select(@RequestBody List<Integer> courseIds) {
-        return ResultVO.success(studentService.insertSelectBatch(courseIds));
+    public ResultVO select(@RequestBody List<Integer> courseIds, @RequestParam Integer id) {
+        return ResultVO.success(studentService.insertSelectBatch(courseIds, id));
     }
 
     @DeleteMapping("/deselect/{courseId}")
-    public ResultVO deselect(@PathVariable Integer courseId) {
-        return ResultVO.success(studentService.deleteSelect(courseId));
+    public ResultVO deselect(@PathVariable Integer courseId, @RequestParam Integer id) {
+        return ResultVO.success(studentService.deleteSelect(courseId, id));
     }
 
     @GetMapping("/course/list")
