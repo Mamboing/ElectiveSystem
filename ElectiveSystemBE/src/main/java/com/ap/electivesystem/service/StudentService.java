@@ -10,15 +10,15 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 
 public interface StudentService extends IService<Student> {
-    List<CourseVO> schedule();
+    List<CourseVO> schedule(Integer id);
 
-    List<ScoreVO> score();
+    List<ScoreVO> score(Integer id);
 
-    int insertSelect(Integer courseId);
+    int insertSelect(Integer courseId, Integer id);
 
-    int insertSelectBatch(List<Integer> courseIds);
+    int insertSelectBatch(List<Integer> courseIds, Integer id);
 
-    int deleteSelect(Integer courseId);
+    int deleteSelect(Integer courseId, Integer id);
 
     PageInfo<StudentVO> findByCourseId(Integer courseId, int pageSize, int pageNo);
 

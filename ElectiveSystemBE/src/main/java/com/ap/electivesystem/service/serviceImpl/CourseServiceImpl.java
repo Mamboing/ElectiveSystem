@@ -25,19 +25,19 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     public static final int ROOM_START = 101;
     public static final int ROOM_END = 120;
 
-    @Resource
-    private HttpSession session;
+//    @Resource
+//    private HttpSession session;
     @Resource
     private CourseMapper courseMapper;
-    @Resource
-    private SessionUtil sessionUtil;
+//    @Resource
+//    private SessionUtil sessionUtil;
     @Resource
     private SelectMapper selectMapper;
 
     @Override
-    public int saveNoId(String courseName, String weekday, String time) {
-        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
-        Integer id = loginStatus.getId();
+    public int saveNoId(String courseName, String weekday, String time, Integer id) {
+//        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
+//        Integer id = loginStatus.getId();
         LambdaQueryWrapper<Course> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Course::getWeekday, weekday)
                 .eq(Course::getTime, time)

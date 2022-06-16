@@ -9,7 +9,7 @@ import com.github.pagehelper.PageInfo;
 
 public interface CourseService extends IService<Course> {
 
-    int saveNoId(String courseName, String weekday, String time);
+    int saveNoId(String courseName, String weekday, String time, Integer id);
 
     PageInfo<CourseVO> find(String courseName, String courseTime, String teacherName, int pageSize, int pageNo);
 

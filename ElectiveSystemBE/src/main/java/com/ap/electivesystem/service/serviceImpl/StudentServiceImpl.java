@@ -44,9 +44,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     private SessionUtil sessionUtil;
 
     @Override
-    public List<CourseVO> schedule() {
-        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
-        Integer id = loginStatus.getId();
+    public List<CourseVO> schedule(Integer id) {
+//        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
+//        Integer id = loginStatus.getId();
         List<Course> schedule = studentMapper.schedule(id);
         List<CourseVO> courseVOS = new ArrayList<>();
         schedule.forEach(course -> {
@@ -56,9 +56,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public List<ScoreVO> score() {
-        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
-        Integer id = loginStatus.getId();
+    public List<ScoreVO> score(Integer id) {
+//        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
+//        Integer id = loginStatus.getId();
         LambdaQueryWrapper<Score> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Score::getStudentId, id);
         List<Score> scores = scoreMapper.selectList(lambdaQueryWrapper);
@@ -71,24 +71,24 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public int insertSelect(Integer courseId) {
-        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
-        Integer id = loginStatus.getId();
+    public int insertSelect(Integer courseId, Integer id) {
+//        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
+//        Integer id = loginStatus.getId();
         Select select = new Select(courseId, id);
         return selectMapper.insert(select);
     }
 
     @Override
-    public int insertSelectBatch(List<Integer> courseIds) {
-        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
-        Integer id = loginStatus.getId();
+    public int insertSelectBatch(List<Integer> courseIds, Integer id) {
+//        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
+//        Integer id = loginStatus.getId();
         return selectMapper.insertBatch(courseIds, id);
     }
 
     @Override
-    public int deleteSelect(Integer courseId) {
-        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
-        Integer id = loginStatus.getId();
+    public int deleteSelect(Integer courseId, Integer id) {
+//        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
+//        Integer id = loginStatus.getId();
         LambdaQueryWrapper<Select> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Select::getCourseId, courseId).eq(Select::getStudentId, id);
         return selectMapper.delete(wrapper);
