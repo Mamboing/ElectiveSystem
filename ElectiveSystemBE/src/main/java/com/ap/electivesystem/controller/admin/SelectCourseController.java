@@ -38,7 +38,7 @@ public class SelectCourseController {
     public ResultVO list(@RequestBody SelectDTO selectDTO, int pageSize, int pageNo) {
         if (pageNo < 0 || pageSize < 0)
             return ResultVO.fail(ReturnCode.PAGE_PARAMETER_ERROR);
-        if (!TimeRange.legalTimeRange(selectDTO.getTime()))
+        if (!TimeRange.legalTimeRange(selectDTO.getTime()) && selectDTO.getTime() != null)
             return ResultVO.fail(ReturnCode.ILLEGAL_TIME_RANGE);
         PageInfo<SelectVO> search = selectService.search(selectDTO, pageSize, pageNo);
         return ResultVO.success(search);
