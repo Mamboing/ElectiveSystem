@@ -8,7 +8,8 @@
   <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
   <p>
- <vxe-input v-model="Search.adminPass" placeholder="【改】教务密码" clearable></vxe-input>
+    <!-- <vxe-input v-model="Search.adminName" placeholder="【改】教务用户名" clearable></vxe-input> -->
+    <vxe-input v-model="Search.adminPass" placeholder="【改】教务密码" clearable></vxe-input>
   </p>
 
   <p>
@@ -28,6 +29,8 @@
 import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents, VXETable } from 'vxe-table'
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
+
 export default defineComponent({
   setup() {
     const tablePage = reactive({
@@ -76,13 +79,28 @@ export default defineComponent({
           adminName: Search.adminName,
           adminPass: Search.adminPass
         },
-        withCredentials: true
       }).then(response => {
-        console.log(tablePage.currentPage);
-        const { list } = response.data.data;
-        gridOptions.data = list;
-        const { total } = response.data.data;
-        tablePage.total = total;
+        let { code } = response.data;
+
+        let { message } = response.data;
+        if (code == 0) {
+          const { list } = response.data.data;
+          gridOptions.data = list;
+          const { total } = response.data.data;
+          tablePage.total = total;
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'success',
+          })
+
+        } else {
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'error',
+          })
+        }
         clear();
       }).catch(res => {
         console.log(res)
@@ -108,9 +126,27 @@ export default defineComponent({
         method: 'GET',
         url: 'http://localhost:8081/admin/list',
       }).then(response => {
-        console.log(tablePage.currentPage);
-        const { data } = response.data;
-        gridOptions.data = data;
+        let { code } = response.data;
+
+        let { message } = response.data;
+        if (code == 0) {
+          const { data } = response.data;
+          gridOptions.data = data;
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'success',
+          })
+
+        } else {
+          ElMessage({
+            showClose: true,
+            message: message,
+            type: 'error',
+          })
+        }
+
+
       }).catch(res => {
         console.log(res)
       }).finally(() => {

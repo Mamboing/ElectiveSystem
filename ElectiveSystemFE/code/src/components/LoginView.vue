@@ -79,7 +79,6 @@ export default defineComponent({
 
             }).catch(res => {
                 console.log(res)
-                let { message } = res.data;
                 console.log('失败了')
             }).finally(() => {
                 console.log('完成了')
