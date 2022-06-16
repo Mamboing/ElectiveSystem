@@ -5,6 +5,13 @@
 <router-link to="/StudentCourseSelection">选课</router-link>|
 <router-link to="/StudentCurriculumView">课表</router-link>|
 <router-link to="/StudentScoreQuery">查分</router-link>
+<p>
+   <vxe-input v-model="CourseSearch.courseId" placeholder="【退】课程ID" clearable></vxe-input>
+</p>
+<p>
+ <vxe-button status="primary" content="退课" @click="deSelect"></vxe-button>
+</p>
+
   <vxe-grid v-bind="gridOptions">
     <template #pager>
       <vxe-pager :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
@@ -21,6 +28,11 @@ import { VxeGridProps, VxePagerEvents, VXETable } from 'vxe-table'
 import axios from 'axios';
 export default defineComponent({
   setup() {
+
+    const CourseSearch = reactive({
+      courseId: null,
+    })
+
     const tablePage = reactive({
       total: 1,
       currentPage: 1,
@@ -81,8 +93,6 @@ export default defineComponent({
         url: 'http://localhost:8081/student/schedule',
         params: {
           id: sessionStorage.id,
-          // pageNo: tablePage.currentPage,
-          // pageSize: tablePage.pageSize
         }
       }).then(response => {
         console.log(tablePage.currentPage);
@@ -94,7 +104,27 @@ export default defineComponent({
         console.log('完成了')
       })
     }
+ const deSelect = () => {
 
+
+      axios({
+        method: 'DELETE',
+
+        url: 'http://localhost:8081/student/deselect/'+ CourseSearch.courseId,
+        params:{
+          id:sessionStorage.id,
+          
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        CourseSearch.courseId=null
+        ShowList();
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
 
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
@@ -115,7 +145,9 @@ export default defineComponent({
       handlePageChange,
       ShowList,
       openAlert,
-      clear
+      clear,
+      deSelect,
+      CourseSearch
     }
   }
 })

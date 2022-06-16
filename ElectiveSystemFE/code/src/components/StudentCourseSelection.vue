@@ -1,12 +1,12 @@
 <template>
-<h1>选课
-</h1>
-<router-link to="/StudentMain">主页</router-link>|
-<router-link to="/StudentCourseSelection">选课</router-link>|
-<router-link to="/StudentCurriculumView">课表</router-link>|
-<router-link to="/StudentScoreQuery">查分</router-link>
-<p>
-  <vxe-input v-model="CourseSearch.courseId" placeholder="【选】课程ID" clearable></vxe-input>
+  <h1>选课
+  </h1>
+  <router-link to="/StudentMain">主页</router-link>|
+  <router-link to="/StudentCourseSelection">选课</router-link>|
+  <router-link to="/StudentCurriculumView">课表</router-link>|
+  <router-link to="/StudentScoreQuery">查分</router-link>
+  <p>
+    <vxe-input v-model="CourseSearch.courseId" placeholder="【选】课程ID" clearable></vxe-input>
     <vxe-input v-model="CourseSearch.courseName" placeholder="【查】课程名称" clearable></vxe-input>
     <vxe-input v-model="CourseSearch.teacherName" placeholder="【查】授课教师
 " clearable></vxe-input>
@@ -19,7 +19,7 @@
     </vxe-select>
   </p>
   <p>
-     <vxe-button status="primary" content="选课" @click="Select"></vxe-button>
+    <vxe-button status="primary" content="选课" @click="Select"></vxe-button>
     <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
     <vxe-button status="primary" content="清空查询" @click="clear"></vxe-button>
   </p>
@@ -99,13 +99,16 @@ export default defineComponent({
       axios({
         method: 'POST',
 
-        url: 'http://localhost:8081/admin/select/course/list',
+        url: 'http://localhost:8081/student/course/list',
         params: {
           pageNo: tablePage.currentPage,
           pageSize: tablePage.pageSize,
+          studentId: sessionStorage.id
+        },
+        data: {
           courseName: CourseSearch.courseName,
           teacherName: CourseSearch.teacherName,
-          time: CourseSearch.time,
+          courseTime: CourseSearch.time,
         }
       }).then(response => {
         console.log(tablePage.currentPage);
@@ -126,16 +129,14 @@ export default defineComponent({
       axios({
         method: 'PUT',
 
-        url: '/student/select'+CourseSearch.courseId,
+        url: 'http://localhost:8081/student/select/' + CourseSearch.courseId,
         params: {
-          pageNo: tablePage.currentPage,
-          pageSize: tablePage.pageSize,
-          id:sessionStorage.id
-        },
-        
+          id: sessionStorage.id,
+        }
       }).then(response => {
         console.log(tablePage.currentPage);
-
+        CourseSearch.courseId = null;
+        ShowList();
       }).catch(res => {
         console.log(res)
       }).finally(() => {
