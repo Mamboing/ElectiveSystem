@@ -10,6 +10,6 @@ public interface TeacherService extends IService<Teacher> {
 
     Teacher getByName(String userName);
 
-    List<CourseVO> schedule();
+    List<CourseVO> schedule(Integer id);
 
 }

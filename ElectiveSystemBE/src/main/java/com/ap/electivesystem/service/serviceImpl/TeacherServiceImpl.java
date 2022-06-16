@@ -37,9 +37,9 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     }
 
     @Override
-    public List<CourseVO> schedule() {
-        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
-        Integer id = loginStatus.getId();
+    public List<CourseVO> schedule(Integer id) {
+//        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
+//        Integer id = loginStatus.getId();
         List<Course> schedule = teacherMapper.schedule(id);
         List<CourseVO> courseVOS = new ArrayList<>();
         schedule.forEach(course -> {

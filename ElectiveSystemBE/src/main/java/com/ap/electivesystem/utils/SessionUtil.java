@@ -16,7 +16,6 @@ public class SessionUtil {
             loginStatus = new LoginStatusBO();
             setLoginStatus(session, loginStatus);
         }
-
         return loginStatus;
     }
 

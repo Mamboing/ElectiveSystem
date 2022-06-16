@@ -43,8 +43,8 @@ public class TeacherController {
     }
 
     @PutMapping("/add/course")
-    public ResultVO addCourse(@RequestParam String courseName, @RequestParam String weekday, @RequestParam String time) {
-        int i = courseService.saveNoId(courseName, weekday, time);
+    public ResultVO addCourse(@RequestParam String courseName, @RequestParam String weekday, @RequestParam String time, @RequestParam Integer id) {
+        int i = courseService.saveNoId(courseName, weekday, time, id);
         switch (i) {
             case -1:
                 return ResultVO.fail(ReturnCode.TIME_CONFLICT);
@@ -79,8 +79,8 @@ public class TeacherController {
             @ApiResponse(code = 1001, message = "没有找到对应的课表"),
             @ApiResponse(code = 0, message = "success")
     })
-    public ResultVO schedule() {
-        List<CourseVO> schedule = teacherService.schedule();
+    public ResultVO schedule(@RequestParam Integer id) {
+        List<CourseVO> schedule = teacherService.schedule(id);
         if (schedule == null)
             return ResultVO.fail(ReturnCode.COURSE_NOT_FOUND);
         return ResultVO.success(schedule);
