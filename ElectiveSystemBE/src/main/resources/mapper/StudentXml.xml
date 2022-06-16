@@ -2,13 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ap.electivesystem.mapper.StudentMapper">
 
-    <sql id="courseField">
-        course_id, course_name, weekday, `time`, teacher_id, course_room, offer_state
-    </sql>
-    <select id="schedule" resultType="com.ap.electivesystem.entity.Course">
+    <select id="schedule" resultType="com.ap.electivesystem.entity.vo.CourseVO">
         select
-        <include refid="courseField"/>
+           s.course_id, course_name, weekday, `time`, teacher_name, course_room, offer_state
         from tb_select s inner join tb_course c on s.course_id = c.course_id
+        inner join tb_teacher tt on c.teacher_id = tt.teacher_id
         where student_id = #{studentId}
     </select>
 </mapper>

@@ -46,12 +46,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public List<CourseVO> schedule(Integer id) {
 //        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
 //        Integer id = loginStatus.getId();
-        List<Course> schedule = studentMapper.schedule(id);
-        List<CourseVO> courseVOS = new ArrayList<>();
-        schedule.forEach(course -> {
-            courseVOS.add(copyUtil.courseCopy(course));
-        });
-        return courseVOS;
+        return studentMapper.schedule(id);
     }
 
     @Override

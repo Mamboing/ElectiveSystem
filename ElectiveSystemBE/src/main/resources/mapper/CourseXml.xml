@@ -8,7 +8,7 @@
         where course_id = #{courseId}
     </select>
     <select id="findCourse" resultType="com.ap.electivesystem.entity.vo.CourseVO">
-        select course_id, course_name, weekday, `time`, teacher_name, course_room
+        select course_id, course_name, weekday, `time`, teacher_name, course_room, offer_state
         from tb_course inner join tb_teacher tt on tb_course.teacher_id = tt.teacher_id
         where offer_state = '1'
         <if test="courseName != null and courseName != ''">

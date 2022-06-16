@@ -48,5 +48,4 @@ public class Course implements Serializable {
         this.courseRoom = courseRoom;
         this.offerState = offerState;
     }
-
 }
