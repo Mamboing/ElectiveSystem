@@ -79,8 +79,8 @@ public class TeacherController {
             @ApiResponse(code = 1001, message = "没有找到对应的课表"),
             @ApiResponse(code = 0, message = "success")
     })
-    public ResultVO schedule(@RequestParam Integer id) {
-        List<CourseVO> schedule = teacherService.schedule(id);
+    public ResultVO schedule(@RequestParam Integer id, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
+        PageInfo<CourseVO> schedule = teacherService.schedule(id, pageSize,pageNo);
         if (schedule == null)
             return ResultVO.fail(ReturnCode.COURSE_NOT_FOUND);
         return ResultVO.success(schedule);

@@ -21,4 +21,6 @@ public class CourseVO implements Serializable {
     private String teacherName;
 
     private String courseRoom;
+
+    private String offerState;
 }

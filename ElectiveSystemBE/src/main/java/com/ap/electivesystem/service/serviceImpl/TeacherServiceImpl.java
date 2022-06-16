@@ -10,6 +10,8 @@ import com.ap.electivesystem.utils.CopyUtil;
 import com.ap.electivesystem.utils.SessionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,14 +39,15 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     }
 
     @Override
-    public List<CourseVO> schedule(Integer id) {
+    public PageInfo<CourseVO> schedule(Integer id, int pageSize, int pageNo) {
 //        LoginStatusBO loginStatus = sessionUtil.getLoginStatus(session);
 //        Integer id = loginStatus.getId();
+        PageHelper.startPage(pageNo,pageSize);
         List<Course> schedule = teacherMapper.schedule(id);
         List<CourseVO> courseVOS = new ArrayList<>();
         schedule.forEach(course -> {
             courseVOS.add(copyUtil.courseCopy(course));
         });
-        return courseVOS;
+        return new PageInfo<>(courseVOS);
     }
 }
