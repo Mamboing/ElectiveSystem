@@ -14,11 +14,11 @@
                 <vxe-option value="周五" label="周五"></vxe-option>
             </vxe-select>
             <vxe-select v-model="course.time" placeholder="Course Time" clearable>
-                <vxe-option value="8:00-9:35" label="8:00-9:35"></vxe-option>
-                <vxe-option value="9:50-11:25" label="9:50-11:25"></vxe-option>
-                <vxe-option value="13:00-14:35" label="13:00-14:35"></vxe-option>
-                <vxe-option value="14:50-16:25" label="14:50-16:25"></vxe-option>
-                <vxe-option value="18:00-20:35" label="18:00-20:35"></vxe-option>
+                <vxe-option value="8:00 - 9:35" label="8:00 - 9:35"></vxe-option>
+                <vxe-option value="9:50 - 11:25" label="9:50 - 11:25"></vxe-option>
+                <vxe-option value="13:00 - 14:35" label="13:00 - 14:35"></vxe-option>
+                <vxe-option value="14:50 - 16:25" label="14:50 - 16:25"></vxe-option>
+                <vxe-option value="18:00 - 20:35" label="18:00 - 20:35"></vxe-option>
             </vxe-select>
       
             <vxe-select v-model="course.location" placeholder="Course Location" clearable>

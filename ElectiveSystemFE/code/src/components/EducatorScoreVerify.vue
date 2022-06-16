@@ -9,17 +9,22 @@
   <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
   <p>
-    <vxe-input v-model="CourseSearch.courseName" placeholder="课程名称" clearable></vxe-input>
-    <vxe-input v-model="CourseSearch.courseRoom" placeholder="授课教室" clearable></vxe-input>
-    <vxe-input v-model="CourseSearch.offerState" placeholder="课程状态" clearable></vxe-input>
-    <vxe-input v-model="CourseSearch.teacherName" placeholder="授课老师
+    <vxe-input v-model="Search.courseName" placeholder="【查】课程名称" clearable></vxe-input>
+    <vxe-input v-model="Search.courseId" placeholder="【改】课程ID" clearable></vxe-input>
+    <vxe-input v-model="Search.teacherName" placeholder="【查】教师" clearable></vxe-input>
+    <vxe-input v-model="Search.studentId" placeholder="【改】学生ID
 " clearable></vxe-input>
-    <vxe-input v-model="CourseSearch.time" placeholder="授课时间
+    <vxe-input v-model="Search.studentName" placeholder="【查】学生
 " clearable></vxe-input>
-    <vxe-input v-model="CourseSearch.weekday" placeholder="授课日
+    <vxe-input v-model="Search.usualGrade" placeholder="【改】平时成绩
+" clearable></vxe-input>
+    <vxe-input v-model="Search.finalGrade" placeholder="【改】期末成绩
+" clearable></vxe-input>
+    <vxe-input v-model="Search.totalGrade" placeholder="【改】总评成绩
 " clearable></vxe-input>
   </p>
   <p>
+    <vxe-button status="primary" content="修改" @click="Update"></vxe-button>
     <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
   </p>
   <vxe-grid v-bind="gridOptions">
@@ -40,13 +45,15 @@ import XEUtils from 'xe-utils'
 // import { table } from 'console';
 export default defineComponent({
   setup() {
-     const CourseSearch = reactive({
+    const Search = reactive({
       courseName: '',
-      courseRoom: '',
-      offerState: '',
+      courseId: '',
+      studentId: '',
+      studentName: '',
       teacherName: '',
-      time: '',
-      weekday: ''
+      usualGrade: '',
+      finalGrade: '',
+      totalGrade: ''
     })
 
     const tablePage = reactive({
@@ -71,9 +78,14 @@ export default defineComponent({
       columns: [
         { type: 'seq', width: 60 },
         { type: 'checkbox', width: 50 },
-        { field: 'teacherId', title: 'ID' },
-        { field: 'teacherName', title: '姓名' },
-        { field: 'teacherPass', title: '密码' }
+        { field: 'courseId', title: '课程ID', sortable: true  },
+        { field: 'courseName', title: '课程名称', sortable: true  },
+        { field: 'teacherName', title: '教师' , sortable: true },
+        { field: 'studentId', title: '学生ID' , sortable: true },
+        { field: 'studentName', title: '学生' , sortable: true },
+        { field: 'usualGrade', title: '平时成绩' , sortable: true },
+        { field: 'finalGrade', title: '期末成绩', sortable: true  },
+        { field: 'totalGrade', title: '总评成绩', sortable: true  }
         // ,
         // { field: 'address', title: 'Address', showOverflow: true }
       ]
@@ -91,17 +103,10 @@ export default defineComponent({
       tablePage.currentPage = 1
       findList()
     }
-    // let tableData: StudentList[] = ref<any>({})
-    const ShowList = () => {
-      // axios.get('http://localhost:8081/admin/student/list', {
-      //           pageNo: tablePage.currentPage,
-      //     pageSize: tablePage.pageSize
 
-      axios({//返回promise对象
-        // 请求类型
-        // headers: {
-        //   "Authorization": sessionStorage.name
-        // },
+    const ShowList = () => {
+
+      axios({
         method: 'GET',
         //URL
         url: 'http://localhost:8081/admin/score/list',
@@ -123,7 +128,36 @@ export default defineComponent({
       })
     }
 
+    const Update = () => {
 
+      axios({
+        method: 'POST',
+        url: 'http://localhost:8081/admin/score/update',
+        data: {
+          courseId: Search.courseId,
+          finalGrade: Search.finalGrade,
+          studentId: Search.studentId,
+          totalGrade: Search.totalGrade,
+          usualGrade: Search.usualGrade
+        }
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+        Search.courseId = '',
+          Search.finalGrade = '',
+          Search.studentId = '',
+          Search.totalGrade = '',
+          Search.usualGrade = '',
+          ShowList();
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
@@ -141,7 +175,8 @@ export default defineComponent({
       searchEvent,
       handlePageChange,
       ShowList,
-      CourseSearch
+      Search,
+      Update
     }
   }
 })

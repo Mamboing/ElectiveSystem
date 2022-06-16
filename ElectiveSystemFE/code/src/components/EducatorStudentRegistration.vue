@@ -59,9 +59,9 @@ export default defineComponent({
       columns: [
         { type: 'seq', width: 60 },
         { type: 'checkbox', width: 50 },
-        { field: 'studentId', title: 'ID' },
-        { field: 'studentName', title: '学生用户名' },
-        { field: 'studentPass', title: '密码' }
+        { field: 'studentId', title: 'ID' , sortable: true },
+        { field: 'studentName', title: '学生用户名' , sortable: true },
+        { field: 'studentPass', title: '密码', sortable: true  }
         // ,
         // { field: 'address', title: 'Address', showOverflow: true }
       ]
