@@ -35,10 +35,10 @@ public class SelectCourseController {
             @ApiResponse(code = 0, message = "success"),
             @ApiResponse(code = 1008, message = "不合法的时间范围"),
     })
-    public ResultVO list(@RequestBody(required = false) SelectDTO selectDTO,@RequestParam(defaultValue = "10") int pageSize,@RequestParam(defaultValue = "1") int pageNo) {
+    public ResultVO list(@RequestBody(required = false) SelectDTO selectDTO,@RequestParam(defaultValue = "10") Integer pageSize,@RequestParam(defaultValue = "1") Integer pageNo) {
         if (pageNo < 0 || pageSize < 0)
             return ResultVO.fail(ReturnCode.PAGE_PARAMETER_ERROR);
-        if (selectDTO != null && selectDTO.getTime().length() != 0 && !TimeRange.legalTimeRange(selectDTO.getTime()) )
+        if (selectDTO != null && selectDTO.getTime() != null && selectDTO.getTime().length() != 0 && !TimeRange.legalTimeRange(selectDTO.getTime()) )
             return ResultVO.fail(ReturnCode.ILLEGAL_TIME_RANGE);
         PageInfo<SelectVO> search = selectService.search(selectDTO, pageSize, pageNo);
         return ResultVO.success(search);

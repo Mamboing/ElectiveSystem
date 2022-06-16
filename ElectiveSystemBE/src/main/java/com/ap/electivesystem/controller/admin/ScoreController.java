@@ -1,6 +1,5 @@
 package com.ap.electivesystem.controller.admin;
 
-import com.ap.electivesystem.config.auth.annotation.Register;
 import com.ap.electivesystem.entity.Score;
 import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.dto.ScoreDTO;
