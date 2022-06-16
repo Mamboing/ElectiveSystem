@@ -57,9 +57,7 @@ export default defineComponent({
                 password: this.LoginPassword,
                 username: this.LoginUsername,
                 userType: this.LoginSelected,
-                xhrFields: {
-                    withCredentials: true
-                }
+                withCredentials: true
             }
             ).then(res => {
                 console.log(res)

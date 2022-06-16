@@ -1,11 +1,13 @@
 package com.ap.electivesystem.config.auth;
 
+import com.ap.electivesystem.entity.bo.LoginStatusBO;
 import com.ap.electivesystem.entity.constant.HttpStatusCode;
 import com.ap.electivesystem.entity.constant.ReturnCode;
 import com.ap.electivesystem.entity.vo.ResultVO;
 import com.ap.electivesystem.utils.SessionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.annotation.Resource;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Method;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {

@@ -17,6 +17,7 @@
     <vxe-button status="primary" content="删除" @click="Delete"></vxe-button>
     <vxe-button status="primary" content="更改" @click="Update"></vxe-button>
     <vxe-button status="primary" content="查询" @click="ShowList"></vxe-button>
+    <vxe-button status="primary" content="清空查询" @click="clear"></vxe-button>
   </p>
   <vxe-grid v-bind="gridOptions">
     <template #pager>
@@ -32,16 +33,19 @@
 import { defineComponent, reactive } from 'vue'
 import { VxeGridProps, VxePagerEvents } from 'vxe-table'
 import axios from 'axios';
-import XEUtils from 'xe-utils'
-// import { table } from 'console';
 export default defineComponent({
   setup() {
     const StudentSearch = reactive({
-      studentId: '',
-      studentName: '',
-      studentPass: ''
+      studentId: null,
+      studentName: null,
+      studentPass: null
     })
-
+    const clear = () => {
+      StudentSearch.studentId = null,
+        StudentSearch.studentName = null,
+        StudentSearch.studentPass = null
+      ShowList();
+    }
     const tablePage = reactive({
       total: 0,
       currentPage: 1,
@@ -59,11 +63,10 @@ export default defineComponent({
       columns: [
         { type: 'seq', width: 60 },
         { type: 'checkbox', width: 50 },
-        { field: 'studentId', title: 'ID' , sortable: true },
-        { field: 'studentName', title: '学生用户名' , sortable: true },
-        { field: 'studentPass', title: '密码', sortable: true  }
-        // ,
-        // { field: 'address', title: 'Address', showOverflow: true }
+        { field: 'studentId', title: 'ID', sortable: true },
+        { field: 'studentName', title: '学生用户名', sortable: true },
+        { field: 'studentPass', title: '密码', sortable: true }
+
       ]
     })
 
@@ -79,9 +82,9 @@ export default defineComponent({
       tablePage.currentPage = 1
       findList()
     }
-  
+
     const ShowList = () => {
-    
+
       axios({
         method: 'GET',
 
@@ -89,8 +92,10 @@ export default defineComponent({
         params: {
           studentName: StudentSearch.studentName,
           pageNo: tablePage.currentPage,
-          pageSize: tablePage.pageSize
-        }
+          pageSize: tablePage.pageSize,
+
+        },
+        withCredentials: true
       }).then(response => {
         console.log(tablePage.currentPage);
         const { list } = response.data.data;
@@ -115,17 +120,15 @@ export default defineComponent({
           studentId: StudentSearch.studentId,
           studentName: StudentSearch.studentName,
           studentPass: StudentSearch.studentPass
-        }
+        },
+        withCredentials: true
       }).then(response => {
         console.log(tablePage.currentPage);
         const { list } = response.data.data;
         gridOptions.data = list;
         const { total } = response.data.data;
         tablePage.total = total;
-        StudentSearch.studentId = '',
-          StudentSearch.studentName = '',
-          StudentSearch.studentPass = ''
-        ShowList();
+        clear();
       }).catch(res => {
         console.log(res)
       }).finally(() => {
@@ -136,17 +139,15 @@ export default defineComponent({
 
       axios({
         method: 'DELETE',
-        url: 'http://localhost:8081/admin/student/delete/' + StudentSearch.studentId
+        url: 'http://localhost:8081/admin/student/delete/' + StudentSearch.studentId,
+        withCredentials: true
       }).then(response => {
         console.log(tablePage.currentPage);
         const { list } = response.data.data;
         gridOptions.data = list;
         const { total } = response.data.data;
         tablePage.total = total;
-        StudentSearch.studentId = '',
-          StudentSearch.studentName = '',
-          StudentSearch.studentPass = ''
-        ShowList();
+        clear();
 
       }).catch(res => {
         console.log(res)
@@ -164,17 +165,15 @@ export default defineComponent({
           studentId: 0,
           studentName: StudentSearch.studentName,
           studentPass: StudentSearch.studentPass
-        }
+        },
+        withCredentials: true
       }).then(response => {
         console.log(tablePage.currentPage);
         const { list } = response.data.data;
         gridOptions.data = list;
         const { total } = response.data.data;
         tablePage.total = total;
-        StudentSearch.studentId = '',
-          StudentSearch.studentName = '',
-          StudentSearch.studentPass = ''
-        ShowList();
+        clear();
 
       }).catch(res => {
         console.log(res)
@@ -186,7 +185,6 @@ export default defineComponent({
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
-      // console.log(tablePage.currentPage)
       findList()
     }
 
@@ -201,7 +199,8 @@ export default defineComponent({
       StudentSearch,
       Update,
       Delete,
-      Add
+      Add,
+      clear
     }
   }
 })

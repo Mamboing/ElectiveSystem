@@ -7,6 +7,9 @@
   <router-link to="/EducatorScoreVerify">成绩管理</router-link>|
   <router-link to="/EducatorCourseOfferingVerify">开课管理</router-link>|
   <router-link to="/EducatorCourseSelectionVerify">选课管理</router-link>
+  <p>
+    <vxe-button status="primary" content="更改" @click="Update"></vxe-button>
+  </p>
   <vxe-grid v-bind="gridOptions">
     <template #pager>
       <vxe-pager :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
@@ -19,23 +22,30 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import { VxeGridProps, VxePagerEvents ,VXETable} from 'vxe-table'
+import { VxeGridProps, VxePagerEvents, VXETable } from 'vxe-table'
 import axios from 'axios';
- import XEUtils from 'xe-utils'
-// import { table } from 'console';
+import XEUtils from 'xe-utils'
 export default defineComponent({
   setup() {
     const tablePage = reactive({
-      total: 0,
+      total: 1,
       currentPage: 1,
-      pageSize: 10
+      pageSize: 1
     })
-    // interface StudentList {
-    //   studentId: string
-    //   studentName: string
-    //   studentPass: string
-    //   children: object
-    // }
+
+    const Search = reactive({
+      adminId: null,
+      adminName: null,
+      adminPass: null
+    })
+
+    const clear = () => {
+      Search.adminId = null,
+        Search.adminName = null,
+        Search.adminPass = null
+      ShowList();
+    }
+
     let gridOptions = reactive<VxeGridProps>({
       border: true,
       height: 530,
@@ -47,14 +57,36 @@ export default defineComponent({
       columns: [
         { type: 'seq', width: 60 },
         { type: 'checkbox', width: 50 },
-        { field: 'studentId', title: 'ID' },
-        { field: 'studentName', title: '姓名' },
-        { field: 'studentPass', title: '密码' }
-        // ,
-        // { field: 'address', title: 'Address', showOverflow: true }
+        { field: 'adminId', title: 'ID' },
+        { field: 'adminName', title: '姓名' },
+        { field: 'adminPass', title: '密码' }
+
       ]
     })
+    const Update = () => {
 
+      axios({
+        method: 'POST',
+        url: 'http://localhost:8081/admin/update',
+        data: {
+          adminId: Search.adminId,
+          adminName: Search.adminName,
+          adminPass: Search.adminPass
+        },
+        withCredentials: true
+      }).then(response => {
+        console.log(tablePage.currentPage);
+        const { list } = response.data.data;
+        gridOptions.data = list;
+        const { total } = response.data.data;
+        tablePage.total = total;
+        clear();
+      }).catch(res => {
+        console.log(res)
+      }).finally(() => {
+        console.log('完成了')
+      })
+    }
     const findList = () => {
       gridOptions.loading = true
       setTimeout(() => {
@@ -67,31 +99,16 @@ export default defineComponent({
       tablePage.currentPage = 1
       findList()
     }
-    // let tableData: StudentList[] = ref<any>({})
     const ShowList = () => {
-      // axios.get('http://localhost:8081/admin/student/list', {
-      //           pageNo: tablePage.currentPage,
-      //     pageSize: tablePage.pageSize
-     
-      axios({//返回promise对象
-        // 请求类型
-        // headers: {
-        //   "Authorization": sessionStorage.name
-        // },
+
+      axios({
         method: 'GET',
         //URL
-        url: 'http://localhost:8081/admin/student/list',
-        params: {
-          pageNo: tablePage.currentPage,
-          pageSize: tablePage.pageSize
-        }
+        url: 'http://localhost:8081/admin/list',
       }).then(response => {
         console.log(tablePage.currentPage);
-        const { list } = response.data.data;
-        gridOptions.data = list;
-        const { total } = response.data.data;
-        tablePage.total = total;
-
+        const { data } = response.data;
+        gridOptions.data = data;
       }).catch(res => {
         console.log(res)
       }).finally(() => {
@@ -99,19 +116,18 @@ export default defineComponent({
       })
     }
 
-    
+
     const handlePageChange: VxePagerEvents.PageChange = ({ currentPage, pageSize }) => {
       tablePage.currentPage = currentPage
       tablePage.pageSize = pageSize
-      // console.log(tablePage.currentPage)
       findList()
     }
 
     findList()
 
-  const openAlert = (options: any) => {
-              VXETable.modal.alert(options)
-            }
+    const openAlert = (options: any) => {
+      VXETable.modal.alert(options)
+    }
 
     return {
       tablePage,
@@ -119,7 +135,9 @@ export default defineComponent({
       searchEvent,
       handlePageChange,
       ShowList,
-      openAlert
+      openAlert,
+      Update,
+      clear
     }
   }
 })
