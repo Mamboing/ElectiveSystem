@@ -23,7 +23,7 @@ public class SelectVO {
 
     private String weekday;
 
-    private String room;
+    private String courseRoom;
 
     private String time;
 

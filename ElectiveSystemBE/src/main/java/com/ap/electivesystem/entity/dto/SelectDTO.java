@@ -23,10 +23,6 @@ public class SelectDTO {
 
     private String weekday;
 
-    private String courseRoom;
-
     private String time;
-
-    private String offerState;
 
 }
