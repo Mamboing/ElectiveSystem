@@ -44,7 +44,15 @@ public class TeacherController {
 
     @PutMapping("/add/course")
     public ResultVO addCourse(@RequestParam String courseName, @RequestParam String weekday, @RequestParam String time) {
-        return ResultVO.success(courseService.saveNoId(courseName, weekday, time));
+        int i = courseService.saveNoId(courseName, weekday, time);
+        switch (i) {
+            case -1:
+                return ResultVO.fail(ReturnCode.TIME_CONFLICT);
+            case -2:
+                return ResultVO.fail(ReturnCode.ROOM_FULLY_OCCUPIED);
+            default:
+                return ResultVO.success(i);
+        }
     }
 
     @PostMapping("/add/score")
