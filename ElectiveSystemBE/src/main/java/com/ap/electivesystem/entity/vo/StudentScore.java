@@ -15,6 +15,8 @@ public class StudentScore implements Serializable {
 
     private String studentName;
 
+    private Integer courseId;
+
     private String courseName;
 
     private Integer usualGrade;

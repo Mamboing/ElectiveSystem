@@ -20,7 +20,7 @@ public interface StudentService extends IService<Student> {
 
     int deleteSelect(Integer courseId, Integer id);
 
-    PageInfo<StudentScore> findByCourseId(Integer courseId, int pageSize, int pageNo);
+    PageInfo<StudentScore> findByCourseId(Integer courseId, int pageSize, int pageNo, int teacherId);
 
     Student getByName(String userName);
 }

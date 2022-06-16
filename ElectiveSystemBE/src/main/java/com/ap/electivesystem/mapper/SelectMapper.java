@@ -15,7 +15,7 @@ public interface SelectMapper extends BaseMapper<Select> {
 
     int insertBatch(List<Integer> courseIds, Integer student_id);
 
-    List<StudentScore> findByCourseIdAndTeacherId(Integer courseId);
+    List<StudentScore> findByCourseIdAndTeacherId(Integer courseId, Integer teacherId);
 
     List<SelectVO> search(SelectDTO selectDTO);
 
