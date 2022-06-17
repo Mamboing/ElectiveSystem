@@ -12,8 +12,8 @@
 " clearable></vxe-input>
     </p>
     <p>
-        <vxe-input v-model="Login.password" placeholder="密码
-" clearable></vxe-input>
+        <vxe-input v-model="Login.password" placeholder="密码 
+" type="password" clearable></vxe-input>
     </p>
 
     <p>
