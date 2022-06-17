@@ -41,7 +41,6 @@ public class ScoreController {
 
     @PostMapping("/update")
     @ApiResponses({
-            @ApiResponse(code = 1004, message = "分页参数问题"),
             @ApiResponse(code = 0, message = "success")
     })
     public ResultVO update(@RequestBody Score score) {
