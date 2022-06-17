@@ -1,5 +1,8 @@
 <template>
     <img alt="Vue logo" src="../assets/logo.png">
+    <h1>
+        欢迎来到选课系统
+    </h1>
     <p>
         <vxe-select v-model="Login.userType" placeholder="用户类型" clearable>
             <vxe-option value="1" label="学生"></vxe-option>
