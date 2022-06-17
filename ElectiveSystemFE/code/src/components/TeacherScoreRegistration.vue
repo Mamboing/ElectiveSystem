@@ -6,7 +6,9 @@
   <router-link to="/TeacherScoreRegistration">成绩登记</router-link>
   <p>
     <vxe-input v-model="Search.courseId" placeholder="【改查】课程ID" clearable></vxe-input>
-    <vxe-input v-model="Search.studentId" placeholder="【改】学生ID
+     <vxe-input v-model="Search.studentId" placeholder="【改查】学生ID
+" clearable></vxe-input>
+    <vxe-input v-model="Search.studentName" placeholder="【改查】学生姓名
 " clearable></vxe-input>
     <vxe-input v-model="Search.usualGrade" placeholder="【改】平时成绩
 " clearable></vxe-input>
@@ -107,7 +109,9 @@ export default defineComponent({
         params: {
           pageNo: tablePage.currentPage,
           pageSize: tablePage.pageSize,
-          teacherId: sessionStorage.id
+          teacherId: sessionStorage.id,
+          studentId:Search.studentId,
+          studentName:Search.studentName,
         }
       }).then(response => {
         let { code } = response.data;

@@ -117,7 +117,10 @@ export default defineComponent({
         url: 'http://localhost:8081/admin/score/list',
         params: {
           pageNo: tablePage.currentPage,
-          pageSize: tablePage.pageSize
+          pageSize: tablePage.pageSize,
+          courseName:Search.courseName,
+          studentName:Search.studentName,
+          teacheName:Search.teacherName
         }
       }).then(response => {
         let { code } = response.data;
