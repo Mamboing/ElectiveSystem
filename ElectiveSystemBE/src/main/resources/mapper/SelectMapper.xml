@@ -14,6 +14,12 @@
         inner join tb_teacher tt on tc.teacher_id = tt.teacher_id
         inner join tb_student t on ts.student_id = t.student_id
         where ts.course_id = #{courseId} and tc.teacher_id = #{teacherId}
+        <if test="studentId != null and studentId != ''">
+            and ts.student_id = #{studentId}
+        </if>
+        <if test="studentName != null and studentName != ''">
+            and student_name like concat('%', #{studentName}, '%')
+        </if>
     </select>
     <select id="search" resultType="com.ap.electivesystem.entity.vo.SelectVO">
         select tb_select.course_id, course_name, tc.teacher_id, teacher_name,ts.student_id, student_name, weekday, course_room, `time`, offer_state

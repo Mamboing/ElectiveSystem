@@ -67,8 +67,8 @@ public class TeacherController {
             @ApiResponse(code = 1003, message = "没有找到对应的学生"),
             @ApiResponse(code = 0, message = "success")
     })
-    public ResultVO findByCourseId(@PathVariable Integer courseId, @RequestParam Integer teacherId, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
-        PageInfo<StudentScore> studentVOS = studentService.findByCourseId(courseId, pageSize, pageNo, teacherId);
+    public ResultVO findByCourseId(@PathVariable Integer courseId, @RequestParam Integer teacherId, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam(required = false) Integer studentId, @RequestParam(required = false) String studentName) {
+        PageInfo<StudentScore> studentVOS = studentService.findByCourseId(courseId, pageSize, pageNo, teacherId, studentId, studentName);
         if (studentVOS.getSize() == 0)
             return ResultVO.fail(ReturnCode.STUDENT_NOT_FOUND);
         return ResultVO.success(studentVOS);
@@ -80,7 +80,7 @@ public class TeacherController {
             @ApiResponse(code = 1001, message = "没有找到对应的课表"),
             @ApiResponse(code = 0, message = "success")
     })
-    public ResultVO schedule(@RequestParam Integer id, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo) {
+    public ResultVO schedule(@RequestParam Integer id, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "1") int pageNo, @RequestParam(required = false) Integer studentId, @RequestParam(required = false) String studentName) {
         PageInfo<CourseVO> schedule = teacherService.schedule(id, pageSize,pageNo);
         if (schedule == null)
             return ResultVO.fail(ReturnCode.COURSE_NOT_FOUND);

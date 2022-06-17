@@ -89,9 +89,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public PageInfo<StudentScore> findByCourseId(Integer courseId, int pageSize, int pageNo, int teacherId) {
+    public PageInfo<StudentScore> findByCourseId(Integer courseId, int pageSize, int pageNo, int teacherId, Integer studentId, String studentName) {
         PageHelper.startPage(pageNo, pageSize);
-        List<StudentScore> byCourseId = selectMapper.findByCourseIdAndTeacherId(courseId, teacherId);
+        List<StudentScore> byCourseId = selectMapper.findByCourseIdAndTeacherId(courseId, teacherId,studentId,studentName);
         return new PageInfo<>(byCourseId);
     }
 
