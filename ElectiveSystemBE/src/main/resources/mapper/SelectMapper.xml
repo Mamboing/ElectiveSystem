@@ -9,11 +9,11 @@
         </foreach>
     </insert>
     <select id="findByCourseIdAndTeacherId" resultType="com.ap.electivesystem.entity.vo.StudentScore">
-        select ts.student_id, student_name, ts.course_id, course_name, usual_grade, final_grade, total_grade
-        from tb_score ts inner join tb_course tc on ts.course_id = tc.course_id
-        inner join tb_teacher tt on tc.teacher_id = tt.teacher_id
-        inner join tb_student t on ts.student_id = t.student_id
-        where ts.course_id = #{courseId} and tc.teacher_id = #{teacherId}
+        select ts.student_id, student_name, tbs.course_id, course_name, 0, 0, 0
+        from tb_select tbs inner join tb_course tc on tbs.course_id = tc.course_id
+                inner join tb_teacher tt on tc.teacher_id = tt.teacher_id
+        inner join tb_student ts on tbs.student_id = ts.student_id
+        where tbs.course_id = #{courseId} and tc.teacher_id = #{teacherId}
         <if test="studentId != null and studentId != ''">
             and ts.student_id = #{studentId}
         </if>

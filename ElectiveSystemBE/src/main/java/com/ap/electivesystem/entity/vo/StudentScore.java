@@ -19,10 +19,10 @@ public class StudentScore implements Serializable {
 
     private String courseName;
 
-    private Integer usualGrade;
+    private Integer usualGrade = 0;
 
-    private Integer finalGrade;
+    private Integer finalGrade = 0;
 
-    private Integer totalGrade;
+    private Integer totalGrade = 0;
 
 }
