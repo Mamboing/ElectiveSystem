@@ -93,3 +93,4 @@ import-summary.txt
 node_modules
 
 
+*.gz
